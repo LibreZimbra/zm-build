@@ -279,6 +279,11 @@ source "$SCRIPT_DIR/utils.sh"
 
 CreateDebianPackage()
 {
+    case "${arch}" in
+        x86_64) debarch="amd64";;
+        *) debarch="${arch}";;
+    esac
+
     mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
@@ -303,7 +308,7 @@ CreateDebianPackage()
       cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb \
          | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
                -e "s/@@branch@@/${buildTimeStamp}/" \
-               -e "s/@@ARCH@@/${arch}/" \
+               -e "s/@@ARCH@@/${debarch}/" \
                -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
                -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/" \
                -e "/^%post$/ r ${currentScript}.post"

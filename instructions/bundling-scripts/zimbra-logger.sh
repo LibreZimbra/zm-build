@@ -41,13 +41,18 @@ source "$SCRIPT_DIR/utils.sh"
 
 CreateDebianPackage()
 {
+    case "${arch}" in
+        x86_64) debarch="amd64";;
+        *) debarch="${arch}";;
+    esac
+
     mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
     echo -e "\tCopy package files..." >> ${buildLogFile}
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 
     echo -e "\tCreate debian package..." >> ${buildLogFile}
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" -e "s/@@branch@@/${buildTimeStamp}/" -e "s/@@ARCH@@/${arch}/" \
+    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" -e "s/@@branch@@/${buildTimeStamp}/" -e "s/@@ARCH@@/${debarch}/" \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
     (cd ${repoDir}/zm-build/${currentPackage}; dpkg -b ${repoDir}/zm-build/${currentPackage} ${repoDir}/zm-build/${arch})
 
