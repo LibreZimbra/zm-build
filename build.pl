@@ -764,15 +764,12 @@ sub GetBuildOS()    # FIXME - use standard mechanism
 
 sub GetBuildArch()
 {
-   my $b_os = $CFG{BUILD_OS};
-
-   return "amd64"
-     if ( $b_os =~ /UBUNTU[0-9]+_64/ );
-
-   return "x86_64"
-     if ( $b_os =~ /RHEL[0-9]+_64/ || $b_os =~ /CENTOS[0-9]+_64/ );
-
-   Die("Could not determine BUILD_ARCH");
+   my $cc = ( $ENV{'CC'} ? $ENV{'CC'} : 'cc');
+   my $mach = `$cc -dumpmachine`;
+   return '' if not $mach;
+   $mach =~ s/^\s+|\s+$//g;
+   my @m = split('-',$mach);
+   return $m[0];
 }
 
 sub GetPkgOsTag()
