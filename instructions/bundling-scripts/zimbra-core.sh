@@ -394,6 +394,15 @@ install_zm_db_conf() {
     done
 }
 
+install_zm_jython() {
+    for i in commands.py conf.py config.py globalconfig.py ldap.py listener.py \
+             localconfig.py logmsg.py miscconfig.py mtaconfig.py \
+             serverconfig.py state.py \
+        ; do
+            install_file "zm-jython/jylibs/$i" "opt/zimbra/common/lib/jylibs/"
+    done
+}
+
 #-------------------- main packaging ---------------------------
 
 main()
@@ -461,18 +470,7 @@ main()
 
    Copy ${repoDir}/zm-freshclam/freshclam.conf.in                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/freshclam.conf.in
 
-   Copy ${repoDir}/zm-jython/jylibs/commands.py                                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/commands.py
-   Copy ${repoDir}/zm-jython/jylibs/conf.py                                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/conf.py
-   Copy ${repoDir}/zm-jython/jylibs/config.py                                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/config.py
-   Copy ${repoDir}/zm-jython/jylibs/globalconfig.py                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/globalconfig.py
-   Copy ${repoDir}/zm-jython/jylibs/ldap.py                                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/ldap.py
-   Copy ${repoDir}/zm-jython/jylibs/listener.py                                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/listener.py
-   Copy ${repoDir}/zm-jython/jylibs/localconfig.py                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/localconfig.py
-   Copy ${repoDir}/zm-jython/jylibs/logmsg.py                                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/logmsg.py
-   Copy ${repoDir}/zm-jython/jylibs/miscconfig.py                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/miscconfig.py
-   Copy ${repoDir}/zm-jython/jylibs/mtaconfig.py                                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/mtaconfig.py
-   Copy ${repoDir}/zm-jython/jylibs/serverconfig.py                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/serverconfig.py
-   Copy ${repoDir}/zm-jython/jylibs/state.py                                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/lib/jylibs/state.py
+    install_zm_jython
 
    Copy ${repoDir}/zm-launcher/build/dist/zmmailboxdmgr                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmailboxdmgr
    Copy ${repoDir}/zm-launcher/build/dist/zmmailboxdmgr.unrestricted                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmailboxdmgr.unrestricted 
