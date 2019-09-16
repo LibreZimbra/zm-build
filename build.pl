@@ -782,6 +782,7 @@ sub GetPkgOsTag()
    return "r$1"
      if ( $b_os =~ /RHEL([0-9]+)_/ || $b_os =~ /CENTOS([0-9]+)_/ );
 
+   return "u$1";
    Die("Could not determine PKG_OS_TAG");
 }
 
