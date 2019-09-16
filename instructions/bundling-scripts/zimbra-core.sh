@@ -119,6 +119,57 @@ CreateRhelPackage()
     	rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
 }
 
+install_zm_core_utils() {
+    install_conf_from zm-core-utils/conf \
+        dhparam.pem.zcs zmlogrotate
+
+    install_bin_from zm-core-utils/src/bin \
+        antispam-mysql antispam-mysql.server antispam-mysqladmin \
+        ldap.production mysql mysql.server mysqladmin postconf postfix \
+        qshape zmaccts zmamavisdctl zmantispamctl zmantispamdbpasswd \
+        zmantivirusctl zmapachectl zmarchivectl zmauditswatchctl zmblobchk \
+        zmcaldebug zmcbpadmin zmcbpolicydctl zmcertmgr zmclamdctl \
+        zmconfigdctl zmcontactbackup zmcontrol zmdedupe zmdhparam \
+        zmdnscachectl zmdumpenv zmfixcalendtime zmfixcalprio zmfreshclamctl \
+        zmgsautil zmhostname zminnotop zmitemdatafile zmjava zmjavaext \
+        zmldappasswd zmldapupgrade zmlmtpinject zmlocalconfig zmloggerctl \
+        zmloggerhostmap zmlogswatchctl zmmailbox zmmailboxdctl zmmemcachedctl \
+        zmmetadump zmmigrateattrs zmmilterctl zmmtactl zmmypasswd \
+        zmmysqlstatus zmmytop zmopendkimctl zmplayredo zmprov zmproxyconf \
+        zmproxyctl zmpython zmredodump zmresolverctl zmsaslauthdctl zmshutil \
+        zmskindeploy zmsoap zmspellctl zmsshkeygen zmstat-chart \
+        zmstat-chart-config zmstatctl zmstorectl zmswatchctl zmthrdump \
+        zmtlsctl zmtotp zmtrainsa zmtzupdate zmupdateauthkeys zmvolume \
+        zmzimletctl
+
+    install_file zm-core-utils/src/contrib/zmfetchercfg \
+                 opt/zimbra/contrib/
+
+    install_libexec_from zm-core-utils/src/libexec \
+        600.zimbra client_usage_report.py configrewrite icalmig \
+        libreoffice-installer.sh zcs zimbra zmaltermimeconfig \
+        zmantispamdbinit zmantispammycnf zmcbpolicydinit \
+        zmcheckduplicatemysqld zmcheckexpiredcerts  zmcleantmp \
+        zmclientcertmgr zmcompresslogs zmcomputequotausage zmconfigd \
+        zmcpustat zmdailyreport zmdbintegrityreport zmdiaglog \
+        zmdkimkeyutil zmdnscachealign zmdomaincertmgr zmexplainslow \
+        zmexplainsql zmextractsql zmfixperms zmfixreminder \
+        zmgenentitlement zmgsaupdate zmhspreport zminiutil zmiostat \
+        zmiptool zmjavawatch zmjsprecompile zmlogger zmloggerinit \
+        zmlogprocess zmmsgtrace zmmtainit zmmtastatus zmmycnf \
+        zmmyinit zmnotifyinstall zmpostfixpolicyd zmproxyconfgen \
+        zmproxyconfig zmproxypurge zmqaction zmqstat zmqueuelog \
+        zmrc zmrcd zmresetmysqlpassword zmrrdfetch zmsacompile \
+        zmsaupdate zmserverips zmsetservername zmsnmpinit \
+        zmspamextract zmstat-allprocs zmstat-cleanup zmstat-convertd \
+        zmstat-cpu zmstat-df zmstat-fd zmstat-io zmstat-mtaqueue \
+        zmstat-mysql zmstat-nginx zmstat-proc zmstat-vm zmstatuslog \
+        zmsyslogsetup zmthreadcpu zmunbound zmupdatedownload zmupdatezco
+
+    install_file zm-core-utils/src/perl/migrate20131014-removezca.pl \
+                 opt/zimbra/libexec/scripts/
+}
+
 #-------------------- main packaging ---------------------------
 
 main()
@@ -181,176 +232,7 @@ main()
    Copy ${repoDir}/zm-build/rpmconf/Install/zmsetup.pl                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmsetup.pl
    Copy ${repoDir}/zm-build/rpmconf/Upgrade/zmupgrade.pm                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmupgrade.pm
 
-   Copy ${repoDir}/zm-core-utils/conf/dhparam.pem.zcs                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/dhparam.pem.zcs
-   Copy ${repoDir}/zm-core-utils/conf/zmlogrotate                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmlogrotate
-   Copy ${repoDir}/zm-core-utils/src/bin/antispam-mysql                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/antispam-mysql
-   Copy ${repoDir}/zm-core-utils/src/bin/antispam-mysql.server                                      ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/antispam-mysql.server
-   Copy ${repoDir}/zm-core-utils/src/bin/antispam-mysqladmin                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/antispam-mysqladmin
-   Copy ${repoDir}/zm-core-utils/src/bin/ldap.production                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/ldap
-   Copy ${repoDir}/zm-core-utils/src/bin/mysql                                                      ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/mysql
-   Copy ${repoDir}/zm-core-utils/src/bin/mysql.server                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/mysql.server
-   Copy ${repoDir}/zm-core-utils/src/bin/mysqladmin                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/mysqladmin
-   Copy ${repoDir}/zm-core-utils/src/bin/postconf                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/postconf
-   Copy ${repoDir}/zm-core-utils/src/bin/postfix                                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/postfix
-   Copy ${repoDir}/zm-core-utils/src/bin/qshape                                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/qshape
-   Copy ${repoDir}/zm-core-utils/src/bin/zmaccts                                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmaccts
-   Copy ${repoDir}/zm-core-utils/src/bin/zmamavisdctl                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmamavisdctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmantispamctl                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmantispamctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmantispamdbpasswd                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmantispamdbpasswd
-   Copy ${repoDir}/zm-core-utils/src/bin/zmantivirusctl                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmantivirusctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmapachectl                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmapachectl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmarchivectl                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmarchivectl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmauditswatchctl                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmauditswatchctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmblobchk                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmblobchk
-   Copy ${repoDir}/zm-core-utils/src/bin/zmcaldebug                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmcaldebug
-   Copy ${repoDir}/zm-core-utils/src/bin/zmcbpadmin                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmcbpadmin
-   Copy ${repoDir}/zm-core-utils/src/bin/zmcbpolicydctl                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmcbpolicydctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmcertmgr                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmcertmgr
-   Copy ${repoDir}/zm-core-utils/src/bin/zmclamdctl                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmclamdctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmconfigdctl                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmconfigdctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmcontactbackup                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmcontactbackup
-   Copy ${repoDir}/zm-core-utils/src/bin/zmcontrol                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmcontrol
-   Copy ${repoDir}/zm-core-utils/src/bin/zmdedupe                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmdedupe
-   Copy ${repoDir}/zm-core-utils/src/bin/zmdhparam                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmdhparam
-   Copy ${repoDir}/zm-core-utils/src/bin/zmdnscachectl                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmdnscachectl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmdumpenv                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmdumpenv
-   Copy ${repoDir}/zm-core-utils/src/bin/zmfixcalendtime                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmfixcalendtime
-   Copy ${repoDir}/zm-core-utils/src/bin/zmfixcalprio                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmfixcalprio
-   Copy ${repoDir}/zm-core-utils/src/bin/zmfreshclamctl                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmfreshclamctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmgsautil                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmgsautil
-   Copy ${repoDir}/zm-core-utils/src/bin/zmhostname                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmhostname
-   Copy ${repoDir}/zm-core-utils/src/bin/zminnotop                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zminnotop
-   Copy ${repoDir}/zm-core-utils/src/bin/zmitemdatafile                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmitemdatafile
-   Copy ${repoDir}/zm-core-utils/src/bin/zmjava                                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmjava
-   Copy ${repoDir}/zm-core-utils/src/bin/zmjavaext                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmjavaext
-   Copy ${repoDir}/zm-core-utils/src/bin/zmldappasswd                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmldappasswd
-   Copy ${repoDir}/zm-core-utils/src/bin/zmldapupgrade                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmldapupgrade
-   Copy ${repoDir}/zm-core-utils/src/bin/zmlmtpinject                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmlmtpinject
-   Copy ${repoDir}/zm-core-utils/src/bin/zmlocalconfig                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmlocalconfig
-   Copy ${repoDir}/zm-core-utils/src/bin/zmloggerctl                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmloggerctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmloggerhostmap                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmloggerhostmap
-   Copy ${repoDir}/zm-core-utils/src/bin/zmlogswatchctl                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmlogswatchctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmailbox                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmailbox
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmailboxdctl                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmailboxdctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmemcachedctl                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmemcachedctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmetadump                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmetadump
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmigrateattrs                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmigrateattrs
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmilterctl                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmilterctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmtactl                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmtactl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmypasswd                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmypasswd
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmysqlstatus                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmysqlstatus
-   Copy ${repoDir}/zm-core-utils/src/bin/zmmytop                                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmytop
-   Copy ${repoDir}/zm-core-utils/src/bin/zmopendkimctl                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmopendkimctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmplayredo                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmplayredo
-   Copy ${repoDir}/zm-core-utils/src/bin/zmprov                                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmprov
-   Copy ${repoDir}/zm-core-utils/src/bin/zmproxyconf                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmproxyconf
-   Copy ${repoDir}/zm-core-utils/src/bin/zmproxyctl                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmproxyctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmpython                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmpython
-   Copy ${repoDir}/zm-core-utils/src/bin/zmredodump                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmredodump
-   Copy ${repoDir}/zm-core-utils/src/bin/zmresolverctl                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmresolverctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmsaslauthdctl                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmsaslauthdctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmshutil                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmshutil
-   Copy ${repoDir}/zm-core-utils/src/bin/zmskindeploy                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmskindeploy
-   Copy ${repoDir}/zm-core-utils/src/bin/zmsoap                                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmsoap
-   Copy ${repoDir}/zm-core-utils/src/bin/zmspellctl                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmspellctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmsshkeygen                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmsshkeygen
-   Copy ${repoDir}/zm-core-utils/src/bin/zmstat-chart                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmstat-chart
-   Copy ${repoDir}/zm-core-utils/src/bin/zmstat-chart-config                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmstat-chart-config
-   Copy ${repoDir}/zm-core-utils/src/bin/zmstatctl                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmstatctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmstorectl                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmstorectl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmswatchctl                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmswatchctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmthrdump                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmthrdump
-   Copy ${repoDir}/zm-core-utils/src/bin/zmtlsctl                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmtlsctl
-   Copy ${repoDir}/zm-core-utils/src/bin/zmtotp                                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmtotp
-   Copy ${repoDir}/zm-core-utils/src/bin/zmtrainsa                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmtrainsa
-   Copy ${repoDir}/zm-core-utils/src/bin/zmtzupdate                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmtzupdate
-   Copy ${repoDir}/zm-core-utils/src/bin/zmupdateauthkeys                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmupdateauthkeys
-   Copy ${repoDir}/zm-core-utils/src/bin/zmvolume                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmvolume
-   Copy ${repoDir}/zm-core-utils/src/bin/zmzimletctl                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmzimletctl
-   Copy ${repoDir}/zm-core-utils/src/contrib/zmfetchercfg                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/contrib/zmfetchercfg
-   Copy ${repoDir}/zm-core-utils/src/libexec/600.zimbra                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/600.zimbra
-   Copy ${repoDir}/zm-core-utils/src/libexec/client_usage_report.py                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/client_usage_report.py
-   Copy ${repoDir}/zm-core-utils/src/libexec/configrewrite                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/configrewrite
-   Copy ${repoDir}/zm-core-utils/src/libexec/icalmig                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/icalmig
-   Copy ${repoDir}/zm-core-utils/src/libexec/libreoffice-installer.sh                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/libreoffice-installer.sh
-   Copy ${repoDir}/zm-core-utils/src/libexec/zcs                                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zcs
-   Copy ${repoDir}/zm-core-utils/src/libexec/zimbra                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zimbra
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmaltermimeconfig                                      ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmaltermimeconfig
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmantispamdbinit                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmantispamdbinit
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmantispammycnf                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmantispammycnf
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmcbpolicydinit                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmcbpolicydinit
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmcheckduplicatemysqld                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmcheckduplicatemysqld
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmcheckexpiredcerts                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmcheckexpiredcerts
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmcleantmp                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmcleantmp
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmclientcertmgr                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmclientcertmgr
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmcompresslogs                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmcompresslogs
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmcomputequotausage                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmcomputequotausage
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmconfigd                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmconfigd
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmcpustat                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmcpustat
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmdailyreport                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmdailyreport
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmdbintegrityreport                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmdbintegrityreport
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmdiaglog                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmdiaglog
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmdkimkeyutil                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmdkimkeyutil
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmdnscachealign                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmdnscachealign
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmdomaincertmgr                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmdomaincertmgr
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmexplainslow                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmexplainslow
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmexplainsql                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmexplainsql
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmextractsql                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmextractsql
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmfixperms                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmfixperms
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmfixreminder                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmfixreminder
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmgenentitlement                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmgenentitlement
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmgsaupdate                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmgsaupdate
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmhspreport                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmhspreport
-   Copy ${repoDir}/zm-core-utils/src/libexec/zminiutil                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zminiutil
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmiostat                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmiostat
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmiptool                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmiptool
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmjavawatch                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmjavawatch
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmjsprecompile                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmjsprecompile
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmlogger                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmlogger
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmloggerinit                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmloggerinit
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmlogprocess                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmlogprocess
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmmsgtrace                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmsgtrace
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmmtainit                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmtainit
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmmtastatus                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmtastatus
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmmycnf                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmycnf
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmmyinit                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmyinit
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmnotifyinstall                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmnotifyinstall
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmpostfixpolicyd                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmpostfixpolicyd
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmproxyconfgen                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmproxyconfgen
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmproxyconfig                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmproxyconfig
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmproxypurge                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmproxypurge
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmqaction                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmqaction
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmqstat                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmqstat
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmqueuelog                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmqueuelog
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmrc                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmrc
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmrcd                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmrcd
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmresetmysqlpassword                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmresetmysqlpassword
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmrrdfetch                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmrrdfetch
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmsacompile                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmsacompile
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmsaupdate                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmsaupdate
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmserverips                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmserverips
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmsetservername                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmsetservername
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmsnmpinit                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmsnmpinit
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmspamextract                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmspamextract
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-allprocs                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-allprocs
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-cleanup                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-cleanup
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-convertd                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-convertd
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-cpu                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-cpu
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-df                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-df
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-fd                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-fd
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-io                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-io
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-mtaqueue                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-mtaqueue
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-mysql                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-mysql
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-nginx                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-nginx
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-proc                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-proc
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-vm                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-vm
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstatuslog                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstatuslog
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmsyslogsetup                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmsyslogsetup
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmthreadcpu                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmthreadcpu
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmunbound                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmunbound
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmupdatedownload                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmupdatedownload
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmupdatezco                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmupdatezco
-   Copy ${repoDir}/zm-core-utils/src/perl/migrate20131014-removezca.pl                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/migrate20131014-removezca.pl
+    install_zm_core_utils
 
    Copy ${repoDir}/zm-db-conf/src/db/migration/Migrate.pm                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/Migrate.pm
    Copy ${repoDir}/zm-db-conf/src/db/migration/clearArchivedFlag.pl                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/clearArchivedFlag.pl
