@@ -565,7 +565,7 @@ sub Build($)
                   if ( my $packages_path = TranslateToPackagePath( $build_info->{deploy_pkg_into} ) )
                   {
                      SysExec( "mkdir", "-p", $packages_path );
-                     SysExec( "rsync", "-av", "build/dist/$CFG{PKG_OS_TAG}/", "$packages_path/" );
+                     SysExec( "rsync", "-av", "build/dist/", "$packages_path/" );
                   }
 
                   if ( !exists $build_info->{partial} )
