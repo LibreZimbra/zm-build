@@ -66,3 +66,85 @@ CreatePackage()
         log 1 "*** ${currentPackage} package successfully created ***"
     fi
 }
+
+install_file() {
+    local src="${repoDir}$1"
+    local dst="${repoDir}/zm-build/${currentPackage}/$2"
+
+    case "$dst" in
+        */)
+            mkdir -p "$dst"
+        ;;
+        *)
+            mkdir -p $(dirname "$dst")
+        ;;
+    esac
+    cp -f "$src" "$dst"
+}
+
+install_docs() {
+    for i in "$*" ; do
+        log 3 "installing doc: $i"
+        install_file "$i" opt/zimbra/docs
+    done
+}
+
+install_libexec() {
+    for i in "$*" ; do
+        log 3 "installing libexec: $i"
+        install_file "$i" opt/zimbra/libexec
+    done
+}
+
+install_libexec_scripts() {
+    for i in "$*" ; do
+        log 3 "installing libexec/scripts: $i"
+        install_file "$i" opt/zimbra/libexec
+    done
+}
+
+install_bin() {
+    for i in "$*" ; do
+        log 3 "installing bin: $i"
+        install_file "$i" opt/zimbra/bin
+    done
+}
+
+install_conf() {
+    for i in "$*" ; do
+        log 3 "installing conf: $i"
+        install_file "$i" opt/zimbra/conf
+    done
+}
+
+install_bins_from() {
+    local srcdir="$1"
+    shift
+    for i in "$*" ; do
+        install_bin "$srcdir/$i"
+    done
+}
+
+install_libexec_from() {
+    local srcdir="$1"
+    shift
+    for i in "$*" ; do
+        install_libexec "$srcdir/$i"
+    done
+}
+
+install_conf_from() {
+    local srcdir="$1"
+    shift
+    for i in "$*" ; do
+        install_conf "$srcdir/$i"
+    done
+}
+
+install_libexec_scripts_from() {
+    local srcdir="$1"
+    shift
+    for i in "$*" ; do
+        install_libexec_scripts "$srcdir/$i"
+    done
+}
