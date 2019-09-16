@@ -31,51 +31,15 @@ source "$SCRIPT_DIR/utils.sh"
 
 CreateDebianPackage()
 {
-   case "${arch}" in
-      x86_64) debarch="amd64";;
-      *) debarch="${arch}";;
-   esac
-
-    log 1 "Create debian package"
-
-   mkdir -p "${repoDir}/zm-build/${currentPackage}/DEBIAN";
-
-   cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post > ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
-   cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre  > ${repoDir}/zm-build/${currentPackage}/DEBIAN/preinst
-
-   chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/preinst
-   chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
-
-   (
-      set -e;
-      cd ${repoDir}/zm-build/${currentPackage}
-      find . -type f -print0 \
-         | xargs -0 md5sum \
-         | grep -v -w "DEBIAN/.*" \
-         | sed -e "s@ [.][/]@ @" \
-         | sort \
-   ) > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums
-
-   (
-      set -e;
-      MORE_DEPENDS=", zimbra-timezone-data (>= 1.0.1+1510156506-1.$PKG_OS_TAG) $(find ${repoDir}/zm-packages/ -name \*.deb \
+    (
+        set -e;
+        MORE_DEPENDS=", zimbra-timezone-data (>= 1.0.1+1510156506-1.$PKG_OS_TAG) $(find ${repoDir}/zm-packages/ -name \*.deb \
                          | xargs -n1 basename \
                          | sed -e 's/_[0-9].*//' \
                          | grep -e zimbra-common- \
                          | sed '1s/^/, /; :a; {N;s/\n/, /;ba}')";
-
-      cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb \
-         | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
-               -e "s/@@branch@@/${buildTimeStamp}/" \
-               -e "s/@@ARCH@@/${debarch}/" \
-               -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/"
-   ) > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
-
-   (
-      set -e;
-      cd ${repoDir}/zm-build/${currentPackage}
-      dpkg -b ${repoDir}/zm-build/${currentPackage} ${repoDir}/zm-build/${arch}
-   )
+        mkdeb_gen_control
+    )
 }
 
 CreateRhelPackage()

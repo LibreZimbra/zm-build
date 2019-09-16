@@ -278,16 +278,7 @@ source "$SCRIPT_DIR/utils.sh"
 
 CreateDebianPackage()
 {
-    case "${arch}" in
-        x86_64) debarch="amd64";;
-        *) debarch="${arch}";;
-    esac
-
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
-    cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
-    chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
-
-    log 1 "Create debian package"
+    # FIXME: check whether this explicit md5sum generation is necessary
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*jetty_base/webapps/zimbra/WEB-INF/jetty-env.xml' ! \
         -regex '.*jetty_base/webapps/zimbraAdmin/WEB-INF/jetty-env.xml' ! -regex '.*jetty_base/modules/setuid.mod' ! \
         -regex '.*jetty_base/etc/krb5.ini' ! -regex '.*jetty_base/etc/spnego.properties' ! -regex '.*jetty_base/etc/jetty.xml' ! \
@@ -297,23 +288,14 @@ CreateDebianPackage()
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums)
 
     (
-      set -e
-      MORE_DEPENDS="$(find ${repoDir}/zm-packages/ -name \*.deb \
+        set -e
+        MORE_DEPENDS="$(find ${repoDir}/zm-packages/ -name \*.deb \
                          | xargs -n1 basename \
                          | sed -e 's/_[0-9].*//' \
                          | grep -e zimbra-mbox- \
                          | sed '1s/^/, /; :a; {N;s/\n/, /;ba}')";
-
-      cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb \
-         | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
-               -e "s/@@branch@@/${buildTimeStamp}/" \
-               -e "s/@@ARCH@@/${debarch}/" \
-               -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
-               -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/"
-    ) > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
-
-    (cd ${repoDir}/zm-build/${currentPackage}; dpkg -b ${repoDir}/zm-build/${currentPackage} ${repoDir}/zm-build/${arch})
-
+        mkdeb_gen_control
+    )
 }
 
 CreateRhelPackage()
