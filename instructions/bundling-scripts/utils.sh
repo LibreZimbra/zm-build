@@ -41,16 +41,18 @@ CreatePackage()
       exit 1
     fi
 
-    if [[ $1 == UBUNTU* ]]
-    then
-        CreateDebianPackage
-    elif [[ $1 == RHEL* ]]
-    then
-        CreateRhelPackage
-    else
-        echo "OS not supported. Run using UBUNTU or RHEL system. "
-        exit 1
-    fi
+    case "$1" in
+        UBUNTU*|DEBIAN*)
+            CreateDebianPackage
+        ;;
+        RHEL*)
+            CreateRhelPackage
+        ;;
+        *)
+            echo "OS \"$1\" not supported. Run using UBUNTU/DEBIAN or RHEL system. "
+            exit 1
+        ;;
+    esac
 
     if [ $? -ne 0 ]; then
         echo -e "\t### ${currentPackage} package building failed ###" >> ${buildLogFile}
