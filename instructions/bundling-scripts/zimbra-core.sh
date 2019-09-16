@@ -36,7 +36,7 @@ CreateDebianPackage()
       *) debarch="${arch}";;
    esac
 
-   echo -e "\tCreate debian package" >> ${buildLogFile}
+   log 1 "Create debian package"
 
    mkdir -p "${repoDir}/zm-build/${currentPackage}/DEBIAN";
 

@@ -27,7 +27,7 @@
 #-------------------- Build Package ---------------------------
 main()
 {
-    echo -e "\tCreate package directories" >> ${buildLogFile}
+    log 1 "Create package directories"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/amavisd/mysql
@@ -37,8 +37,7 @@ main()
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/opendkim
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/postfix
 
-
-    echo -e "\tCopy package files" >> ${buildLogFile}
+    log 1 "Copy package files"
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
     cp ${repoDir}/zm-postfix/conf/postfix/master.cf.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/master.cf.in
     cp ${repoDir}/zm-postfix/conf/postfix/tag_as_foreign.re.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/tag_as_foreign.re.in
@@ -65,13 +64,12 @@ CreateDebianPackage()
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 
-    echo -e "\tCreate debian package" >> ${buildLogFile}
+    log 1 "Create debian package"
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*opt/zimbra/postfix-.*/conf/master.cf' ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -print0 | \
         xargs -0 md5sum | sed -e 's| \./| |' > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums)
     cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" -e "s/@@branch@@/${buildTimeStamp}/" \
         -e "s/@@ARCH@@/${debarch}/" -e "s/^Copyright:/Copyright:/" -e "/^%post$/ r ${currentScript}.post" > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
     (cd ${repoDir}/zm-build/${currentPackage}; dpkg -b ${repoDir}/zm-build/${currentPackage} ${repoDir}/zm-build/${arch})
-
 }
 
 CreateRhelPackage()
