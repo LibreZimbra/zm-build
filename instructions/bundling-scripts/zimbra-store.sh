@@ -27,17 +27,16 @@ set -e
 #-------------------- Build Package ---------------------------
 main()
 {
-    echo -e "\tCreate package directories" >> ${buildLogFile}
+    log 1 "Create package directories"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/templates
 
-    echo -e "\tCopy package files" >> ${buildLogFile}
-
-    echo -e "\tCopy etc files" >> ${buildLogFile}
+    log 1 "Copy package files"
+    log 1 "Copy etc files"
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
 
-    echo -e "\tCopy bin files of /opt/zimbra/" >> ${buildLogFile}
+    log 1 "Copy bin files of /opt/zimbra/"
 
     if [ "${buildType}" == "NETWORK" ]
     then
@@ -55,7 +54,7 @@ main()
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/owasp_policy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/owasp_policy.xml
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/antisamy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/antisamy.xml
 
-    echo -e "\tCopy extensions-extra files of /op/zimbra/" >> ${buildLogFile}
+    log 1  "Copy extensions-extra files of /op/zimbra/"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer
     cp -rf ${repoDir}/zm-openid-consumer-store/build/dist/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer
     rm -rf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer/extensions-extra
@@ -63,14 +62,14 @@ main()
 
     if [ "${buildType}" == "NETWORK" ]
     then
-       echo -e "\tCopy extensions-network-extra files of /op/zimbra/" >> ${buildLogFile}
+        log 1 "Copy extensions-network-extra files of /op/zimbra/"
        mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-network-extra
        cp -rf ${repoDir}/zm-saml-consumer-store/build/dist/saml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-network-extra/
     fi
 
-    echo -e "\tCopy lib files of /opt/zimbra/" >> ${buildLogFile}
+    log 1 "Copy lib files of /opt/zimbra/"
 
-    echo -e "\t\tCopy ext files of /opt/zimbra/lib/" >> ${buildLogFile}
+    log 2 "Copy ext files of /opt/zimbra/lib/"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/mitel
@@ -129,7 +128,7 @@ main()
 
 #-------------------- Get wars content (service.war, zimbra.war and zimbraAdmin.war) ---------------------------
 
-    echo "\t\t++++++++++ service.war content ++++++++++" >> ${buildLogFile}
+    log 2 "++++++++++ service.war content ++++++++++"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF/lib
     cp ${repoDir}/zm-zimlets/conf/zimbra.tld ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF
@@ -140,7 +139,7 @@ main()
 
     if [ "${buildType}" == "NETWORK" ]
     then
-      echo "\t\t***** css, public and t content *****" >> ${buildLogFile}
+        log 2 "***** css, public and t content *****"
       mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/css
       mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/public
       cp ${repoDir}/zm-touch-client/build/WebRoot/css/ztouch.css ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/css/ztouch.css
@@ -149,17 +148,17 @@ main()
       cp -rf ${repoDir}/zm-touch-client/build/WebRoot/tdebug ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/
     fi
 
-    echo "\t\t***** help content *****" >> ${buildLogFile}
+    log 2 "***** help content *****"
     cp -rf ${repoDir}/zm-help/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/help
 
-    echo "\t\t***** portals example content *****" >> ${buildLogFile}
+    log 2 "***** portals example content *****"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/portals/example
     cp -rf ${repoDir}/zm-webclient-portal-example/example ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/portals
 
-    echo "\t\t***** robots.txt content *****" >> ${buildLogFile}
+    log 2 "***** robots.txt content *****"
     cp -f ${repoDir}/zm-aspell/conf/robots.txt ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/robots.txt
 
-    echo "\t\t***** downloads content *****" >> ${buildLogFile}
+    log 2 "***** downloads content *****"
     downloadsDir=${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/downloads
     mkdir -p ${downloadsDir}
     cp -rf ${repoDir}/zm-downloads/. ${downloadsDir}
@@ -171,7 +170,7 @@ main()
         wget -r -nd --no-parent --reject "index.*" http://${zimbraThirdPartyServer}/ZimbraThirdParty/zco-migration-builds/current/
     fi
 
-    echo "\t\t***** help content *****" >> ${buildLogFile}
+    log 2 "***** help content *****"
     rsync -a ${repoDir}/zm-admin-help-common/WebRoot/help ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbraAdmin/
 
     if [ "${buildType}" == "NETWORK" ]
@@ -181,7 +180,7 @@ main()
 
     if [ "${buildType}" == "NETWORK" ]
     then
-      echo -e "\t\tCopy ext-common files of /opt/zimbra/lib/" >> ${buildLogFile}
+        log 2 "Copy ext-common files of /opt/zimbra/lib/"
       mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common
       cp -f ${repoDir}/zm-zcs-lib/build/dist/bcpkix-jdk15on-1.55.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
       cp -f ${repoDir}/zm-zcs-lib/build/dist/bcmail-jdk15on-1.55.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
@@ -193,11 +192,11 @@ main()
     cp -f ${repoDir}/zm-migration-tools/src/libexec/zmcleaniplanetics ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
     cp -f ${repoDir}/zm-versioncheck-utilities/src/libexec/zmcheckversion ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
 
-    echo -e "\tCopy log files of /opt/zimbra/" >> ${buildLogFile}
+    log 1 "Copy log files of /opt/zimbra/"
      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log
      cp -f ${repoDir}/zm-build/rpmconf/Conf/hotspot_compiler ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log/.hotspot_compiler
 
-    echo -e "\tCopy zimlets files of /opt/zimbra/" >> ${buildLogFile}
+    log 1 "Copy zimlets files of /opt/zimbra/"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets
     zimletsArray=( "zm-versioncheck-admin-zimlet" \
                    "zm-bulkprovision-admin-zimlet" \
@@ -215,7 +214,7 @@ main()
 
     if [ "${buildType}" == "NETWORK" ]
     then
-      echo -e "\tCopy zimlets-network files of /opt/zimbra/" >> ${buildLogFile}
+        log 1 "Copy zimlets-network files of /opt/zimbra/"
       mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets-network
       adminZimlets=( "zm-license-admin-zimlet" \
                      "zm-backup-restore-admin-zimlet" \
@@ -240,7 +239,7 @@ main()
       done
     fi
 
-    echo "\t\t***** Building jetty/common/ *****" >> ${buildLogFile}
+    log 2 "***** Building jetty/common/ *****"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/common/endorsed
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/common/lib
 
@@ -248,7 +247,7 @@ main()
    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/temp
    touch ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/temp/.emptyfile
 
-     echo -e "\tCreate jetty conf" >> ${buildLogFile}
+    log 1 "Create jetty conf"
      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc
      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/modules
      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/start.d
@@ -288,7 +287,7 @@ CreateDebianPackage()
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 
-    echo -e "\tCreate debian package" >> ${buildLogFile}
+    log 1 "Create debian package"
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*jetty_base/webapps/zimbra/WEB-INF/jetty-env.xml' ! \
         -regex '.*jetty_base/webapps/zimbraAdmin/WEB-INF/jetty-env.xml' ! -regex '.*jetty_base/modules/setuid.mod' ! \
         -regex '.*jetty_base/etc/krb5.ini' ! -regex '.*jetty_base/etc/spnego.properties' ! -regex '.*jetty_base/etc/jetty.xml' ! \

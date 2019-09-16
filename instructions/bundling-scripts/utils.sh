@@ -1,5 +1,12 @@
 #!/bin/bash
 
+log() {
+    local indent="$1"
+    shift
+    for (( i=1 ; ((i-$indent)) ; i=(($i+1)) )) do echo -e "\t" >> ${buildLogFile} ; done
+    echo -e "$@" >> ${buildLogFile}
+}
+
 Copy()
 {
    if [ $# -ne 2 ]
@@ -32,7 +39,6 @@ Cpy2()
    cp -f "$src_file" "$dest_dir"
 }
 
-
 CreatePackage()
 {
     if [ $# -ne 1 ]
@@ -53,10 +59,8 @@ CreatePackage()
     fi
 
     if [ $? -ne 0 ]; then
-        echo -e "\t### ${currentPackage} package building failed ###" >> ${buildLogFile}
+        log 1 "### ${currentPackage} package building failed ###"
     else
-        echo -e "\t*** ${currentPackage} package successfully created ***" >> ${buildLogFile}
+        log 1 "*** ${currentPackage} package successfully created ***"
     fi
-
 }
-
