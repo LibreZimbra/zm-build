@@ -447,6 +447,14 @@ install_zm_perl() {
     done
 }
 
+install_spamfilter_conf() {
+    install_conf \
+        zm-amavis/conf/amavisd.conf.in \
+        zm-amavis/conf/amavisd/amavisd-custom.conf \
+        zm-amavis/conf/dspam.conf.in \
+        zm-freshclam/freshclam.conf.in
+}
+
 #-------------------- main packaging ---------------------------
 
 main()
@@ -457,10 +465,7 @@ main()
         install_file "zm-build/rpmconf/Env/sudoers.d/$i" "/etc/sudoers.d/"
     done
 
-   Copy ${repoDir}/zm-amavis/conf/amavisd.conf.in                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/amavisd.conf.in
-   Copy ${repoDir}/zm-amavis/conf/amavisd/amavisd-custom.conf                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/amavisd-custom.conf
-   Copy ${repoDir}/zm-amavis/conf/dspam.conf.in                                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/dspam.conf.in
-
+    install_spamfilter_conf
     install_zm_perl
 
    Copy ${repoDir}/zm-build/rpmconf/Build/get_plat_tag.sh                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/get_plat_tag.sh
@@ -497,9 +502,6 @@ main()
 
     install_zm_core_utils
     install_zm_db_conf
-
-   Copy ${repoDir}/zm-freshclam/freshclam.conf.in                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/freshclam.conf.in
-
     install_zm_jython
 
    Copy ${repoDir}/zm-launcher/build/dist/zmmailboxdmgr                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmailboxdmgr
