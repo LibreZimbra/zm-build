@@ -427,6 +427,12 @@ install_spamfilter_conf() {
         zm-freshclam/freshclam.conf.in
 }
 
+install_zm_launcher() {
+    install_libexec \
+        zm-launcher/build/dist/zmmailboxdmgr \
+        zm-launcher/build/dist/zmmailboxdmgr.unrestricted
+}
+
 #-------------------- main packaging ---------------------------
 
 # "
@@ -476,10 +482,7 @@ main()
     install_zm_core_utils
     install_zm_db_conf
     install_zm_jython
-
-   Copy ${repoDir}/zm-launcher/build/dist/zmmailboxdmgr                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmailboxdmgr
-   Copy ${repoDir}/zm-launcher/build/dist/zmmailboxdmgr.unrestricted                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmailboxdmgr.unrestricted 
-
+    install_zm_launcher
     install_zm_ldap_utilities
 
     install_file zm-licenses/zimbra/ypl-full.txt    opt/zimbra/docs/YPL.txt
