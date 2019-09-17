@@ -506,6 +506,11 @@ install_zm_ssdb() {
                  opt/zimbra/lib/ext/com_zimbra_ssdb_ephemeral_store/
 }
 
+install_zm_clientuploader() {
+    install_file "zm-clientuploader-store/build/zm-clientuploader-store*.jar" \
+                 opt/zimbra/lib/ext/com_zimbra_clientuploader/com_zimbra_clientuploader.jar
+}
+
 #-------------------- main packaging ---------------------------
 
 # "
@@ -541,8 +546,7 @@ main()
 
    Copy ${repoDir}/zm-certificate-manager-store/build/zm-certificate-manager-store*.jar             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_cert_manager/com_zimbra_cert_manager.jar 
 
-   Copy ${repoDir}/zm-clientuploader-store/build/zm-clientuploader-store*.jar                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_clientuploader/com_zimbra_clientuploader.jar
-
+    install_zm_clientuploader
     install_zm_ssdb
     install_ne
 
