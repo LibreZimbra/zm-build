@@ -539,6 +539,11 @@ install_zm_clientuploader() {
                  opt/zimbra/lib/ext/com_zimbra_clientuploader/com_zimbra_clientuploader.jar
 }
 
+install_zm_certificate_manager() {
+   install_file "zm-certificate-manager-store/build/zm-certificate-manager-store*.jar" \
+                opt/zimbra/lib/ext/com_zimbra_cert_manager/com_zimbra_cert_manager.jar
+}
+
 #-------------------- main packaging ---------------------------
 
 main()
@@ -571,8 +576,7 @@ main()
    Copy ${repoDir}/zm-bulkprovision-store/build/dist/commons-csv-1.2.jar                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_bulkprovision/commons-csv-1.2.jar
    Copy ${repoDir}/zm-bulkprovision-store/build/dist/zm-bulkprovision-store*.jar                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_bulkprovision/com_zimbra_bulkprovision.jar
 
-   Copy ${repoDir}/zm-certificate-manager-store/build/zm-certificate-manager-store*.jar             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_cert_manager/com_zimbra_cert_manager.jar 
-
+    install_zm_certificate_manager
     install_zm_clientuploader
     install_zm_ssdb
     install_ne
