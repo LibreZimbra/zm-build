@@ -488,6 +488,41 @@ install_zm_mta() {
                  opt/zimbra/conf/zmconfigd/smtpd_sender_restrictions.cf
 }
 
+install_zm_rpmconf() {
+    install_file zm-build/rpmconf/Build/get_plat_tag.sh               opt/zimbra/libexec/installer/bin/
+    install_file zm-build/rpmconf/Conf/auditswatchrc                  opt/zimbra/conf/auditswatchrc.in
+    install_conf zm-build/rpmconf/Conf/logswatchrc                    zm-build/rpmconf/Conf/zmssl.cnf.in
+
+    for i in crontab crontab.ldap crontab.logger crontab.mta crontab.store ; do
+        install_file zm-build/rpmconf/Env/crontabs/$i opt/zimbra/conf/crontabs/
+    done
+
+    install_file zm-build/rpmconf/Conf/swatchrc                       opt/zimbra/conf/swatchrc.in
+    install_file zm-build/rpmconf/Env/zimbra.bash_profile             opt/zimbra/.bash_profile
+    install_file zm-build/rpmconf/Env/zimbra.bashrc                   opt/zimbra/.bashrc
+    install_file zm-build/rpmconf/Env/zimbra.exrc                     opt/zimbra/.exrc
+    install_file zm-build/rpmconf/Env/zimbra.ldaprc                   opt/zimbra/.ldaprc
+    install_file zm-build/rpmconf/Env/zimbra.platform                 opt/zimbra/.platform
+    install_file zm-build/rpmconf/Env/zimbra.viminfo                  opt/zimbra/.viminfo
+    install_file zm-build/rpmconf/Img/connection_failed.gif           opt/zimbra/logger/db/work/
+    install_file zm-build/rpmconf/Img/data_not_available.gif          opt/zimbra/logger/db/work/
+    install_file zm-build/rpmconf/Install/Util/addUser.sh             opt/zimbra/libexec/installer/util/
+    install_file zm-build/rpmconf/Install/Util/globals.sh             opt/zimbra/libexec/installer/util/
+    install_file zm-build/rpmconf/Install/Util/modules/getconfig.sh   opt/zimbra/libexec/installer/util/modules/
+    install_file zm-build/rpmconf/Install/Util/modules/packages.sh    opt/zimbra/libexec/installer/util/modules/
+    install_file zm-build/rpmconf/Install/Util/modules/postinstall.sh opt/zimbra/libexec/installer/util/modules/
+    install_file zm-build/rpmconf/Install/Util/utilfunc.sh            opt/zimbra/libexec/installer/util/
+    install_file zm-build/rpmconf/Install/install.sh                  opt/zimbra/libexec/installer/
+
+    install_libexec \
+        zm-build/rpmconf/Install/postinstall.pm \
+        zm-build/rpmconf/Install/preinstall.pm \
+        zm-build/rpmconf/Install/zmsetup.pl \
+        zm-build/rpmconf/Upgrade/zmupgrade.pm \
+        zm-build/rpmconf/Install/Util/addUser.sh \
+        zm-build/rpmconf/Build/get_plat_tag.sh
+}
+
 #-------------------- main packaging ---------------------------
 
 main()
@@ -501,38 +536,7 @@ main()
     install_spamfilter_conf
     install_zm_perl
 
-   Copy ${repoDir}/zm-build/rpmconf/Build/get_plat_tag.sh                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/get_plat_tag.sh
-   Copy ${repoDir}/zm-build/rpmconf/Build/get_plat_tag.sh                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/installer/bin/get_plat_tag.sh
-   Copy ${repoDir}/zm-build/rpmconf/Conf/auditswatchrc                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/auditswatchrc.in
-   Copy ${repoDir}/zm-build/rpmconf/Conf/logswatchrc                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/logswatchrc
-   Copy ${repoDir}/zm-build/rpmconf/Conf/swatchrc                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/swatchrc.in
-   Copy ${repoDir}/zm-build/rpmconf/Conf/zmssl.cnf.in                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmssl.cnf.in
-   Copy ${repoDir}/zm-build/rpmconf/Env/crontabs/crontab                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/crontabs/crontab
-   Copy ${repoDir}/zm-build/rpmconf/Env/crontabs/crontab.ldap                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/crontabs/crontab.ldap
-   Copy ${repoDir}/zm-build/rpmconf/Env/crontabs/crontab.logger                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/crontabs/crontab.logger
-   Copy ${repoDir}/zm-build/rpmconf/Env/crontabs/crontab.mta                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/crontabs/crontab.mta
-   Copy ${repoDir}/zm-build/rpmconf/Env/crontabs/crontab.store                                      ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/crontabs/crontab.store
-   Copy ${repoDir}/zm-build/rpmconf/Env/zimbra.bash_profile                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/.bash_profile
-   Copy ${repoDir}/zm-build/rpmconf/Env/zimbra.bashrc                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/.bashrc
-   Copy ${repoDir}/zm-build/rpmconf/Env/zimbra.exrc                                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/.exrc
-   Copy ${repoDir}/zm-build/rpmconf/Env/zimbra.ldaprc                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/.ldaprc
-   Copy ${repoDir}/zm-build/rpmconf/Env/zimbra.platform                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/.platform
-   Copy ${repoDir}/zm-build/rpmconf/Env/zimbra.viminfo                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/.viminfo
-   Copy ${repoDir}/zm-build/rpmconf/Img/connection_failed.gif                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/logger/db/work/connection_failed.gif
-   Copy ${repoDir}/zm-build/rpmconf/Img/data_not_available.gif                                      ${repoDir}/zm-build/${currentPackage}/opt/zimbra/logger/db/work/data_not_available.gif
-   Copy ${repoDir}/zm-build/rpmconf/Install/Util/addUser.sh                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/addUser.sh
-   Copy ${repoDir}/zm-build/rpmconf/Install/Util/addUser.sh                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/installer/util/addUser.sh
-   Copy ${repoDir}/zm-build/rpmconf/Install/Util/globals.sh                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/installer/util/globals.sh
-   Copy ${repoDir}/zm-build/rpmconf/Install/Util/modules/getconfig.sh                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/installer/util/modules/getconfig.sh
-   Copy ${repoDir}/zm-build/rpmconf/Install/Util/modules/packages.sh                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/installer/util/modules/packages.sh
-   Copy ${repoDir}/zm-build/rpmconf/Install/Util/modules/postinstall.sh                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/installer/util/modules/postinstall.sh
-   Copy ${repoDir}/zm-build/rpmconf/Install/Util/utilfunc.sh                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/installer/util/utilfunc.sh
-   Copy ${repoDir}/zm-build/rpmconf/Install/install.sh                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/installer/install.sh
-   Copy ${repoDir}/zm-build/rpmconf/Install/postinstall.pm                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/postinstall.pm
-   Copy ${repoDir}/zm-build/rpmconf/Install/preinstall.pm                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/preinstall.pm
-   Copy ${repoDir}/zm-build/rpmconf/Install/zmsetup.pl                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmsetup.pl
-   Copy ${repoDir}/zm-build/rpmconf/Upgrade/zmupgrade.pm                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmupgrade.pm
-
+    install_zm_rpmconf
     install_zm_core_utils
     install_zm_db_conf
     install_zm_jython
