@@ -516,6 +516,14 @@ install_zm_certificate_manager() {
                 opt/zimbra/lib/ext/com_zimbra_cert_manager/com_zimbra_cert_manager.jar
 }
 
+install_zm_bulkprovision() {
+    install_file zm-bulkprovision-store/build/dist/commons-csv-1.2.jar \
+                 opt/zimbra/lib/ext/com_zimbra_bulkprovision/
+
+    install_file "zm-bulkprovision-store/build/dist/zm-bulkprovision-store*.jar" \
+                 opt/zimbra/lib/ext/com_zimbra_bulkprovision/com_zimbra_bulkprovision.jar
+}
+
 #-------------------- main packaging ---------------------------
 
 # "
@@ -546,9 +554,7 @@ main()
    Cpy2 ${repoDir}/junixsocket/junixsocket-native/build/junixsocket-native-*.nar                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/
    Cpy2 ${repoDir}/junixsocket/junixsocket-native/build/libjunixsocket-native-*.so                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/
 
-   Copy ${repoDir}/zm-bulkprovision-store/build/dist/commons-csv-1.2.jar                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_bulkprovision/commons-csv-1.2.jar
-   Copy ${repoDir}/zm-bulkprovision-store/build/dist/zm-bulkprovision-store*.jar                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_bulkprovision/com_zimbra_bulkprovision.jar
-
+    install_zm_bulkprovision
     install_zm_certificate_manager
     install_zm_clientuploader
     install_zm_ssdb
