@@ -443,7 +443,7 @@ install_zm_perl() {
              ZmClient \
     ; do
         local d=$(dirname "$i")
-        install_file "zm-build/lib/Zimbra/${i}.pm" /opt/zimbra/common/lib/perl5/Zimbra/$d/"
+        install_file "zm-build/lib/Zimbra/${i}.pm" "/opt/zimbra/common/lib/perl5/Zimbra/$d/"
     done
 }
 
