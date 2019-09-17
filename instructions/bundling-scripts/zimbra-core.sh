@@ -461,6 +461,33 @@ install_zm_launcher() {
         zm-launcher/build/dist/zmmailboxdmgr.unrestricted
 }
 
+install_zm_mta() {
+    install_conf zm-mta \
+        cbpolicyd.conf.in clamd.conf.in opendkim-localnets.conf.in opendkim.conf.in \
+        postfix_header_checks.in salocal.cf.in saslauthd.conf.in
+
+    install_file zm-mta/postfix_sasl_smtpd.conf \
+                 opt/zimbra/conf/sasl2/smtpd.conf.in
+
+    install_file zm-mta/zmconfigd/postfix_content_filter.cf \
+                 opt/zimbra/conf/zmconfigd/postfix_content_filter.cf
+
+    install_file zm-mta/zmconfigd/smtpd_end_of_data_restrictions.cf \
+                 opt/zimbra/conf/zmconfigd/smtpd_end_of_data_restrictions.cf
+
+    install_file zm-mta/zmconfigd/smtpd_recipient_restrictions.cf \
+                 opt/zimbra/conf/zmconfigd/smtpd_recipient_restrictions.cf
+
+    install_file zm-mta/zmconfigd/smtpd_relay_restrictions.cf \
+                 opt/zimbra/conf/zmconfigd/smtpd_relay_restrictions.cf
+
+    install_file zm-mta/zmconfigd/smtpd_sender_login_maps.cf \
+                 opt/zimbra/conf/zmconfigd/smtpd_sender_login_maps.cf
+
+    install_file zm-mta/zmconfigd/smtpd_sender_restrictions.cf \
+                 opt/zimbra/conf/zmconfigd/smtpd_sender_restrictions.cf
+}
+
 #-------------------- main packaging ---------------------------
 
 main()
@@ -516,20 +543,7 @@ main()
     install_file zm-licenses/zimbra/zpl-full.txt    opt/zimbra/docs/ZPL.txt
     install_file zm-migration-tools/ReadMe.txt      opt/zimbra/docs/zmztozmig.txt
 
-   Copy ${repoDir}/zm-mta/cbpolicyd.conf.in                                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/cbpolicyd.conf.in
-   Copy ${repoDir}/zm-mta/clamd.conf.in                                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/clamd.conf.in
-   Copy ${repoDir}/zm-mta/opendkim-localnets.conf.in                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/opendkim-localnets.conf.in
-   Copy ${repoDir}/zm-mta/opendkim.conf.in                                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/opendkim.conf.in
-   Copy ${repoDir}/zm-mta/postfix_header_checks.in                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/postfix_header_checks.in
-   Copy ${repoDir}/zm-mta/postfix_sasl_smtpd.conf                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/sasl2/smtpd.conf.in
-   Copy ${repoDir}/zm-mta/salocal.cf.in                                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/salocal.cf.in
-   Copy ${repoDir}/zm-mta/saslauthd.conf.in                                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/saslauthd.conf.in
-   Copy ${repoDir}/zm-mta/zmconfigd/postfix_content_filter.cf                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmconfigd/postfix_content_filter.cf
-   Copy ${repoDir}/zm-mta/zmconfigd/smtpd_end_of_data_restrictions.cf                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmconfigd/smtpd_end_of_data_restrictions.cf
-   Copy ${repoDir}/zm-mta/zmconfigd/smtpd_recipient_restrictions.cf                                 ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmconfigd/smtpd_recipient_restrictions.cf
-   Copy ${repoDir}/zm-mta/zmconfigd/smtpd_relay_restrictions.cf                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmconfigd/smtpd_relay_restrictions.cf
-   Copy ${repoDir}/zm-mta/zmconfigd/smtpd_sender_login_maps.cf                                      ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmconfigd/smtpd_sender_login_maps.cf
-   Copy ${repoDir}/zm-mta/zmconfigd/smtpd_sender_restrictions.cf                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmconfigd/smtpd_sender_restrictions.cf
+    install_zm_mta
 
    Cpy2 ${repoDir}/junixsocket/junixsocket-native/build/junixsocket-native-*.nar                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/
    Cpy2 ${repoDir}/junixsocket/junixsocket-native/build/libjunixsocket-native-*.so                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/
