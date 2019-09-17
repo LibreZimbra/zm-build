@@ -552,6 +552,11 @@ install_zm_bulkprovision() {
                  opt/zimbra/lib/ext/com_zimbra_bulkprovision/com_zimbra_bulkprovision.jar
 }
 
+install_zm_junixsocket() {
+    install_lib "junixsocket/junixsocket-native/build/junixsocket-native-*.nar"
+    install_lib "junixsocket/junixsocket-native/build/libjunixsocket-native-*.so"
+}
+
 #-------------------- main packaging ---------------------------
 
 main()
@@ -577,10 +582,7 @@ main()
     install_file zm-migration-tools/ReadMe.txt      opt/zimbra/docs/zmztozmig.txt
 
     install_zm_mta
-
-   Cpy2 ${repoDir}/junixsocket/junixsocket-native/build/junixsocket-native-*.nar                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/
-   Cpy2 ${repoDir}/junixsocket/junixsocket-native/build/libjunixsocket-native-*.so                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/
-
+    install_zm_junixsocket
     install_zm_bulkprovision
     install_zm_certificate_manager
     install_zm_clientuploader
