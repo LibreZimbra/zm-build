@@ -28,12 +28,9 @@
 
 main()
 {
-    log 1 "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf
-
     log 1 "Copy package files"
-    cp ${repoDir}/zm-aspell/conf/httpd.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/httpd.conf
-    cp ${repoDir}/zm-aspell/conf/php.ini ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/php.ini
+    install_conf_from zm-aspell/conf \
+        httpd.conf php.ini
 
     CreatePackage "${os}"
 }
