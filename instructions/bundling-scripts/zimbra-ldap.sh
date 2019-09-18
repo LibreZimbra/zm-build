@@ -23,23 +23,19 @@
     currentScript=`basename $0 | cut -d "." -f 1`                          # zimbra-ldap
     currentPackage=`echo ${currentScript}build | cut -d "-" -f 2` # ldapbuild
 
-    ldapSchemaDir=${repoDir}/zm-ldap-utilities/build/dist
-
-
 #-------------------- Build Package ---------------------------
 main()
 {
-    log 1 "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/etc/openldap/zimbra
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
-
     log 1 "Copy package files"
-    cp -rf ${ldapSchemaDir}/*  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/etc/openldap/zimbra
+    install_subtree zm-ldap-utilities/build/dist opt/zimbra/common/etc/openldap/zimbra
+
     if [ "${buildType}" == "NETWORK" ]
     then
-      cp -f ${repoDir}/zm-convertd-native/conf/ldap/zimbra_mimehandlers.ldif ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/etc/openldap/zimbra/convertd_mimehandlers.ldif
+        install_file zm-convertd-native/conf/ldap/zimbra_mimehandlers.ldif \
+                     opt/zimbra/common/etc/openldap/zimbra/convertd_mimehandlers.ldif
     fi
-    cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/
+
+    install_file zm-build/rpmconf/Env/sudoers.d/02_${currentScript} etc/sudoers.d/
 
     CreatePackage "${os}"
 }
