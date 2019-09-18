@@ -26,16 +26,12 @@
 #-------------------- Build Package ---------------------------
 main()
 {
-    log 1 "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars
-
-
     log 1 "Copy package files"
-    cp ${repoDir}/zm-core-utils/src/bin/zmimapdctl ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmimapdctl
-    cp ${repoDir}/zm-zcs-lib/build/dist/oauth-1.4.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars/oauth-1.4.jar
-    cp ${repoDir}/zm-mailbox/store-conf/conf/imapd.log4j.properties ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/imapd.log4j.properties
+
+    install_bin  zm-core-utils/src/bin/zmimapdctl
+    install_jar  zm-zcs-lib/build/dist/oauth-1.4.jar
+    install_conf zm-mailbox/store-conf/conf/imapd.log4j.properties
+
     CreatePackage "${os}"
 }
 
