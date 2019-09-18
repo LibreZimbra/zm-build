@@ -421,7 +421,7 @@ install_zm_ldap_utilities() {
         zmldapanon zmldapapplyldif zmldapenable-mmr zmldapenablereplica \
         zmldapinit zmldapmmrtool zmldapmonitordb zmldappromote-replica-mmr \
         zmldapreplicatool zmldapschema zmldapupdateldif zmreplchk \
-        zmslapadd zmslapcat zmslapd zmslapindex zmstat-ldap \
+        zmslapadd zmslapcat zmslapd zmslapindex zmstat-ldap
 }
 
 install_zm_perl() {
