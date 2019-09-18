@@ -1,0 +1,3 @@
+
+export ENV_RESUME_FLAG=1
+export ENV_GIT_UPDATE_INCLUDE=none
