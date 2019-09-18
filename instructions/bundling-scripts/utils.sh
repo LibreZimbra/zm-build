@@ -64,3 +64,7 @@ CreatePackage()
         log 1 "*** ${currentPackage} package successfully created ***"
     fi
 }
+
+target_dir() {
+    echo -n "${repoDir}/zm-build/${currentPackage}/$1"
+}
