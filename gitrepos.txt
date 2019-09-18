@@ -1,0 +1,12 @@
+
+ical4j-0.9.16-patched:
+    upstream:	git@github.com:ical4j/ical4j.git
+    mtx:	git@github.com:metux/ical4j-0.9.16-patched.git
+
+zm-core-utils:
+    zimbra:	git@github.com:Zimbra/zm-core-utils.git
+    mtx:	git@github.com:metux/zm-core-utils.git
+
+zm-versioncheck-utilities:
+    zimbra:	git@github.com:Zimbra/zm-versioncheck-utilities.git
+    mtx:	git@github.com:metux/zm-versioncheck-utilities.git
