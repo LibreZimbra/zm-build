@@ -128,6 +128,129 @@ mkdeb_gen_control() {
               -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/" > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
 }
 
+install_file() {
+    local src="${repoDir}/$1"
+    local dst="$(target_dir $2)"
+
+    case "$dst" in
+        */)
+            mkdir -p "$dst"
+        ;;
+        *)
+            mkdir -p $(dirname "$dst")
+        ;;
+    esac
+    # note: do not quote src, so * can be resolved
+    cp -f $src "$dst"
+}
+
+install_subtree() {
+    local src="${repoDir}/$1"
+    local dst="$(target_dir $2)"
+
+    mkdir -p "$dst"
+    cp -Rf $src/* "$dst"
+}
+
+install_dirs() {
+    while [ "$1" ]; do
+        mkdir -p "$(target_dir $1)"
+        shift
+    done
+}
+
+install_docs() {
+    while [ "$1" ]; do
+        log 3 "installing doc: $1"
+        install_file "$1" opt/zimbra/docs/
+        shift;
+    done
+}
+
+install_libexec() {
+    while [ "$1" ]; do
+        log 3 "installing libexec: $1"
+        install_file "$1" opt/zimbra/libexec/
+        shift;
+    done
+}
+
+install_libexec_scripts() {
+    while [ "$1" ]; do
+        log 3 "installing libexec/scripts: $1"
+        install_file "$1" opt/zimbra/libexec/scripts/
+        shift;
+    done
+}
+
+install_bin() {
+    while [ "$1" ]; do
+        log 3 "installing bin: $1"
+        install_file "$1" opt/zimbra/bin/
+        shift;
+    done
+}
+
+install_lib() {
+    while [ "$1" ]; do
+        log 3 "installing lib: $1"
+        install_file "$1" opt/zimbra/lib/
+        shift;
+    done
+}
+
+install_jar() {
+    while [ "$1" ]; do
+        log 3 "installing jar: $1"
+        install_file "$1" opt/zimbra/lib/jars/
+        shift;
+    done
+}
+
+install_conf() {
+    while [ "$1" ]; do
+        log 3 "installing conf: $1"
+        install_file "$1" opt/zimbra/conf/
+        shift;
+    done
+}
+
+install_bin_from() {
+    local srcdir="$1"
+    shift
+    while [ "$1" ]; do
+        install_bin "$srcdir/$1"
+        shift
+    done
+}
+
+install_libexec_from() {
+    local srcdir="$1"
+    shift
+    while [ "$1" ]; do
+        install_libexec "$srcdir/$1"
+        shift
+    done
+}
+
+install_conf_from() {
+    local srcdir="$1"
+    shift
+    while [ "$1" ]; do
+        install_conf "$srcdir/$1"
+        shift
+    done
+}
+
+install_libexec_scripts_from() {
+    local srcdir="$1"
+    shift
+    while [ "$1" ]; do
+        install_libexec_scripts "$srcdir/$1"
+        shift
+    done
+}
+
 install_zimlets_from() {
     local target="$(target_dir opt/zimbra/$1)"
     shift
