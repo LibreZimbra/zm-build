@@ -28,9 +28,7 @@
 main()
 {
     log 1 "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/dns/ca
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/dns/trust
+    install_dirs etc/sudoers.d opt/zimbra/data/dns/ca opt/zimbra/data/dns/trust
 
     CreatePackage "${os}"
 }
@@ -43,16 +41,15 @@ source "$SCRIPT_DIR/utils.sh"
 
 CreateDebianPackage()
 {
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/resolvconf/update.d
-    cp ${repoDir}/zm-dnscache/conf/dns/zimbra-unbound ${repoDir}/zm-build/${currentPackage}/etc/resolvconf/update.d
-    cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript}.deb ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
+    install_file zm-dnscache/conf/dns/zimbra-unbound                    etc/resolvconf/update.d/
+    install_file zm-build/rpmconf/Env/sudoers.d/02_${currentScript}.deb etc/sudoers.d/02_${currentScript}
 
     mkdeb_gen_control
 }
 
 CreateRhelPackage()
 {
-    cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript}.rpm ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
+    install_file zm-build/rpmconf/Env/sudoers.d/02_${currentScript}.rpm etc/sudoers.d/
 
     cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
         sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
