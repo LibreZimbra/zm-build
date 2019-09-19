@@ -193,8 +193,7 @@ main()
     zm_install_help
 
     log 2 "***** portals example content *****"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/portals/example
-    cp -rf ${repoDir}/zm-webclient-portal-example/example ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/portals
+    install_subtree zm-webclient-portal-example/example opt/zimbra/jetty_base/webapps/zimbra/portals/example/
 
     log 2 "***** robots.txt content *****"
     cp -f ${repoDir}/zm-aspell/conf/robots.txt ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/robots.txt
