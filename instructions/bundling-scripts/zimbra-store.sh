@@ -196,7 +196,7 @@ main()
     install_subtree zm-webclient-portal-example/example opt/zimbra/jetty_base/webapps/zimbra/portals/example/
 
     log 2 "***** robots.txt content *****"
-    cp -f ${repoDir}/zm-aspell/conf/robots.txt ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/robots.txt
+    install_file zm-aspell/conf/robots.txt opt/zimbra/jetty_base/webapps/zimbra/robots.txt
 
     log 2 "***** downloads content *****"
     downloadsDir=${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/downloads
