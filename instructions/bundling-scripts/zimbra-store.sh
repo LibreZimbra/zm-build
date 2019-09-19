@@ -24,12 +24,53 @@ set -e
     currentScript=`basename $0 | cut -d "." -f 1`                          # zimbra-store
     currentPackage=`echo ${currentScript}build | cut -d "-" -f 2` # storebuild
 
+zm_install_ne_bin() {
+    [ "${buildType}" == "NETWORK" ] || return 0
+
+    log 1 "Installing NE binaries and jar libs"
+
+    install_bin \
+        zm-hsm/src/bin/zmhsm \
+        zm-archive-utils/src/bin/zmarchiveconfig \
+        zm-archive-utils/src/bin/zmarchivesearch \
+        zm-sync-tools/src/bin/zmsyncreverseproxy \
+        zm-sync-store/src/bin/zmdevicesstats \
+        zm-sync-store/src/bin/zmgdcutil
+
+    for i in bcpkix-jdk15on-1.55 bcmail-jdk15on-1.55 bcprov-jdk15on-1.55 saaj-impl-1.5.1 ; do
+        install_file zm-zcs-lib/build/dist/$i.jar opt/zimbra/lib/ext-common/
+    done
+
+    install_dir opt/zimbra/lib/ext/network
+    install_file zm-backup-store/build/dist/zm-backup-store.jar               opt/zimbra/lib/ext/backup/zimbrabackup.jar
+    install_file zm-archive-store/build/dist/*.jar                            opt/zimbra/lib/ext/zimbra-archive/zimbra-archive.jar
+    install_file zm-voice-store/build/dist/zm-voice-store.jar                 opt/zimbra/lib/ext/voice/zimbravoice.jar
+    install_file zm-voice-mitel-store/build/dist/zm-voice-mitel-store.jar     opt/zimbra/lib/ext/mitel/
+    install_file zm-voice-cisco-store/build/dist/zm-voice-cisco-store.jar     opt/zimbra/lib/ext/cisco/
+    install_file zm-sync-common/build/dist/*.jar                              opt/zimbra/lib/ext/zimbrasync/
+    install_file zm-sync-store/build/dist/*.jar                               opt/zimbra/lib/ext/zimbrasync/
+    install_file zm-sync-tools/build/dist/*.jar                               opt/zimbra/lib/ext/zimbrasync/
+    install_file zm-openoffice-store/build/dist/*.jar                         opt/zimbra/lib/ext/com_zimbra_oo/
+    ## fixme: bug in com_zimbra_oo extension - should generate the correct jar filename
+    mv $(target_dir opt/zimbra/lib/ext/com_zimbra_oo/zm-openoffice-store.jar) \
+       $(target_dir opt/zimbra/lib/ext/com_zimbra_oo/com_zimbra_oo.jar)
+    install_file zm-convertd-store/build/dist/*.jar                           opt/zimbra/lib/ext/convertd/
+    install_file zm-twofactorauth-store/build/dist/zm-twofactorauth-store*.jar \
+                 opt/zimbra/lib/ext/twofactorauth/zimbratwofactorauth.jar
+    install_file zm-hsm-store/build/zimbrahsm.jar                             opt/zimbra/lib/ext/zimbrahsm/
+    install_file zm-freebusy-provider-store/build/zimbra-freebusyprovider.jar opt/zimbra/lib/ext/zimbra-freebusy/
+    install_file zm-smime-store/build/dist/*.jar                              opt/zimbra/lib/ext/smime/
+    install_file zm-network-gql/build/dist/zm-network-gql*.jar                opt/zimbra/lib/ext/zm-gql/zmnetworkgql.jar
+
+    install_subtree zm-saml-consumer-store/build/dist/saml \
+                    opt/zimbra/extensions-network-extra/saml
+}
+
 #-------------------- Build Package ---------------------------
 main()
 {
     log 1 "Create package directories"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/templates
 
     log 1 "Copy package files"
@@ -37,17 +78,7 @@ main()
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
 
     log 1 "Copy bin files of /opt/zimbra/"
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-       cp -f ${repoDir}/zm-hsm/src/bin/zmhsm ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmhsm
-       cp -f ${repoDir}/zm-archive-utils/src/bin/zmarchiveconfig ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmarchiveconfig
-       cp -f ${repoDir}/zm-archive-utils/src/bin/zmarchivesearch ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmarchivesearch
-       cp -f ${repoDir}/zm-sync-tools/src/bin/zmsyncreverseproxy ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmsyncreverseproxy
-       cp -f ${repoDir}/zm-sync-store/src/bin/zmdevicesstats ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmdevicesstats
-       cp -f ${repoDir}/zm-sync-store/src/bin/zmgdcutil ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmgdcutil
-    fi
-
+    zm_install_ne_bin
 
     cp -f ${repoDir}/zm-migration-tools/zmztozmig.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmztozmig.conf
 
@@ -59,20 +90,11 @@ main()
     cp -rf ${repoDir}/zm-openid-consumer-store/build/dist/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer
     rm -rf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer/extensions-extra
 
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-        log 1 "Copy extensions-network-extra files of /op/zimbra/"
-       mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-network-extra
-       cp -rf ${repoDir}/zm-saml-consumer-store/build/dist/saml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-network-extra/
-    fi
-
     log 1 "Copy lib files of /opt/zimbra/"
 
     log 2 "Copy ext files of /opt/zimbra/lib/"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/mitel
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/twofactorauth
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup
@@ -83,38 +105,6 @@ main()
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraldaputils
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-oauth-social
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-gql
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/backup
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-archive
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/voice
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/mitel
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/cisco
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrasync
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/network
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_oo
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/convertd
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrahsm
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/smime
-
-      cp -f ${repoDir}/zm-backup-store/build/dist/zm-backup-store.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/backup/zimbrabackup.jar
-      cp -f ${repoDir}/zm-archive-store/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-archive/zimbra-archive.jar
-      cp -rf ${repoDir}/zm-voice-store/build/dist/zm-voice-store.jar  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/voice/zimbravoice.jar
-      cp -rf ${repoDir}/zm-voice-mitel-store/build/dist/zm-voice-mitel-store.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/mitel
-      cp -rf ${repoDir}/zm-voice-cisco-store/build/dist/zm-voice-cisco-store.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/cisco
-      cp -rf ${repoDir}/zm-sync-common/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrasync
-      cp -rf ${repoDir}/zm-sync-store/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrasync
-      cp -rf ${repoDir}/zm-sync-tools/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrasync
-      cp -f ${repoDir}/zm-openoffice-store/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_oo
-      mv ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_oo/zm-openoffice-store.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_oo/com_zimbra_oo.jar
-      cp -rf ${repoDir}/zm-convertd-store/build/dist/*jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/convertd
-      cp -f ${repoDir}/zm-twofactorauth-store/build/dist/zm-twofactorauth-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/twofactorauth/zimbratwofactorauth.jar
-      cp -f ${repoDir}/zm-hsm-store/build/zimbrahsm.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrahsm/zimbrahsm.jar
-      cp -f ${repoDir}/zm-freebusy-provider-store/build/zimbra-freebusyprovider.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-freebusy/zimbra-freebusyprovider.jar
-      cp -rf ${repoDir}/zm-smime-store/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/smime
-      cp -f ${repoDir}/zm-network-gql/build/dist/zm-network-gql*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-gql/zmnetworkgql.jar
-    fi
 
     cp -f ${repoDir}/zm-clam-scanner-store/build/dist/zm-clam-scanner-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner/clamscanner.jar
     cp -f ${repoDir}/zm-nginx-lookup-store/build/dist/zm-nginx-lookup-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup/nginx-lookup.jar
@@ -176,16 +166,6 @@ main()
     if [ "${buildType}" == "NETWORK" ]
     then
        rsync -a ${repoDir}/zm-admin-help-network/WebRoot/help ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbraAdmin/
-    fi
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-        log 2 "Copy ext-common files of /opt/zimbra/lib/"
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common
-      cp -f ${repoDir}/zm-zcs-lib/build/dist/bcpkix-jdk15on-1.55.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
-      cp -f ${repoDir}/zm-zcs-lib/build/dist/bcmail-jdk15on-1.55.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
-      cp -f ${repoDir}/zm-zcs-lib/build/dist/bcprov-jdk15on-1.55.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
-      cp -f ${repoDir}/zm-zcs-lib/build/dist/saaj-impl-1.5.1.jar     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
     fi
 
     cp -f ${repoDir}/zm-migration-tools/src/libexec/zmztozmig ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
