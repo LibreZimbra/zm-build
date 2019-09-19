@@ -177,17 +177,13 @@ main()
     install_file zm-taglib/build/zm-taglib*.jar         opt/zimbra/jetty_base/webapps/service/WEB-INF/lib/
     install_file zm-zimlets/build/dist/zimlettaglib.jar opt/zimbra/jetty_base/webapps/service/WEB-INF/lib/
 
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra
-
     if [ "${buildType}" == "NETWORK" ]
     then
         log 2 "***** css, public and t content *****"
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/css
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/public
-      cp ${repoDir}/zm-touch-client/build/WebRoot/css/ztouch.css ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/css/ztouch.css
-      cp ${repoDir}/zm-touch-client/build/WebRoot/public/loginTouch.jsp ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/public/loginTouch.jsp
-      cp -rf ${repoDir}/zm-touch-client/build/WebRoot/t ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/
-      cp -rf ${repoDir}/zm-touch-client/build/WebRoot/tdebug ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/
+        install_file zm-touch-client/build/WebRoot/css/ztouch.css         opt/zimbra/jetty_base/webapps/zimbra/css/
+        install_file zm-touch-client/build/WebRoot/public/loginTouch.jsp  opt/zimbra/jetty_base/webapps/zimbra/public/
+        install_subtree zm-touch-client/build/WebRoot/t                   opt/zimbra/jetty_base/webapps/zimbra/t/
+        install_subtree zm-touch-client/build/WebRoot/tdebug              opt/zimbra/jetty_base/webapps/zimbra/tdebug/
     fi
 
     zm_install_help
