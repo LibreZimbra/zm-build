@@ -199,14 +199,12 @@ main()
     install_file zm-aspell/conf/robots.txt opt/zimbra/jetty_base/webapps/zimbra/robots.txt
 
     log 2 "***** downloads content *****"
-    downloadsDir=${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/downloads
-    mkdir -p ${downloadsDir}
-    cp -rf ${repoDir}/zm-downloads/. ${downloadsDir}
+    install_subtree zm-downloads /opt/zimbra/jetty_base/webapps/zimbra/downloads/
 
     if [ "${buildType}" == "NETWORK" ]
     then
         set -e
-        cd ${downloadsDir}
+        cd $(target_dir /opt/zimbra/jetty_base/webapps/zimbra/downloads/)
         wget -r -nd --no-parent --reject "index.*" http://${zimbraThirdPartyServer}/ZimbraThirdParty/zco-migration-builds/current/
     fi
 
