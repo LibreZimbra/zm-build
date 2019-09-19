@@ -76,6 +76,16 @@ zm_install_openidconsumer() {
     rm -rf $(target_dir opt/zimbra/extensions-extra/openidconsumer/extensions-extra)
 }
 
+zm_install_migration_tools() {
+    log 1 "Installing zm-migration-tools"
+
+    install_conf zm-migration-tools/zmztozmig.conf
+
+    install_libexec \
+        zm-migration-tools/src/libexec/zmztozmig \
+        zm-migration-tools/src/libexec/zmcleaniplanetics
+}
+
 #-------------------- Build Package ---------------------------
 main()
 {
@@ -90,8 +100,7 @@ main()
     log 1 "Copy bin files of /opt/zimbra/"
     zm_install_ne_bin
     zm_install_openidconsumer
-
-    cp -f ${repoDir}/zm-migration-tools/zmztozmig.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmztozmig.conf
+    zm_install_migration_tools
 
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/owasp_policy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/owasp_policy.xml
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/antisamy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/antisamy.xml
@@ -100,7 +109,6 @@ main()
 
     log 2 "Copy ext files of /opt/zimbra/lib/"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/twofactorauth
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup
@@ -172,8 +180,6 @@ main()
        rsync -a ${repoDir}/zm-admin-help-network/WebRoot/help ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbraAdmin/
     fi
 
-    cp -f ${repoDir}/zm-migration-tools/src/libexec/zmztozmig ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
-    cp -f ${repoDir}/zm-migration-tools/src/libexec/zmcleaniplanetics ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
     cp -f ${repoDir}/zm-versioncheck-utilities/src/libexec/zmcheckversion ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
 
     log 1 "Copy log files of /opt/zimbra/"
