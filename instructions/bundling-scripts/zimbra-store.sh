@@ -134,6 +134,18 @@ zm_install_jetty_conf() {
     install_file zm-zimlets/conf/web.xml.production                    opt/zimbra/jetty_base/etc/zimlet.web.xml.in
 }
 
+zm_install_help() {
+    log 1 "Installing help content"
+
+    install_subtree zm-help/                          opt/zimbra/jetty_base/webapps/zimbra/help/
+    install_subtree zm-admin-help-common/WebRoot/help opt/zimbra/jetty_base/webapps/zimbraAdmin/help/
+
+    if [ "${buildType}" == "NETWORK" ]
+    then
+        install_subtree zm-admin-help-network/WebRoot/help opt/zimbra/jetty_base/webapps/zimbraAdmin/help/
+    fi
+}
+
 #-------------------- Build Package ---------------------------
 main()
 {
@@ -178,8 +190,7 @@ main()
       cp -rf ${repoDir}/zm-touch-client/build/WebRoot/tdebug ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/
     fi
 
-    log 2 "***** help content *****"
-    cp -rf ${repoDir}/zm-help/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/help
+    zm_install_help
 
     log 2 "***** portals example content *****"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/portals/example
@@ -198,14 +209,6 @@ main()
         set -e
         cd ${downloadsDir}
         wget -r -nd --no-parent --reject "index.*" http://${zimbraThirdPartyServer}/ZimbraThirdParty/zco-migration-builds/current/
-    fi
-
-    log 2 "***** help content *****"
-    rsync -a ${repoDir}/zm-admin-help-common/WebRoot/help ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbraAdmin/
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-       rsync -a ${repoDir}/zm-admin-help-network/WebRoot/help ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbraAdmin/
     fi
 
     log 1 "Copy log files of /opt/zimbra/"
