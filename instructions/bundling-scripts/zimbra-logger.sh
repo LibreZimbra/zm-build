@@ -28,7 +28,7 @@
 main()
 {
     log 1 "Create package directories..."
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/logger/db/data
+    install_dirs opt/zimbra/logger/db/data
 
     CreatePackage "${os}"
 }
