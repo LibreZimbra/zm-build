@@ -138,12 +138,11 @@ zm_install_jetty_conf() {
 main()
 {
     log 1 "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/templates
+    install_dirs opt/zimbra/conf/templates
 
     log 1 "Copy package files"
     log 1 "Copy etc files"
-    cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
+    install_file zm-build/rpmconf/Env/sudoers.d/02_${currentScript} etc/sudoers.d/
 
     log 1 "Copy bin files of /opt/zimbra/"
     zm_install_ne_bin
@@ -153,8 +152,9 @@ main()
     zm_install_ose_ext
     zm_install_jetty_conf
 
-    cp -f ${repoDir}/zm-mailbox/store-conf/conf/owasp_policy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/owasp_policy.xml
-    cp -f ${repoDir}/zm-mailbox/store-conf/conf/antisamy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/antisamy.xml
+    install_conf \
+        zm-mailbox/store-conf/conf/owasp_policy.xml \
+        zm-mailbox/store-conf/conf/antisamy.xml
 
     log 1 "Copy lib files of /opt/zimbra/"
 
