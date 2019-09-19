@@ -197,7 +197,6 @@ main()
      cp -f ${repoDir}/zm-build/rpmconf/Conf/hotspot_compiler ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log/.hotspot_compiler
 
     log 1 "Copy zimlets files of /opt/zimbra/"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets
     zimletsArray=( "zm-versioncheck-admin-zimlet" \
                    "zm-bulkprovision-admin-zimlet" \
                    "zm-certificate-manager-admin-zimlet" \
@@ -207,15 +206,14 @@ main()
                    "zm-viewmail-admin-zimlet" )
     for i in "${zimletsArray[@]}"
     do
-        cp ${repoDir}/${i}/build/zimlet/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets
+        install_zimlets_from zimlets "${i}/build/zimlet"
     done
 
-    cp -f ${repoDir}/zm-zimlets/build/dist/zimlets/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets
+    install_zimlets_from zimlets zm-zimlets/build/dist/zimlets
 
     if [ "${buildType}" == "NETWORK" ]
     then
         log 1 "Copy zimlets-network files of /opt/zimbra/"
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets-network
       adminZimlets=( "zm-license-admin-zimlet" \
                      "zm-backup-restore-admin-zimlet" \
                      "zm-convertd-admin-zimlet" \
@@ -229,13 +227,13 @@ main()
                      "zm-mobile-sync-admin-zimlet" )
       for i in "${adminZimlets[@]}"
       do
-         cp ${repoDir}/${i}/build/zimlet/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets-network
+            install_zimlets_from zimlets-network ${i}/build/zimlet/
       done
 
       adminUcZimlets=( "cisco" "mitel" "voiceprefs" )
       for i in "${adminUcZimlets[@]}"
       do
-         cp ${repoDir}/zm-uc-admin-zimlets/${i}/build/zimlet/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets-network
+            install_zimlets_from zimlets-network zm-uc-admin-zimlets/${i}/build/zimlet/
       done
     fi
 

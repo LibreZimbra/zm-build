@@ -127,3 +127,14 @@ mkdeb_gen_control() {
               -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
               -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/" > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
 }
+
+install_zimlets_from() {
+    local target="$(target_dir opt/zimbra/$1)"
+    shift
+    mkdir -p "${target}"
+
+    while [ "$1" ]; do
+        cp ${repoDir}/$1/*.zip ${target}
+        shift
+    done
+}
