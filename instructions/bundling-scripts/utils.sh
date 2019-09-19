@@ -88,7 +88,7 @@ mkdeb_gen_control() {
     esac
 
     mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN/
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb \
+    cat ${repoDir}/zm-build/pkg/debian/${currentScript}.in \
         | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
               -e "s/@@branch@@/${buildTimeStamp}/" \
               -e "s/@@ARCH@@/${debarch}/" \
