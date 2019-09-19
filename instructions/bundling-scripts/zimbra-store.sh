@@ -146,6 +146,18 @@ zm_install_help() {
     fi
 }
 
+zm_install_touch_client() {
+    if [ "${buildType}" == "NETWORK" ]; then
+
+        log 1 "Installing touch web client"
+
+        install_file zm-touch-client/build/WebRoot/css/ztouch.css         opt/zimbra/jetty_base/webapps/zimbra/css/
+        install_file zm-touch-client/build/WebRoot/public/loginTouch.jsp  opt/zimbra/jetty_base/webapps/zimbra/public/
+        install_subtree zm-touch-client/build/WebRoot/t                   opt/zimbra/jetty_base/webapps/zimbra/t/
+        install_subtree zm-touch-client/build/WebRoot/tdebug              opt/zimbra/jetty_base/webapps/zimbra/tdebug/
+    fi
+}
+
 #-------------------- Build Package ---------------------------
 main()
 {
@@ -163,6 +175,7 @@ main()
     zm_install_versioncheck
     zm_install_ose_ext
     zm_install_jetty_conf
+    zm_install_touch_client
 
     install_conf \
         zm-mailbox/store-conf/conf/owasp_policy.xml \
@@ -176,15 +189,6 @@ main()
     install_file zm-zimlets/conf/zimbra.tld             opt/zimbra/jetty_base/webapps/service/WEB-INF/
     install_file zm-taglib/build/zm-taglib*.jar         opt/zimbra/jetty_base/webapps/service/WEB-INF/lib/
     install_file zm-zimlets/build/dist/zimlettaglib.jar opt/zimbra/jetty_base/webapps/service/WEB-INF/lib/
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-        log 2 "***** css, public and t content *****"
-        install_file zm-touch-client/build/WebRoot/css/ztouch.css         opt/zimbra/jetty_base/webapps/zimbra/css/
-        install_file zm-touch-client/build/WebRoot/public/loginTouch.jsp  opt/zimbra/jetty_base/webapps/zimbra/public/
-        install_subtree zm-touch-client/build/WebRoot/t                   opt/zimbra/jetty_base/webapps/zimbra/t/
-        install_subtree zm-touch-client/build/WebRoot/tdebug              opt/zimbra/jetty_base/webapps/zimbra/tdebug/
-    fi
 
     zm_install_help
 
