@@ -95,6 +95,19 @@ zm_install_versioncheck() {
     install_libexec zm-versioncheck-utilities/src/libexec/zmcheckversion
 }
 
+zm_install_ose_ext() {
+    log 1 "Installing OSE extension libraries"
+
+    install_dirs opt/zimbra/lib/jars opt/zimbra/lib/ext/zimbra-license
+
+    install_file zm-clam-scanner-store/build/dist/zm-clam-scanner-store*.jar      opt/zimbra/lib/ext/clamscanner/clamscanner.jar
+    install_file zm-nginx-lookup-store/build/dist/zm-nginx-lookup-store*.jar      opt/zimbra/lib/ext/nginx-lookup/nginx-lookup.jar
+    install_file zm-ldap-utils-store/build/zm-ldap-utils-*.jar                    opt/zimbra/lib/ext/zimbraldaputils/zimbraldaputils.jar
+    install_file zm-oauth-social/build/dist/zm-oauth-social*.jar                  opt/zimbra/lib/ext/zm-oauth-social/zmoauthsocial.jar
+    install_file zm-zcs-lib/build/dist/java-jwt-3.2.0.jar                         opt/zimbra/lib/ext/zm-oauth-social/
+    install_file zm-gql/build/dist/zm-gql*.jar                                    opt/zimbra/lib/ext/zm-gql/zmgql.jar
+}
+
 #-------------------- Build Package ---------------------------
 main()
 {
@@ -111,30 +124,12 @@ main()
     zm_install_openidconsumer
     zm_install_migration_tools
     zm_install_versioncheck
+    zm_install_ose_ext
 
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/owasp_policy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/owasp_policy.xml
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/antisamy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/antisamy.xml
 
     log 1 "Copy lib files of /opt/zimbra/"
-
-    log 2 "Copy ext files of /opt/zimbra/lib/"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/twofactorauth
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-license
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-freebusy
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraldaputils
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-oauth-social
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-gql
-
-    cp -f ${repoDir}/zm-clam-scanner-store/build/dist/zm-clam-scanner-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner/clamscanner.jar
-    cp -f ${repoDir}/zm-nginx-lookup-store/build/dist/zm-nginx-lookup-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup/nginx-lookup.jar
-    cp -f ${repoDir}/zm-ldap-utils-store/build/zm-ldap-utils-*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraldaputils/zimbraldaputils.jar
-    cp -f ${repoDir}/zm-oauth-social/build/dist/zm-oauth-social*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-oauth-social/zmoauthsocial.jar
-    cp -f ${repoDir}/zm-zcs-lib/build/dist/java-jwt-3.2.0.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-oauth-social/
-    cp -f ${repoDir}/zm-gql/build/dist/zm-gql*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-gql/zmgql.jar
-
 
 #-------------------- Get wars content (service.war, zimbra.war and zimbraAdmin.war) ---------------------------
 
