@@ -44,79 +44,52 @@ CreateDebianPackage()
 
 CreateRhelPackage()
 {
-    MORE_DEPENDS=", zimbra-timezone-data >= 1.0.1+1510156506-1.$PKG_OS_TAG $(find ${repoDir}/zm-packages/ -name \*.rpm \
+    (
+        MORE_DEPENDS=", zimbra-timezone-data >= 1.0.1+1510156506-1.$PKG_OS_TAG $(find ${repoDir}/zm-packages/ -name \*.rpm \
                        | xargs -n1 basename \
                        | sed -e 's/-[0-9].*//' \
                        | grep -e zimbra-common- \
                        | sed '1s/^/, /; :a; {N;s/\n/, /;ba}')";
 
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
-    	sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
-            	-e "s/@@RELEASE@@/${buildTimeStamp}/" \
-                -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
-            	-e "/^%pre$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre" \
-            	-e "/Best email money can buy/ a Network edition" \
-            	-e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post" > ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/corebuild; find opt -maxdepth 2 -type f -o -type l \
-    	| sed -e 's|^|%attr(-, zimbra, zimbra) /|' >> \
-    	${repoDir}/zm-build/${currentScript}.spec )
-    echo "%attr(440, root, root) /etc/sudoers.d/01_zimbra" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-core" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, root, root) /opt/zimbra/bin" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/docs" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(444, zimbra, zimbra) /opt/zimbra/docs/*" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
+        mkrpm_template | \
+            sed -e "/^%pre$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre" \
+                -e "/Best email money can buy/ a Network edition" \
+                -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post"
 
-    if [ "${buildType}" == "NETWORK" ]
-    then
-      echo "%attr(755, zimbra, zimbra) /opt/zimbra/docs/rebranding" >> \
-         ${repoDir}/zm-build/${currentScript}.spec
-      echo "%attr(444, zimbra, zimbra) /opt/zimbra/docs/rebranding/*" >> \
-         ${repoDir}/zm-build/${currentScript}.spec
-    fi
+        cd ${repoDir}/zm-build/corebuild; find opt -maxdepth 2 -type f -o -type l \
+            | sed -e 's|^|%attr(-, zimbra, zimbra) /|'
 
-    echo "%attr(755, root, root) /opt/zimbra/contrib" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, root, root) /opt/zimbra/libexec" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/logger" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/*" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/externaldirsync" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/externaldirsync/*" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/sasl2" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/sasl2/*" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/zmconfigd" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/zmconfigd/*" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/db" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/lib" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/conf/crontabs" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/lib/jylibs" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/lib/perl5/Zimbra" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/logger/db/work" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "" >> ${repoDir}/zm-build/${currentScript}.spec
-    echo "%clean" >> ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/${currentPackage}; \
-    	rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
+        echo "%attr(440, root, root) /etc/sudoers.d/01_zimbra"
+        echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-core"
+        echo "%attr(755, root, root) /opt/zimbra/bin"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/docs"
+        echo "%attr(444, zimbra, zimbra) /opt/zimbra/docs/*"
+
+        if [ "${buildType}" == "NETWORK" ]; then
+            echo "%attr(755, zimbra, zimbra) /opt/zimbra/docs/rebranding"
+            echo "%attr(444, zimbra, zimbra) /opt/zimbra/docs/rebranding/*"
+        fi
+
+        echo "%attr(755, root, root) /opt/zimbra/contrib"
+        echo "%attr(755, root, root) /opt/zimbra/libexec"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/logger"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf"
+        echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/*"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/externaldirsync"
+        echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/externaldirsync/*"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/sasl2"
+        echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/sasl2/*"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/zmconfigd"
+        echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/zmconfigd/*"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/db"
+        echo "%attr(-, root, root) /opt/zimbra/lib"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/conf/crontabs"
+        echo "%attr(-, root, root) /opt/zimbra/common/lib/jylibs"
+        echo "%attr(-, root, root) /opt/zimbra/common/lib/perl5/Zimbra"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/logger/db/work"
+        echo ""
+        echo "%clean"
+    ) | mkrpm_writespec
 }
 
 install_zm_core_utils() {

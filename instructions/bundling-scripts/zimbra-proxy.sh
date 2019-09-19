@@ -48,27 +48,18 @@ CreateDebianPackage()
 
 CreateRhelPackage()
 {
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
-        sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
-               -e "s/@@RELEASE@@/${buildTimeStamp}/" \
-               -e "s/^Copyright:/Copyright:/" \
-               -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post" > ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-proxy" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/nginx" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/nginx/*" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/nginx/includes" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/nginx/templates" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/nginx/templates/*" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "" >> ${repoDir}/zm-build/${currentScript}.spec
-    echo "%clean" >> ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/${currentPackage}; \
-    rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
+    (
+        mkrpm_template | sed -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post"
+
+        echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-proxy"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/nginx"
+        echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/nginx/*"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/nginx/includes"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/nginx/templates"
+        echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/nginx/templates/*"
+        echo ""
+        echo "%clean"
+    ) | mkrpm_writespec
 }
 
 ############################################################################

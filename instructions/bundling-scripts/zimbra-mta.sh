@@ -58,33 +58,23 @@ CreateDebianPackage()
 
 CreateRhelPackage()
 {
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
-        sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
-            -e "s/@@RELEASE@@/${buildTimeStamp}/" \
+    (
+        mkrpm_template | sed \
             -e "s/@@MTA_PROVIDES@@/smtpdaemon/" \
-            -e "s/^Copyright:/Copyright:/" \
-            -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post" > ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/mtabuild; find opt -maxdepth 2 -type f -o -type l \
-        | sed -e 's|^|%attr(-, zimbra, zimbra) /|' >> \
-        ${repoDir}/zm-build/${currentScript}.spec )
-    echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-mta" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/common/conf/master.cf.in" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/common/conf/tag_as_foreign.re.in" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/common/conf/tag_as_originating.re.in" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/amavisd" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/clamav" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/cbpolicyd" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/opendkim" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/${currentPackage}; \
-        rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
+            -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post"
+
+        cd ${repoDir}/zm-build/mtabuild; find opt -maxdepth 2 -type f -o -type l \
+            | sed -e 's|^|%attr(-, zimbra, zimbra) /|'
+
+        echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-mta"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/common/conf/master.cf.in"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/common/conf/tag_as_foreign.re.in"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/common/conf/tag_as_originating.re.in"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/amavisd"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/clamav"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/cbpolicyd"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/opendkim"
+    ) | mkrpm_writespec
 }
 
 ############################################################################

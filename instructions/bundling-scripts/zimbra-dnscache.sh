@@ -51,17 +51,11 @@ CreateRhelPackage()
 {
     install_file zm-build/rpmconf/Env/sudoers.d/02_${currentScript}.rpm etc/sudoers.d/
 
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
-        sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
-            -e "s/@@RELEASE@@/${buildTimeStamp}/" \
-            -e "s/^Copyright:/Copyright:/" \
-            -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post" > ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/dns" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-dnscache" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/${currentPackage}; \
-        rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
+    (
+        mkrpm_template | sed -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/dns"
+        echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-dnscache"
+    ) | mkrpm_writespec
 }
 
 ############################################################################

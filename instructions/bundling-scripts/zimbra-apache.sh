@@ -48,16 +48,13 @@ CreateDebianPackage()
 
 CreateRhelPackage()
 {
-  cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
-  sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os} /" \
-      -e "s/@@RELEASE@@/${buildTimeStamp}/" \
-      -e "s/^Copyright:/Copyright:/" > ${repoDir}/zm-build/${currentScript}.spec
-  echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf" >> ${repoDir}/zm-build/${currentScript}.spec
-  echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/*" >> ${repoDir}/zm-build/${currentScript}.spec
-  echo "" >> ${repoDir}/zm-build/${currentScript}.spec
-  echo "%clean" >> ${repoDir}/zm-build/${currentScript}.spec
-  (cd ${repoDir}/zm-build/${currentPackage}; \
-  rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
+    (
+        mkrpm_template
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf"
+        echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/*"
+        echo ""
+        echo "%clean"
+    ) | mkdeb_writespec
 }
 
 ############################################################################

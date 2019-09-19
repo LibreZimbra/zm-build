@@ -51,35 +51,21 @@ CreateDebianPackage()
 
 CreateRhelPackage()
 {
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
-    	sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
-    	-e "s/@@RELEASE@@/${buildTimeStamp}/" \
-    	-e "s/^Copyright:/Copyright:/" \
-    	> ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/data/snmp" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/*" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(775, root, zimbra) /opt/zimbra/common/conf" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, root, root) /opt/zimbra/common/conf/snmp.conf" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, root, root) /opt/zimbra/common/share/snmp" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, root, root) /opt/zimbra/common/share/snmp/snmp.conf" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, root, root) /opt/zimbra/common/share/snmp/mibs" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, root, root) /opt/zimbra/common/share/snmp/mibs/zimbra.mib" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, root, root) /opt/zimbra/common/share/snmp/mibs/zimbra_traps.mib" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "" >> ${repoDir}/zm-build/${currentScript}.spec
-    echo "%clean" >> ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/${currentPackage}; \
-    	rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
+    (
+        mkrpm_template
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/data/snmp"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf"
+        echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/*"
+        echo "%attr(775, root, zimbra) /opt/zimbra/common/conf"
+        echo "%attr(644, root, root) /opt/zimbra/common/conf/snmp.conf"
+        echo "%attr(755, root, root) /opt/zimbra/common/share/snmp"
+        echo "%attr(644, root, root) /opt/zimbra/common/share/snmp/snmp.conf"
+        echo "%attr(755, root, root) /opt/zimbra/common/share/snmp/mibs"
+        echo "%attr(644, root, root) /opt/zimbra/common/share/snmp/mibs/zimbra.mib"
+        echo "%attr(644, root, root) /opt/zimbra/common/share/snmp/mibs/zimbra_traps.mib"
+        echo ""
+        echo "%clean"
+    ) | mkrpm_writespec
 }
 
 

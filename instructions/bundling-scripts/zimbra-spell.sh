@@ -46,17 +46,12 @@ CreateDebianPackage()
 
 CreateRhelPackage()
 {
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
-    	sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
-    	-e "s/@@RELEASE@@/${buildTimeStamp}/" \
-    	-e "s/^Copyright:/Copyright:/" \
-    	> ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/data/httpd/htdocs/aspell.php" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "" >> ${repoDir}/zm-build/${currentScript}.spec
-    echo "%clean" >> ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/${currentPackage}; \
-    	rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
+    (
+        mkrpm_template
+        echo "%attr(-, root, root) /opt/zimbra/data/httpd/htdocs/aspell.php"
+        echo ""
+        echo "%clean"
+    ) | mkrpm_writespec
 }
 
 ############################################################################

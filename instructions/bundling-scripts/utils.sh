@@ -23,6 +23,7 @@ CreatePackage()
         ;;
         RHEL*)
             CreateRhelPackage
+            mkrpm_finish
         ;;
         *)
             echo "OS \"$1\" not supported. Run using UBUNTU/DEBIAN or RHEL system. "
@@ -230,4 +231,28 @@ install_zimlets_from() {
         cp ${repoDir}/$1/*.zip ${target}
         shift
     done
+}
+
+mkrpm_finish() {
+    (
+        cd ${repoDir}/zm-build/${currentPackage} && \
+        rpmbuild \
+            --target ${arch} \
+            --define '_rpmdir ../' \
+            --buildroot=${repoDir}/zm-build/${currentPackage} \
+            -bb ${repoDir}/zm-build/${currentScript}.spec
+    )
+}
+
+mkrpm_template() {
+    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
+    sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os} /" \
+        -e "s/@@RELEASE@@/${buildTimeStamp}/" \
+        -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
+        -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/" \
+        -e "s/^Copyright:/Copyright:/"
+}
+
+mkrpm_writespec() {
+    cat > ${repoDir}/zm-build/${currentScript}.spec
 }

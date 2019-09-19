@@ -53,37 +53,23 @@ CreateDebianPackage()
 
 CreateRhelPackage()
 {
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
-        sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
-            -e "s/@@RELEASE@@/${buildTimeStamp}/" \
-            -e "s/^Copyright:/Copyright:/" \
-            -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post" >  ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-ldap" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/*" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/*" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/cn=config" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/cn=config/*" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/cn=config/olcDatabase={2}mdb" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/cn=config/olcDatabase={2}mdb/*" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/schema" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/schema/*" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "" >> ${repoDir}/zm-build/${currentScript}.spec
-    echo "%clean" >> ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/${currentPackage}; \
-        rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
+    (
+        mkrpm_template | sed \
+            -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post"
+        echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-ldap"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/*"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/*"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/cn=config"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/cn=config/*"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/cn=config/olcDatabase={2}mdb"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/config/cn=config/olcDatabase={2}mdb/*"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/schema"
+        echo "%attr(-, root, root) /opt/zimbra/common/etc/openldap/zimbra/schema/*"
+        echo ""
+        echo "%clean"
+    ) | mkrpm_writespec
 }
 
 ############################################################################

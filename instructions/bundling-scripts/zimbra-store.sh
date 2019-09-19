@@ -285,53 +285,36 @@ CreateDebianPackage()
 
 CreateRhelPackage()
 {
-    MORE_DEPENDS="$(find ${repoDir}/zm-packages/ -name \*.rpm \
+    (
+        MORE_DEPENDS="$(find ${repoDir}/zm-packages/ -name \*.rpm \
                        | xargs -n1 basename \
                        | sed -e 's/-[0-9].*//' \
                        | grep -e zimbra-mbox- \
                        | sed '1s/^/, /; :a; {N;s/\n/, /;ba}')";
 
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
-    	sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
-            	-e "s/@@RELEASE@@/${buildTimeStamp}/" \
-                -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
-                -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/" \
-            	-e "/^%pre$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre" \
-            	-e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post" > ${repoDir}/zm-build/${currentScript}.spec
+        mkrpm_template | \
+            sed -e "/^%pre$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre" \
+                -e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post"
 
-    echo "%attr(-, root, root) /opt/zimbra/lib" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-store" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/*" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/log" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/zimlets" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/extensions-extra" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
+        echo "%attr(-, root, root) /opt/zimbra/lib"
+        echo "%attr(440, root, root) /etc/sudoers.d/02_zimbra-store"
+        echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf"
+        echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/*"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/log"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/zimlets"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/extensions-extra"
 
-   if [ "${buildType}" == "NETWORK" ]
-   then
-      echo "%attr(-, zimbra, zimbra) /opt/zimbra/zimlets-network" >> \
-         ${repoDir}/zm-build/${currentScript}.spec
-      echo "%attr(-, zimbra, zimbra) /opt/zimbra/extensions-network-extra" >> \
-         ${repoDir}/zm-build/${currentScript}.spec
-   fi
+        if [ "${buildType}" == "NETWORK" ]; then
+            echo "%attr(-, zimbra, zimbra) /opt/zimbra/zimlets-network"
+            echo "%attr(-, zimbra, zimbra) /opt/zimbra/extensions-network-extra"
+        fi
 
-    echo "%attr(755, root, root) /opt/zimbra/bin" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, root, root) /opt/zimbra/libexec" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/jetty_base" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "" >> ${repoDir}/zm-build/${currentScript}.spec
-    echo "%clean" >> ${repoDir}/zm-build/${currentScript}.spec
-    (cd ${repoDir}/zm-build/${currentPackage}; \
-    rpmbuild --target ${arch} --define '_rpmdir ../' --buildroot=${repoDir}/zm-build/${currentPackage} -bb ${repoDir}/zm-build/${currentScript}.spec )
+        echo "%attr(755, root, root) /opt/zimbra/bin"
+        echo "%attr(755, root, root) /opt/zimbra/libexec"
+        echo "%attr(-, zimbra, zimbra) /opt/zimbra/jetty_base"
+        echo ""
+        echo "%clean"
+    ) | mkrpm_writespec
 }
 ############################################################################
 main "$@"
