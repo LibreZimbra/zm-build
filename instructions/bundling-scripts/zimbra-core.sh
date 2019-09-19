@@ -68,8 +68,7 @@ CreateDebianPackage()
          | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
                -e "s/@@branch@@/${buildTimeStamp}/" \
                -e "s/@@ARCH@@/${debarch}/" \
-               -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
-               -e "/^%post$/ r ${currentScript}.post"
+               -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/"
    ) > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
 
    (

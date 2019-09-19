@@ -310,8 +310,7 @@ CreateDebianPackage()
                -e "s/@@branch@@/${buildTimeStamp}/" \
                -e "s/@@ARCH@@/${debarch}/" \
                -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
-               -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/" \
-               -e "/^%post$/ r ${currentScript}.post"
+               -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/"
     ) > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
 
     (cd ${repoDir}/zm-build/${currentPackage}; dpkg -b ${repoDir}/zm-build/${currentPackage} ${repoDir}/zm-build/${arch})
