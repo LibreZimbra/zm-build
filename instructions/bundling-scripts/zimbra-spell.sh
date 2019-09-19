@@ -27,11 +27,8 @@
 #-------------------- Build Package ---------------------------
 main()
 {
-    log 1 "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/httpd/htdocs
-
     log 1 "Copy package files"
-    cp ${repoDir}/zm-aspell/src/php/aspell.php ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/httpd/htdocs/aspell.php
+    install_file zm-aspell/src/php/aspell.php opt/zimbra/data/httpd/htdocs/
 
     CreatePackage "${os}"
 }
