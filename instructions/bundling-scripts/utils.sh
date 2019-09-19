@@ -90,6 +90,11 @@ mkdeb_gen_control() {
         *) debarch="${arch}";;
     esac
 
+    (
+        echo "creating deb control: ${currentPackage}"
+        echo "        MORE_DEPENDS: ${MORE_DEPENDS}"
+    ) >&2
+
     mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN/
     cat ${repoDir}/zm-build/pkg/debian/${currentScript}.in \
         | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
