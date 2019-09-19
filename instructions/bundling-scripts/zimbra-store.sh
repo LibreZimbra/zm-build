@@ -108,6 +108,32 @@ zm_install_ose_ext() {
     install_file zm-gql/build/dist/zm-gql*.jar                                    opt/zimbra/lib/ext/zm-gql/zmgql.jar
 }
 
+zm_install_jetty_conf() {
+    log 1 "Installign jetty config"
+
+    install_dirs \
+        opt/zimbra/jetty_base/common/endorsed \
+        opt/zimbra/jetty_base/common/lib \
+        opt/zimbra/jetty_base/temp
+
+    touch $(target_dir opt/zimbra/jetty_base/temp/.emptyfile)
+
+    install_file zm-jetty-conf/conf/jetty/jettyrc                      opt/zimbra/jetty_base/etc/
+    install_file zm-jetty-conf/conf/jetty/zimbra.policy.example        opt/zimbra/jetty_base/etc/
+    install_file zm-jetty-conf/conf/jetty/jetty.xml.production         opt/zimbra/jetty_base/etc/jetty.xml.in
+    install_file zm-jetty-conf/conf/jetty/webdefault.xml.production    opt/zimbra/jetty_base/etc/webdefault.xml
+    install_file zm-jetty-conf/conf/jetty/jetty-setuid.xml             opt/zimbra/jetty_base/etc/jetty-setuid.xml
+    install_file zm-jetty-conf/conf/jetty/spnego/etc/spnego.properties opt/zimbra/jetty_base/etc/spnego.properties.in
+    install_file zm-jetty-conf/conf/jetty/spnego/etc/spnego.conf       opt/zimbra/jetty_base/etc/spnego.conf.in
+    install_file zm-jetty-conf/conf/jetty/spnego/etc/krb5.ini          opt/zimbra/jetty_base/etc/krb5.ini.in
+    install_file zm-jetty-conf/conf/jetty/modules/*.mod                opt/zimbra/jetty_base/modules/
+    install_file zm-jetty-conf/conf/jetty/modules/*.mod.in             opt/zimbra/jetty_base/modules/
+    install_file zm-jetty-conf/conf/jetty/start.d/*.ini.in             opt/zimbra/jetty_base/start.d/
+    install_file zm-jetty-conf/conf/jetty/modules/npn/*.mod            opt/zimbra/jetty_base/modules/npn/
+
+    install_file zm-zimlets/conf/web.xml.production                    opt/zimbra/jetty_base/etc/zimlet.web.xml.in
+}
+
 #-------------------- Build Package ---------------------------
 main()
 {
@@ -125,6 +151,7 @@ main()
     zm_install_migration_tools
     zm_install_versioncheck
     zm_install_ose_ext
+    zm_install_jetty_conf
 
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/owasp_policy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/owasp_policy.xml
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/antisamy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/antisamy.xml
@@ -227,34 +254,6 @@ main()
             install_zimlets_from zimlets-network zm-uc-admin-zimlets/${i}/build/zimlet/
       done
     fi
-
-    log 2 "***** Building jetty/common/ *****"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/common/endorsed
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/common/lib
-
-
-   mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/temp
-   touch ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/temp/.emptyfile
-
-    log 1 "Create jetty conf"
-     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc
-     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/modules
-     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/start.d
-
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/jettyrc  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/zimbra.policy.example ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/jetty.xml.production ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/jetty.xml.in
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/webdefault.xml.production ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/webdefault.xml
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/jetty-setuid.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/jetty-setuid.xml
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/spnego/etc/spnego.properties ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/spnego.properties.in
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/spnego/etc/spnego.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/spnego.conf.in
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/spnego/etc/krb5.ini ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/krb5.ini.in
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/modules/*.mod  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/modules
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/modules/*.mod.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/modules
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/start.d/*.ini.in   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/start.d
-    cp -f ${repoDir}/zm-jetty-conf/conf/jetty/modules/npn/*.mod  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/modules/npn
-
-    cp -f ${repoDir}/zm-zimlets/conf/web.xml.production ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/zimlet.web.xml.in
 
     CreatePackage "${os}"
 }
