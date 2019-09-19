@@ -211,8 +211,7 @@ main()
     fi
 
     log 1 "Copy log files of /opt/zimbra/"
-     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log
-     cp -f ${repoDir}/zm-build/rpmconf/Conf/hotspot_compiler ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log/.hotspot_compiler
+    install_file zm-build/rpmconf/Conf/hotspot_compiler opt/zimbra/log/.hotspot_compiler
 
     log 1 "Copy zimlets files of /opt/zimbra/"
     zimletsArray=( "zm-versioncheck-admin-zimlet" \
