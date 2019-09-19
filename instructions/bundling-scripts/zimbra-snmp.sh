@@ -27,18 +27,13 @@
 #-------------------- Build Package ---------------------------
 main()
 {
-    log 1 "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/snmp/persist
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/snmp/state
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/share/snmp/mibs
-
     log 1 "Copy package files"
-    cp ${repoDir}/zm-build/rpmconf/Conf/snmp.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/snmp.conf
-    cp ${repoDir}/zm-build/rpmconf/Conf/snmpd.conf.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/snmpd.conf.in
-    cp ${repoDir}/zm-build/rpmconf/Conf/snmp.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/share/snmp/snmp.conf
-    cp ${repoDir}/zm-build/rpmconf/Conf/mibs/*mib ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/share/snmp/mibs
+
+    install_conf zm-build/rpmconf/Conf/snmpd.conf.in
+    install_file zm-build/rpmconf/Conf/snmp.conf      opt/zimbra/common/conf/
+    install_file zm-build/rpmconf/Conf/snmp.conf      opt/zimbra/common/share/snmp/
+    install_file zm-build/rpmconf/Conf/mibs/*mib      opt/zimbra/common/share/snmp/mibs/
+    install_dirs /opt/zimbra/data/snmp/state /opt/zimbra/data/snmp/persist
 
     CreatePackage "${os}"
 }
