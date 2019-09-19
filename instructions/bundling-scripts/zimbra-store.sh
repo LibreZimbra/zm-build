@@ -161,11 +161,9 @@ main()
 #-------------------- Get wars content (service.war, zimbra.war and zimbraAdmin.war) ---------------------------
 
     log 2 "++++++++++ service.war content ++++++++++"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF/lib
-    cp ${repoDir}/zm-zimlets/conf/zimbra.tld ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF
-    cp ${repoDir}/zm-taglib/build/zm-taglib*.jar         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF/lib
-    cp ${repoDir}/zm-zimlets/build/dist/zimlettaglib.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF/lib
+    install_file zm-zimlets/conf/zimbra.tld             opt/zimbra/jetty_base/webapps/service/WEB-INF/
+    install_file zm-taglib/build/zm-taglib*.jar         opt/zimbra/jetty_base/webapps/service/WEB-INF/lib/
+    install_file zm-zimlets/build/dist/zimlettaglib.jar opt/zimbra/jetty_base/webapps/service/WEB-INF/lib/
 
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra
 
