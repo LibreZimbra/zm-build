@@ -16,6 +16,9 @@
 # ***** END LICENSE BLOCK *****
 #
 
+if ! id -g zimbra 2>/dev/null; then groupadd zimbra ; fi
+if ! id -u zimbra 2>/dev/null; then useradd -g zimbra zimbra ; fi
+
 if [ "`echo /etc/security/limits.d/*-nproc.conf`" != "/etc/security/limits.d/*-nproc.conf" ]; then
     echo "zimbra soft nproc 278528" > /etc/security/limits.d/10-zimbra.conf
     echo "zimbra hard nproc 278528" >> /etc/security/limits.d/10-zimbra.conf
