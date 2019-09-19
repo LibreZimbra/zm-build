@@ -2,7 +2,7 @@ Package: zimbra-dnscache
 Version: @@VERSION@@
 Description: Best email money can buy
 Maintainer: Zimbra Packaging Services <packaging-devel@zimbra.com>
-Section: Mail
+Section: mail
 Priority: optional
 Architecture: @@ARCH@@
 Depends: zimbra-core, zimbra-dnscache-components
