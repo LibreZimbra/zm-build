@@ -1,5 +1,6 @@
 @ENTRIES = (
    "zimbra-timezones",
+   "zimbra-mailbox",
    "zimbra-core",
    "zimbra-ldap",
    "zimbra-logger",
