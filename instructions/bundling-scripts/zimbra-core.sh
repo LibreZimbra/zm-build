@@ -33,7 +33,7 @@ CreateDebianPackage()
 {
     (
         set -e;
-        export MORE_DEPENDS=", zimbra-timezone-data (>= 1.0.1+1510156506-1.$PKG_OS_TAG) $(find ${repoDir}/zm-packages/ -name \*.deb \
+        MORE_DEPENDS=", zimbra-timezone-data (>= 1.0.1+1510156506-1.$PKG_OS_TAG) $(find ${repoDir}/zm-packages/ -name \*.deb \
                          | xargs -n1 basename \
                          | sed -e 's/_[0-9].*//' \
                          | grep -e zimbra-common- \
