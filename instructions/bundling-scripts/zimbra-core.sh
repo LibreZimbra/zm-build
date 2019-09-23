@@ -33,11 +33,11 @@ CreateDebianPackage()
 {
     (
         set -e;
-#        export MORE_DEPENDS=", zimbra-timezone-data (>= 1.0.1+1510156506-1.$PKG_OS_TAG) $(find ${repoDir}/zm-packages/ -name \*.deb \
-#                         | xargs -n1 basename \
-#                         | sed -e 's/_[0-9].*//' \
-#                         | grep -e zimbra-common- \
-#                         | sed '1s/^/, /; :a; {N;s/\n/, /;ba}')";
+        export MORE_DEPENDS=", zimbra-timezone-data (>= 1.0.1+1510156506-1.$PKG_OS_TAG) $(find ${repoDir}/zm-packages/ -name \*.deb \
+                         | xargs -n1 basename \
+                         | sed -e 's/_[0-9].*//' \
+                         | grep -e zimbra-common- \
+                         | sed '1s/^/, /; :a; {N;s/\n/, /;ba}')";
         mkdeb_gen_control
     )
 }
@@ -45,11 +45,11 @@ CreateDebianPackage()
 CreateRhelPackage()
 {
     (
-#        MORE_DEPENDS=", zimbra-timezone-data >= 1.0.1+1510156506-1.$PKG_OS_TAG $(find ${repoDir}/zm-packages/ -name \*.rpm \
-#                       | xargs -n1 basename \
-#                       | sed -e 's/-[0-9].*//' \
-#                       | grep -e zimbra-common- \
-#                       | sed '1s/^/, /; :a; {N;s/\n/, /;ba}')";
+        MORE_DEPENDS=", zimbra-timezone-data >= 1.0.1+1510156506-1.$PKG_OS_TAG $(find ${repoDir}/zm-packages/ -name \*.rpm \
+                       | xargs -n1 basename \
+                       | sed -e 's/-[0-9].*//' \
+                       | grep -e zimbra-common- \
+                       | sed '1s/^/, /; :a; {N;s/\n/, /;ba}')";
 
         mkrpm_template | \
             sed -e "/^%pre$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre" \
