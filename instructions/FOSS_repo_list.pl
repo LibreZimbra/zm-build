@@ -1,3 +1,10 @@
+#
+# This file defines all the repos that are involved in the build process.
+# Note that these do not (yet) map to created binary packages.
+#
+# build.pl clones/pulls each of these repos. The repo URL prefixes are
+# defined in FOSS_remote_list.pl.
+
 @ENTRIES = (
    { name => "ant-1.7.0-ziputil-patched",            },
    { name => "ant-tar-patched",                      },
@@ -57,4 +64,5 @@
    { name => "zm-zimlets",                           },
    { name => "zm-oauth-social",                      },
    { name => "zm-gql",		                     },
+   { name => "zm-amavis", remote => "gh-mtx" },
 );

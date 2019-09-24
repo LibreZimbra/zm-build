@@ -1,3 +1,11 @@
+# This file defines the individual components to be built, with their
+# individual build parameters. These do neither have to match the repos,
+# nor the finally created packages.
+#
+# The given stage_cmd() functions place the built artifacts into some
+# "staging" dir, where they're then picked up by the actual packaging
+# scripts (see subdir bundling-scripts).
+
 @ENTRIES = (
    {
       "dir"             => "zm-mailbox",
@@ -396,5 +404,10 @@
          SysExec("mkdir -p $CFG{BUILD_DIR}/zm-gql/build/dist");
          SysExec("cp -f -rp build/zm-gql-*.jar $CFG{BUILD_DIR}/zm-gql/build/dist");
       },
+   },
+   {
+      "dir"             => "zm-amavis",
+      "make_targets"    => ["pkg"],
+      "deploy_pkg_into" => "bundle",
    },
 );
