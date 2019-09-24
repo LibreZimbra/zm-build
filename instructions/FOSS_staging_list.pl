@@ -249,9 +249,10 @@
       },
    },
    {
-      "dir"         => "zm-amavis",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
+      "dir"             => "zm-amavis",
+      "make_targets"    => ["pkg"],
+      "deploy_pkg_into" => "bundle",
+      "stage_cmd"       => sub {
          SysExec("cp -f -r ../zm-amavis $CFG{BUILD_DIR}");
       },
    },
@@ -404,10 +405,5 @@
          SysExec("mkdir -p $CFG{BUILD_DIR}/zm-gql/build/dist");
          SysExec("cp -f -rp build/zm-gql-*.jar $CFG{BUILD_DIR}/zm-gql/build/dist");
       },
-   },
-   {
-      "dir"             => "zm-amavis",
-      "make_targets"    => ["pkg"],
-      "deploy_pkg_into" => "bundle",
    },
 );
