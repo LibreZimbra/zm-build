@@ -27,14 +27,10 @@
 #-------------------- Build Package ---------------------------
 main()
 {
-    log 1 "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/nginx/includes
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/nginx/templates
-
     log 1 "Copy package files"
-    cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
-    cp ${repoDir}/zm-nginx-conf/conf/nginx/* ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/nginx/templates/
+    install_file    zm-build/rpmconf/Env/sudoers.d/02_${currentScript} etc/sudoers.d/
+    install_subtree zm-nginx-conf/conf/nginx/                          opt/zimbra/conf/nginx/templates/
+    install_dirs    opt/zimbra/conf/nginx/includes
 
     CreatePackage "${os}"
 }
