@@ -28,21 +28,19 @@
 main()
 {
     log 1 "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/amavisd/mysql
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/altermime
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/cbpolicyd/db
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/clamav
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/opendkim
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/postfix
+    install_dirs \
+        opt/zimbra/data/altermime \
+        opt/zimbra/data/cbpolicyd/db \
+        opt/zimbra/data/clamav \
+        opt/zimbra/data/opendkim \
+        opt/zimbra/data/postfix
 
     log 1 "Copy package files"
-    cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
-    cp ${repoDir}/zm-postfix/conf/postfix/master.cf.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/master.cf.in
-    cp ${repoDir}/zm-postfix/conf/postfix/tag_as_foreign.re.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/tag_as_foreign.re.in
-    cp ${repoDir}/zm-postfix/conf/postfix/tag_as_originating.re.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/tag_as_originating.re.in
-    cp -f ${repoDir}/zm-amavis/conf/amavisd/mysql/antispamdb.sql ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/amavisd/mysql/antispamdb.sql
+    install_file zm-build/rpmconf/Env/sudoers.d/02_${currentScript} etc/sudoers.d/
+    install_file zm-postfix/conf/postfix/master.cf.in               opt/zimbra/common/conf/
+    install_file zm-postfix/conf/postfix/tag_as_foreign.re.in       opt/zimbra/common/conf/
+    install_file zm-postfix/conf/postfix/tag_as_originating.re.in   opt/zimbra/common/conf/
+    install_file zm-amavis/conf/amavisd/mysql/antispamdb.sql        opt/zimbra/data/amavisd/mysql/
 
     CreatePackage "${os}"
 }
