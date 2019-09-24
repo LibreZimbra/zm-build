@@ -1,5 +1,4 @@
 @ENTRIES = (
-   "zimbra-timezones",
    "zimbra-mailbox",
    "zimbra-core",
    "zimbra-ldap",
@@ -12,5 +11,4 @@
    "zimbra-spell",
    "zimbra-proxy",
    "zimbra-imapd",
-   "zimbra-amavis",
 );
