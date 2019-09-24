@@ -12,4 +12,5 @@
    "zimbra-spell",
    "zimbra-proxy",
    "zimbra-imapd",
+   "zimbra-amavis",
 );
