@@ -10,7 +10,7 @@
    {
       "dir"             => "zm-mailbox",
       "ant_targets"     => ["pkg-after-plough-through-tests"],
-      "deploy_pkg_into" => "bundle",
+      "deploy_pkg_into" => "zm-mailbox",
       "stage_cmd"       => sub {
          SysExec("mkdir -p                                 $CFG{BUILD_DIR}/zm-mailbox/store-conf/");
          SysExec("rsync -az store-conf/conf                $CFG{BUILD_DIR}/zm-mailbox/store-conf/");

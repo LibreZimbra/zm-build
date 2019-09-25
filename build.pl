@@ -641,10 +641,18 @@ sub Deploy()
 
    SysExec( "mkdir", "-p", "$destination_dir/archives" );
 
+    print "DIR=$CFG{BUILD_DIR}/zm-packages/\n";
+   my @foo = glob("$CFG{BUILD_DIR}/zm-packages/*");
+
+   foreach my $x (@foo) {
+	print "FOUND: $x\n";
+   }
+
    my @archive_names = map { basename($_) } grep { -d $_ && $_ !~ m/\/bundle$/ } glob("$CFG{BUILD_DIR}/zm-packages/*");
 
    foreach my $archive_name (@archive_names)
    {
+      print "=== archive_name = $archive_name\n";
       SysExec( "rsync", "-av", "--delete", "$CFG{BUILD_DIR}/zm-packages/$archive_name/", "$destination_dir/archives/$archive_name" );
 
       if ( -f "/etc/redhat-release" )
