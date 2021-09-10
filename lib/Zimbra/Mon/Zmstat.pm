@@ -62,23 +62,7 @@ sub userCheck() {
     }
 }
 
-sub isLinux() {
-    return $^O =~ /linux/i;
-}
-
-sub isMac() {
-    return $^O =~ /darwin/i;
-}
-
-sub osCheck() {
-    if (!isLinux() && !isMac()) {
-        print "zmstat is supported on Linux and Mac only\n";
-        exit(0);  # return success to calling script
-    }
-}
-
 sub zmstatInit() {
-    osCheck();
     getLocalConfig('zimbra_user', 'zimbra_server_hostname',
                    'zmstat_interval', 'zmstat_disk_interval');
     userCheck();
