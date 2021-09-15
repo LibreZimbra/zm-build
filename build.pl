@@ -140,7 +140,6 @@ sub InitGlobalBuildVars()
          { name => "GIT_DEFAULT_TAG",            type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return undef; }, },
          { name => "GIT_DEFAULT_REMOTE",         type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return undef; }, },
          { name => "GIT_DEFAULT_BRANCH",         type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return undef; }, },
-         { name => "STOP_AFTER_CHECKOUT",        type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
          { name => "ANT_OPTIONS",                type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return undef; }, },
          { name => "BUILD_HOSTNAME",             type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return Net::Domain::hostfqdn; }, },
          { name => "BUILD_ARCH",                 type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return GetBuildArch(); }, },
@@ -246,9 +245,6 @@ sub InitGlobalBuildVars()
 
       print "NOTE: DUMPED CONFIG TO FILE - $CFG{DUMP_CONFIG_TO}\n";
    }
-
-   print "NOTE: THIS WILL STOP AFTER CHECKOUTS\n"
-     if ( $CFG{STOP_AFTER_CHECKOUT} );
 
    if ( $CFG{INTERACTIVE} )
    {
@@ -380,26 +376,6 @@ sub LoadBuilds($)
 
    return \@filtered_builds;
 }
-
-
-sub Checkout($)
-{
-   my $repo_list = shift;
-
-   print "\n";
-   print "=========================================================================================================\n";
-   print " Processing " . scalar(@$repo_list) . " repositories\n";
-   print "=========================================================================================================\n";
-   print "\n";
-
-   my $repo_remote_details = LoadRemotes();
-
-   for my $repo_details (@$repo_list)
-   {
-      Clone( $repo_details, $repo_remote_details );
-   }
-}
-
 
 sub RemoveTargetInDir($$)
 {
@@ -791,98 +767,6 @@ sub GetPkgOsTag()
 
 ##############################################################################################
 
-sub Clone($$)
-{
-   my $repo_details        = shift;
-   my $repo_remote_details = shift;
-
-   my $repo_name       = $repo_details->{name};
-   my $repo_branch_csv = $CFG{GIT_OVERRIDES}->{"$repo_name.branch"} || $repo_details->{branch} || $CFG{GIT_DEFAULT_BRANCH} || "develop";
-   my $repo_tag_csv    = $CFG{GIT_OVERRIDES}->{"$repo_name.tag"} || $repo_details->{tag} || $CFG{GIT_DEFAULT_TAG} if ( $CFG{GIT_OVERRIDES}->{"$repo_name.tag"} || !$CFG{GIT_OVERRIDES}->{"$repo_name.branch"} );
-   my $repo_remote     = $CFG{GIT_OVERRIDES}->{"$repo_name.remote"} || $repo_details->{remote} || $CFG{GIT_DEFAULT_REMOTE} || "gh-zm";
-   my $repo_url_prefix = $CFG{GIT_OVERRIDES}->{"$repo_remote.url-prefix"} || $repo_remote_details->{$repo_remote}->{'url-prefix'} || Die( "unresolved url-prefix for remote='$repo_remote'", "" );
-
-   $repo_url_prefix =~ s,/*$,,;
-
-   my $repo_dir = "$CFG{BUILD_SOURCES_BASE_DIR}/$repo_name";
-
-   if ( !-d $repo_dir )
-   {
-      my $s = 0;
-      foreach my $minus_b_arg ( split( /,/, $repo_tag_csv ? $repo_tag_csv : $repo_branch_csv ) )
-      {
-         my $r = SysExec( "git", "ls-remote", $repo_tag_csv ? "--tags" : "--heads", "$repo_url_prefix/$repo_name.git", "$minus_b_arg" );
-         if ( $r->{success} && "@{$r->{out}}" =~ /$minus_b_arg$/ )
-         {
-            my @clone_cmd_args = ( "git", "clone" );
-
-            push( @clone_cmd_args, "--depth=1" ) if ( not $ENV{ENV_GIT_FULL_CLONE} and $repo_name ne "zm-mailbox");
-            push( @clone_cmd_args, "-b", $minus_b_arg );
-            push( @clone_cmd_args, "$repo_url_prefix/$repo_name.git", "$repo_dir" );
-
-            print "\n";
-            my $r = SysExec(@clone_cmd_args);
-            if ( $r->{success} )
-            {
-               $s++;
-               last;
-            }
-         }
-      }
-
-      Die("Clone Attempts Failed")
-        if ( !$s );
-
-      RemoveTargetInDir( $repo_name, $CFG{BUILD_DIR} );
-   }
-   else
-   {
-      if ( !defined $ENV{ENV_GIT_UPDATE_INCLUDE} || grep { $repo_name =~ /$_/ } split( ",", $ENV{ENV_GIT_UPDATE_INCLUDE} ) )
-      {
-         if ($repo_tag_csv)
-         {
-            RunInDir(
-               cd    => $repo_dir,
-               child => sub {
-
-                  my $s = 0;
-                  foreach my $minus_b_arg ( split( /,/, $repo_tag_csv ) )
-                  {
-                     print "\n";
-                     my $r = SysExec( "git", "checkout", $minus_b_arg );
-                     if ( $r->{success} )
-                     {
-                        $s++;
-                        last;
-                     }
-                  }
-
-                  Die("Clone Attempts Failed")
-                    if ( !$s );
-               },
-            );
-
-            RemoveTargetInDir( $repo_name, $CFG{BUILD_DIR} );
-         }
-         else
-         {
-            print "\n";
-            RunInDir(
-               cd    => $repo_dir,
-               child => sub {
-                  my $z = SysExec( "git", "pull", "--ff-only" );
-
-                  if ( "@{$z->{out}}" !~ /Already up-to-date/ )
-                  {
-                     RemoveTargetInDir( $repo_name, $CFG{BUILD_DIR} );
-                  }
-               },
-            );
-         }
-      }
-   }
-}
-
 sub SysExec(@)
 {
    my $options = shift
@@ -1072,15 +956,8 @@ sub main()
    my $all_repos = LoadRepos();
 
    Prepare();
-
-   Checkout($all_repos);
-
-   if ( !$CFG{STOP_AFTER_CHECKOUT} )
-   {
-      Build($all_repos);
-
-      Deploy();
-   }
+   Build($all_repos);
+   Deploy();
 }
 
 main();
