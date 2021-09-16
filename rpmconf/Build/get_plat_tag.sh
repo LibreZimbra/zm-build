@@ -154,6 +154,11 @@ if [ -f /etc/lsb-release ]; then
   DISTRIBUTOR=$($LSB -s -i)
   if [ "$DISTRIBUTOR" = "Ubuntu" ]; then
     echo -n "UBUNTU"
+    ver=$($LSB -r | sed -E 's~Release:\s*([0-9]+).*~\1~;')
+    if [ "$ver" ]; then
+      echo "$ver$i"
+      exit 0
+    fi
     if [ "$RELEASE" = "precise" ]; then
       echo "12${i}"
       exit 0
