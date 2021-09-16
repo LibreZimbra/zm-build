@@ -35,30 +35,7 @@ zimbra-onlyoffice"
 
 SERVICES=""
 
-OPTIONAL_PACKAGES="zimbra-qatest \
-zimbra-imapd \
-zimbra-patch \
-zimbra-mta-patch \
-zimbra-proxy-patch \
-zimbra-license-tools \
-zimbra-license-extension \
-zimbra-network-store"
-
-ZEXTRAS_PACKAGES="zimbra-connect \
-zimbra-connect-modern \
-zimbra-drive \
-zimbra-drive-ng \
-zimbra-drive-modern \
-zimbra-docs \
-zimbra-docs-modern \
-zimbra-chat \
-zimbra-talk \
-zimbra-network-modules-ng"
-
 MYDIR="$(CDPATH= cd "$(dirname "$0")" && pwd)"
-if [ "$(cat ${MYDIR}/.BUILD_TYPE)" == "NETWORK" ]; then
-   OPTIONAL_PACKAGES="${OPTIONAL_PACKAGES} zimbra-modern-ui zimbra-modern-zimlets"
-fi
 
 PACKAGE_DIR="$(CDPATH= cd "$(dirname "$0")" && pwd)/packages"
 

@@ -21,8 +21,6 @@ displayLicense() {
   echo ""
   if [ -f ${MYDIR}/docs/zcl.txt ]; then
     cat $MYDIR/docs/zcl.txt
-  elif [ -f ${MYDIR}/docs/zimbra_network_eula.txt ]; then
-    cat ${MYDIR}/docs/zimbra_network_eula.txt
   fi
   echo ""
   echo ""
@@ -368,33 +366,6 @@ checkRecentBackup() {
   fi
 }
 
-checkNGModulesInstalled() {
-		isInstalled zimbra-network-modules-ng
-		if [ x$PKGINSTALLED != "x" ]; then
-		        echo ""
-			echo "WARNING: You are about to upgrade to the ${ZM_INST_VERSION}"
-			echo "NGModules and other packages zimbra-connect, zimbra-docs, zimbra-drive and"
-			echo "zimbra-chat are removed from ${ZM_INST_VERSION}"
-			echo ""
-			if [ x$DEFAULTFILE = "x" ]; then
-			          while :; do
-			            askYN "Do you wish to continue without NGModules?" "N"
-			            if [ $response = "no" ]; then
-			              askYN "Exit?" "N"
-			              if [ $response = "yes" ]; then
-			                echo "Exiting."
-			                exit 1
-			              fi
-			            else
-			              break
-			            fi
-			          done
-			else
-			    echo "Automated install detected...continuing."
-			fi
-		fi
-}
-
 checkUbuntuRelease() {
   if [ -f "/etc/lsb-release" ]; then
     . /etc/lsb-release
@@ -566,7 +537,6 @@ EOF
 
   checkRecentBackup
   checkDatabaseIntegrity
-  checkNGModulesInstalled
 }
 
 
@@ -620,36 +590,6 @@ checkRequiredSpace() {
   fi
 }
 
-checkStoreRequirements() {
-  echo "Checking required packages for zimbra-store"
-  GOOD="yes"
-  if [ x"$ZMTYPE_INSTALLABLE" = "xNETWORK" ]; then
-    for i in $STORE_PACKAGES; do
-      #echo -n "    $i..."
-      isInstalled $i
-      if [ "x$PKGINSTALLED" != "x" ]; then
-        echo "     FOUND: $PKGINSTALLED"
-      else
-        echo "     MISSING: $i"
-        GOOD="no"
-      fi
-    done
-  fi
-
-  if [ $GOOD = "no" ]; then
-    echo ""
-    echo "###WARNING###"
-    echo ""
-    echo "One or more suggested packages for zimbra-store are missing."
-    echo "Some features may be disabled due to the missing package(s)."
-    echo ""
-  else
-    echo "zimbra-store package check complete."
-  fi
-
-
-}
-
 checkExistingInstall() {
 
   echo $PLATFORM | egrep -q "UBUNTU|DEBIAN"
@@ -691,8 +631,6 @@ checkExistingInstall() {
   if [ $INSTALLED = "yes" ]; then
     verifyUpgrade
   fi
-  verifyLicenseActivationServer
-  verifyLicenseAvailable
 
   if [ $INSTALLED != "yes" ]; then
     checkUserInfo
@@ -704,11 +642,6 @@ determineVersionType() {
   isInstalled zimbra-core
   if [ x"$PKGINSTALLED" != "x" ]; then
     export ZMVERSION_CURRENT=`echo $PKGVERSION | sed s/^zimbra-core-//`
-    if [ -f "/opt/zimbra/bin/zmbackupquery" ]; then
-      ZMTYPE_CURRENT="NETWORK"
-    else
-      ZMTYPE_CURRENT="FOSS"
-    fi
     ZM_CUR_MAJOR=$(perl -e '$v=$ENV{ZMVERSION_CURRENT}; $v =~ s/^(\d+\.\d+\.[^_]*_[^_]+_[^.]+).*/\1/; ($maj,$min,$mic) = $v =~ m/^(\d+)\.(\d+)\.(\d+)/; print "$maj\n"')
     ZM_CUR_MINOR=$(perl -e '$v=$ENV{ZMVERSION_CURRENT}; $v =~ s/^(\d+\.\d+\.[^_]*_[^_]+_[^.]+).*/\1/; ($maj,$min,$mic) = $v =~ m/^(\d+)\.(\d+)\.(\d+)/; print "$min\n"')
     ZM_CUR_MICRO=$(perl -e '$v=$ENV{ZMVERSION_CURRENT}; $v =~ s/^(\d+\.\d+\.[^_]*_[^_]+_[^.]+).*/\1/; ($maj,$min,$mic) = $v =~ m/^(\d+)\.(\d+)\.(\d+)/; print "$mic\n"')
@@ -720,9 +653,6 @@ determineVersionType() {
     return
   fi
 
-  # need way to determine type for other package types
-  ZMTYPE_INSTALLABLE="$(cat ${MYDIR}/.BUILD_TYPE)"
-
   ZM_INST_MAJOR=$(perl -e '$v=glob("packages/zimbra-core*"); $v =~ s/^packages\/zimbra-core[-_]//; $v =~ s/^(\d+\.\d+\.[^_]*_[^_]+_[^.]+).*/\1/; ($maj,$min,$mic) = $v =~ m/^(\d+)\.(\d+)\.(\d+)/; print "$maj\n"')
   ZM_INST_MINOR=$(perl -e '$v=glob("packages/zimbra-core*"); $v =~ s/^packages\/zimbra-core[-_]//; $v =~ s/^(\d+\.\d+\.[^_]*_[^_]+_[^.]+).*/\1/; ($maj,$min,$mic) = $v =~ m/^(\d+)\.(\d+)\.(\d+)/; print "$min\n"')
   ZM_INST_MICRO=$(perl -e '$v=glob("packages/zimbra-core*"); $v =~ s/^packages\/zimbra-core[-_]//; $v =~ s/^(\d+\.\d+\.[^_]*_[^_]+_[^.]+).*/\1/; ($maj,$min,$mic) = $v =~ m/^(\d+)\.(\d+)\.(\d+)/; print "$mic\n"')
@@ -733,57 +663,7 @@ determineVersionType() {
     return
   fi
 
-  #echo "TYPE: CURRENT: $ZMTYPE_CURRENT INSTALLABLE: $ZMTYPE_INSTALLABLE"
-  #echo "VERSION: CURRENT: $ZM_CUR_MAJOR INSTALLABLE: $ZM_INST_MAJOR"
-
   checkVersionDowngrade
-
-  if [ x"$ZMTYPE_CURRENT" = "xNETWORK" ] && [ x"$ZMTYPE_INSTALLABLE" = "xFOSS" ]; then
-    echo "Warning: You are about to upgrade from the Network Edition to the"
-    echo "Open Source Edition.  This will remove all Network features, including"
-    echo "Attachment Searching, Zimbra Mobile, Backup/Restore, and support for the "
-    echo "Zimbra Connector for Outlook."
-    while :; do
-     askYN "Do you wish to continue?" "N"
-     if [ $response = "no" ]; then
-      askYN "Exit?" "N"
-      if [ $response = "yes" ]; then
-        echo "Exiting."
-        exit 1
-      fi
-     else
-      break
-     fi
-    done
-  fi
-
-  if [ x"$ZMTYPE_CURRENT" = "xNETWORK" ]; then
-    echo $ZM_INST_RTYPE | grep -v GA$ > /dev/null 2>&1
-    if [ $? = 0 ]; then
-      if [ ${ZM_CUR_MAJOR} -lt ${ZM_INST_MAJOR} ]; then
-        echo "This is a Network Edition ${ZM_INST_RTYPE} build and is not intended for production."
-        if [ x"$BETA_SUPPORT" = "x" ]; then
-          echo "Upgrades from $ZMVERSION_CURRENT are not supported."
-          exit 1
-        else
-          echo "Support for developer versions of ZCS maybe limited to bugzilla and Zimbra forums."
-          #echo "Installing non-GA versions in production is not recommended."
-          while :; do
-            askYN "Do you wish to continue?" "N"
-            if [ $response = "no" ]; then
-              askYN "Exit?" "N"
-              if [ $response = "yes" ]; then
-                echo "Exiting."
-                exit 1
-              fi
-            else
-              break
-            fi
-          done
-        fi
-      fi
-    fi
-  fi
 }
 
 verifyUpgrade() {
@@ -846,49 +726,6 @@ verifyUpgrade() {
   if [ x$PKGINSTALLED != "x" ]; then
     runAsZimbra "ldap start"
     # Upgrade tests specific to NE only
-    if [ x"$ZMTYPE_CURRENT" = "xNETWORK" ] && [ x"$ZMTYPE_INSTALLABLE" = "xNETWORK" ]; then
-      if [ x"$SKIP_ACTIVATION_CHECK" = "xno" ]; then
-        if [ -x "bin/checkLicense.pl" ]; then
-          echo "Validating existing license is not expired and qualifies for upgrade"
-          echo $HOSTNAME | egrep -qe 'eng.vmware.com$|eng.zimbra.com$|lab.zimbra.com$' > /dev/null 2>&1
-          if [ $? = 0 ]; then
-            # echo "Running bin/checkLicense.pl -i -v $ZM_INST_VERSION"
-            `bin/checkLicense.pl -i -v $ZM_INST_VERSION >/dev/null`
-          else
-            # echo "Running bin/checkLicense.pl -v $ZM_INST_VERSION"
-            `bin/checkLicense.pl -v $ZM_INST_VERSION >/dev/null`
-          fi
-          licenseRC=$?;
-          if [ $licenseRC != 0 ]; then
-            if [ $licenseRC = 6 ]; then
-              echo "Error: Unable to bind to LDAP"
-              exit 1
-            elif [ $licenseRC = 5 ]; then
-              echo "Error: Unable to execute startTLS with LDAP"
-              exit 1
-            elif [ $licenseRC = 4 ]; then
-              echo "Error: Unable to connect to LDAP"
-              exit 1
-            elif [ $licenseRC = 3 ]; then
-              echo "Error: No upgrade version supplied"
-              exit 1
-            elif [ $licenseRC = 2 ]; then
-              echo "Error: No license file found"
-              exit 1
-            elif [ $licenseRC = 1 ]; then
-              echo "Error: License is expired or cannot be upgraded."
-              echo "       Aborting upgrade"
-              exit 1
-            else
-              echo "Unknown Error.  It should be impossible to reach this statement."
-              exit 1
-            fi
-          else
-           echo "License is valid and supports this upgrade.  Continuing."
-          fi
-        fi
-      fi
-    fi
   fi
 
   # Upgrade tests applicable to everyone
@@ -929,317 +766,6 @@ verifyUpgrade() {
    else
      echo "LDAP validation succeeded.  Continuing."
    fi
-}
-
-verifyLicenseActivationServer() {
-
-  if [ x"$SKIP_ACTIVATION_CHECK" = "xyes" -o x"$SKIP_UPGRADE_CHECK" = "xyes" ]; then
-    return
-  fi
-
-  # sometimes we just don't want to check
-  if [ x"$AUTOINSTALL" = "xyes" ] || [ x"$UNINSTALL" = "xyes" ] || [ x"$SOFTWAREONLY" = "xyes" ]; then
-    return
-  fi
-
-  # make sure this is an upgrade
-  isInstalled zimbra-store
-  if [ x$PKGINSTALLED = "x" ]; then
-    return
-  fi
-
-  # make sure the current version we are trying to install is a NE version
-  if [ x"$ZMTYPE_INSTALLABLE" != "xNETWORK" ]; then
-    return
-  fi
-
-  # if we specify an activation presume its valid
-  if [ x"$ACTIVATION" != "x" ] && [ -e $ACTIVATION ]; then
-    if [ ! -d "/opt/zimbra/conf" ]; then
-      mkdir -p /opt/zimbra/conf
-    fi
-    cp -f $ACTIVATION /opt/zimbra/conf/ZCSLicense-activated.xml
-    chown zimbra:zimbra /opt/zimbra/conf/ZCSLicense-activated.xml
-    chmod 444 /opt/zimbra/conf/ZCSLicense-activated.xml
-    return
-  fi
-
-  # if all else fails make sure we can contact the activation server for automated activation
-  if [ ${ZM_CUR_MAJOR} -ge "7" ]; then
-    if [ ${ZM_CUR_MAJOR} -eq "7" -a ${ZM_CUR_MINOR} -ge "1" ]; then
-      /opt/zimbra/bin/zmlicense --ping > /dev/null 2>&1
-    elif [ ${ZM_CUR_MAJOR} -gt "7" ]; then
-      /opt/zimbra/bin/zmlicense --ping > /dev/null 2>&1
-    else
-      /opt/zimbra/java/bin/java -XX:ErrorFile=/opt/zimbra/log -client -Xmx256m -Dzimbra.home=/opt/zimbra -Djava.library.path=/opt/zimbra/lib  -classpath ./lib/jars/zimbra-license-tools.jar:/opt/zimbra/lib/jars/* com.zimbra.cs.license.LicenseCLI --ping > /dev/null 2>&1
-    fi
-    if [ $? != 0 ]; then
-      activationWarning
-    fi
-  else
-    echo $HOSTNAME | egrep -qe 'vmware.com$|zimbra.com$' > /dev/null 2>&1
-    if [ $? = 0 ]; then
-      url='https://zimbra-stage-license.eng.zimbra.com/zimbraLicensePortal/public/activation?action=test'
-    else
-      url='https://license.zimbra.com/zimbraLicensePortal/public/activation?action=test'
-    fi
-
-    cmd=$(which curl 2>/dev/null)
-    if [ -x "$cmd" ]; then
-      output=$($cmd --connect-timeout 5 -s -f $url)
-      if [ $? != 0 ]; then
-        output=$($cmd -k --connect-timeout 5 -s -f $url)
-        if [ $? != 0 ]; then
-          activationWarning
-        else
-          return
-        fi
-      else
-        return
-      fi
-    fi
-    cmd=$(which wget 2>/dev/null)
-    if [ -x "$cmd" ]; then
-      output=$($cmd --tries 1 -T 5 -q -O /tmp/zmlicense.tmp $url)
-      if [ $? != 0 ]; then
-        output=$($cmd --no-check-certificate --tries 1 -T 5 -q -O /tmp/zmlicense.tmp $url)
-        if [ $? != 0 ]; then
-          activationWarning
-        else
-          return
-        fi
-        activationWarning
-      else
-        return
-      fi
-    fi
-    activationWarning
-  fi
-}
-
-activationWarning() {
-  echo "ERROR: Unable to reach the Zimbra License Activation Server."
-  echo ""
-  echo "License Activation is required when upgrading to ZCS 7 or later."
-  echo ""
-  echo "The ZCS Network upgrade will automatically attempt to activate the"
-  echo "current license as long as the activation server can be contacted."
-  echo ""
-  echo "You can obtain a manual activation key and re-run the upgrade"
-  echo "by specifying the -a activation.xml option."
-  echo ""
-  echo "A manual license activation key can be obtained by either visiting"
-  echo "the Zimbra support portal or contacting Zimbra support or sales."
-  echo ""
-  exit 1;
-}
-
-verifyLicenseAvailable() {
-
-  if [ x"$LICENSE" != "x" ] && [ -e $LICENSE ]; then
-    if [ ! -d "/opt/zimbra/conf" ]; then
-      mkdir -p /opt/zimbra/conf
-    fi
-    cp -f $LICENSE /opt/zimbra/conf/ZCSLicense.xml
-    chown zimbra:zimbra /opt/zimbra/conf/ZCSLicense.xml 2> /dev/null
-    chmod 444 /opt/zimbra/conf/ZCSLicense.xml
-  fi
-
-  if [ x"$AUTOINSTALL" = "xyes" ] || [ x"$UNINSTALL" = "xyes" ] || [ x"$SOFTWAREONLY" = "xyes" ]; then
-    return
-  fi
-
-  isInstalled zimbra-store
-  if [ x$PKGINSTALLED = "x" ]; then
-    return
-  fi
-
-  # need to finish for other native packagers
-  if [ "$(cat ${MYDIR}/.BUILD_TYPE)" != "NETWORK" ]; then
-     return
-  fi
-
-  echo "Checking for available license file..."
-
-
-  # use the tool if it exists
-  if [ -f "/opt/zimbra/bin/zmlicense" ]; then
-    licenseCheck=`su - zimbra -c "zmlicense -c" 2> /dev/null`
-    licensedUsers=`su - zimbra -c "zmlicense -p | grep ^AccountsLimit | sed -e 's/AccountsLimit=//'" 2> /dev/null`
-    licenseValidUntil=`su - zimbra -c "zmlicense -p | grep ^ValidUntil= | sed -e 's/ValidUntil=//'" 2> /dev/null`
-    licenseType=`su - zimbra -c "zmlicense -p | grep ^InstallType= | sed -e 's/InstallType=//'" 2> /dev/null`
-  fi
-
-  # parse files if license tool wasn't there or didn't return a valid license
-  if [ x"$licenseCheck" = "xlicense not installed" -o x"$licenseCheck" = "x" ]; then
-    if [ -f "/opt/zimbra/conf/ZCSLicense.xml" ]; then
-      licenseCheck="license is OK"
-      licensedUsers=`cat /opt/zimbra/conf/ZCSLicense.xml | grep AccountsLimit | head -1  | awk '{print $3}' | awk -F= '{print $2}' | awk -F\" '{print $2}'`
-      licenseValidUntil=`cat /opt/zimbra/conf/ZCSLicense.xml | awk -F\" '{ if ($2 ~ /^ValidUntil$/) {print $4 } }'`
-      licenseType=`cat /opt/zimbra/conf/ZCSLicense.xml | awk -F\" '{ if ($2 ~ /^InstallType$/) {print $4 } }'`
-    elif [ -f "/opt/zimbra/conf/ZCSLicense-Trial.xml" ]; then
-      licenseCheck="license is OK"
-      licensedUsers=`cat /opt/zimbra/conf/ZCSLicense-Trial.xml | grep AccountsLimit | head -1  | awk '{print $3}' | awk -F= '{print $2}' | awk -F\" '{print $2}'`
-      licenseValidUntil=`cat /opt/zimbra/conf/ZCSLicense-Trial.xml | awk -F\" '{ if ($2 ~ /^ValidUntil$/) {print $4 } }'`
-      licenseType=`cat /opt/zimbra/conf/ZCSLicense-Trial.xml | awk -F\" '{ if ($2 ~ /^InstallType$/) {print $4 } }'`
-    else
-      echo "ERROR: The ZCS Network upgrade requires a license to be located in"
-      echo "/opt/zimbra/conf/ZCSLicense.xml or a license previously installed."
-      echo "The upgrade will not continue without a license."
-      echo ""
-      echo "Your system has not been modified."
-      echo ""
-      echo "New customers wanting to purchase or obtain a trial license"
-      echo "should contact Zimbra sales.  Contact information for Zimbra is"
-      echo "located at http://www.zimbra.com/about/contact_us.html"
-      echo "Existing customers can obtain an updated license file via the"
-      echo "Zimbra Support page located at http://www.zimbra.com/support."
-      echo ""
-      exit 1;
-    fi
-  fi
-
-  now=`date -u "+%Y%m%d%H%M%SZ"`
-  if [ \( x"$licenseValidUntil" \< x"$now" -o x"$licenseValidUntil" == x"$now" \) -a x"$ZMTYPE_INSTALLABLE" == x"NETWORK" ]; then
-    if [ x"$licenseType" == x"perpetual" ]; then
-      echo ""
-      echo "ERROR: The ZCS Network upgrade requires a previously installed license"
-      echo "or the license file located in /opt/zimbra/conf/ZCSLicense.xml to be"
-      echo "valid and not expired."
-      echo ""
-      echo "The upgrade cannot occur with an expired perpetual license.  In order"
-      echo "to perform an upgrade, you will need to have a valid support contract"
-      echo "in place."
-      echo ""
-      echo "Your system has not been modified."
-      echo ""
-      exit 1;
-    else
-      echo ""
-      echo "WARNING: The ZCS Network upgrade requires a previously installed license"
-      echo "or the license file located in /opt/zimbra/conf/ZCSLicense.xml to be"
-      echo "valid and not expired."
-      echo ""
-      echo "The upgrade can continue, but there will be some loss of functionality."
-      echo ""
-      while :; do
-        askYN "Do you wish to continue? " "N"
-        if [ $response == "no" ]; then
-          askYN "Exit?" "N"
-          if [ $response == "yes" ]; then
-            echo ""
-            echo "Your system has not been modified."
-            echo""
-            exit 1;
-          fi
-        else
-          break
-        fi
-      done
-    fi
-  fi
-
-
-  if [ x"$licensedUsers" = "x" ]; then
-    licensedUsers=0
-  fi
-
-  # return immediately if we have an unlimited license
-  if [ "$licensedUsers" = "-1" ]; then
-    return
-  fi
-
-  # Check for licensed user count and warn if necessary
-  oldUserCheck=0
-  if [ ${ZM_CUR_MAJOR} -eq 6 -a ${ZM_CUR_MICRO} -lt 8 ]; then
-    userProvCommand="zmprov -l gaa 2> /dev/null | wc -l"
-    oldUserCheck=1
-  else
-    userProvCommand="zmprov -l cto userAccounts 2> /dev/null"
-  fi
-
-  # Make sure zmprov is responsive and able to talk to LDAP before we do anything for real
-  zmprovTest="zmprov -l gac 2> /dev/null > /dev/null"
-  su - zimbra -c "$zmprovTest"
-  zmprovTestRC=$?
-  if [ $zmprovTestRC -eq 0 ]; then
-    su - zimbra -c "$zmprovTest"
-    zmprovTestRC=$?
-  fi
-  if [ $zmprovTestRC -ne 0 ]; then
-    echo ""
-    echo "Warning: Unable to determine the number of users on this system via zmprov command."
-    echo "Please make sure LDAP services are running."
-    echo ""
-  fi
-
-  # Passed check to make sure zmprov and LDAP are working.  Now let's get a real count.
-  numCurrentUsers=-1;
-  if [ $zmprovTestRC -eq 0 ]; then
-    numCurrentUsers=`su - zimbra -c "$userProvCommand"`;
-    numUsersRC=$?
-    if [ $numUsersRC -ne 0 ]; then
-      numCurrentUsers=`su - zimbra -c "$userProvCommand"`;
-      numUsersRC=$?
-    fi
-  fi
-
-  # Unable to determine the number of current users
-  if [ "$numCurrentUsers"x = "x" ]; then
-    numCurrentUsers=-1;
-    echo ""
-    echo "Warning: Unable to determine the number of users on this system via zmprov command."
-    echo "Please make sure LDAP services are running."
-    echo ""
-  fi
-
-  if [ $oldUserCheck -eq 1 ]; then
-    numCurrentUsers=`expr $numCurrentUsers - 3`
-  fi
-  if [ $numCurrentUsers -gt 0 ]; then
-    echo "Current Users=$numCurrentUsers Licensed Users=$licensedUsers"
-  fi
-
-  if [ $numCurrentUsers -lt 0 ]; then
-    echo "Warning: Could not determine the number of users on this system."
-    echo "If you exceed the number of licensed users ($licensedUsers) then you will"
-    echo "not be able to create new users."
-    while :; do
-     askYN "Do you wish to continue?" "N"
-     if [ $response = "no" ]; then
-      askYN "Exit?" "N"
-      if [ $response = "yes" ]; then
-        echo "Exiting - place a valid license file in /opt/zimbra/conf/ZCSLicense.xml and rerun."
-        exit 1
-      fi
-     else
-      break
-     fi
-    done
-  elif [ $numUsersRC -ne 0 ] || [ $numCurrentUsers -gt $licensedUsers ]; then
-    echo "Warning: The number of users on this system ($numCurrentUsers) exceeds the licensed number"
-    echo "($licensedUsers).  You may continue with the upgrade, but you will not be able to create"
-    echo "new users.  Also, initialization of the Document feature will fail.  If you "
-    echo "later wish to use the Documents feature you'll need to resolve the licensing "
-    echo "issues and then run a separate script available from support to initialize the "
-    echo "Documents feature. "
-    while :; do
-     askYN "Do you wish to continue?" "N"
-     if [ $response = "no" ]; then
-      askYN "Exit?" "N"
-      if [ $response = "yes" ]; then
-        echo "Exiting - place a valid license file in /opt/zimbra/conf/ZCSLicense.xml and rerun."
-        exit 1
-      fi
-     else
-      break
-     fi
-    done
-  else
-    # valid license and user count
-    return
-  fi
-
 }
 
 checkUserInfo() {
@@ -1695,21 +1221,6 @@ removeExistingPackages() {
   fi
 }
 
-removeZextrasPackagesIfInstalled() {
-	for i in $ZEXTRAS_PACKAGES; do
-		echo ""
-		echo "Remove $i if it is installed ..."
-		isInstalled $i
-		if [ x$PKGINSTALLED != "x" ]; then
-			echo -n "   $i FOUND..."
-			echo ""
-			echo -n "   Removing $i..."
-			$PACKAGERM $i >/dev/null 2>&1
-			echo "done"
-		fi
-	done
-}
-
 removeExistingInstall() {
   if [ $INSTALLED = "yes" ]; then
     echo ""
@@ -1769,7 +1280,6 @@ removeExistingInstall() {
     fi
     if [ "$UPGRADE" = "yes" -a "$POST87UPGRADE" = "true" -a "$FORCE_UPGRADE" != "yes" -a "$ZM_CUR_BUILD" != "$ZM_INST_BUILD" ]; then
       echo "Upgrading the remote packages"
-      removeZextrasPackagesIfInstalled
     else
       removeExistingPackages
     fi
@@ -2095,19 +1605,6 @@ configurePackageServer() {
       USE_ZIMBRA_PACKAGE_SERVER="yes"
       PACKAGE_SERVER="repo.zimbra.com"
       response="no"
-      echo $HOSTNAME | egrep -qe 'eng.vmware.com$|eng.zimbra.com$|lab.zimbra.com$' > /dev/null 2>&1
-      if [ $? = 0 ]; then
-        askYN "Use internal development repo" "N"
-        if [ $response = "yes" ]; then
-          PACKAGE_SERVER="repo-dev.eng.zimbra.com"
-        else
-          response="no"
-          askYN "Use internal production mirror" "N"
-          if [ $response = "yes" ]; then
-            PACKAGE_SERVER="repo.eng.zimbra.com"
-          fi
-        fi
-      fi
     fi
   fi
 
@@ -2155,12 +1652,6 @@ deb     [arch=amd64] https://$PACKAGE_SERVER/apt/87 $repo zimbra
 deb     [arch=amd64] https://$PACKAGE_SERVER/apt/90 $repo zimbra
 deb-src [arch=amd64] https://$PACKAGE_SERVER/apt/87 $repo zimbra
 EOF
-if [ x"$ZMTYPE_INSTALLABLE" = "xNETWORK" ]; then
-cat >> /etc/apt/sources.list.d/zimbra.list << EOF
-deb     [arch=amd64] https://$PACKAGE_SERVER/apt/90-ne $repo zimbra
-deb     [arch=amd64] https://$PACKAGE_SERVER/apt/910-ne $repo zimbra
-EOF
-fi
       apt-get update >>$LOGFILE 2>&1
       if [ $? -ne 0 ]; then
         echo "ERROR: Unable to install packages via apt-get"
@@ -2206,24 +1697,6 @@ EOF
       yum check-update --disablerepo=* --enablerepo=zimbra --noplugins >>$LOGFILE 2>&1
       yum --disablerepo=* --enablerepo=zimbra-90-oss clean metadata >>$LOGFILE 2>&1
       yum check-update --disablerepo=* --enablerepo=zimbra-90-oss --noplugins >>$LOGFILE 2>&1
-if [ x"$ZMTYPE_INSTALLABLE" = "xNETWORK" ]; then
-cat >> /etc/yum.repos.d/zimbra.repo <<EOF
-[zimbra-90-network]
-name=Zimbra New RPM Repository
-baseurl=https://$PACKAGE_SERVER/rpm/90-ne/$repo
-gpgcheck=1
-enabled=1
-[zimbra-910-network]
-name=Zimbra New RPM Repository
-baseurl=https://$PACKAGE_SERVER/rpm/910-ne/$repo
-gpgcheck=1
-enabled=1
-EOF
-      yum --disablerepo=* --enablerepo=zimbra-90-network clean metadata >>$LOGFILE 2>&1
-      yum check-update --disablerepo=* --enablerepo=zimbra-90-network --noplugins >>$LOGFILE 2>&1
-      yum --disablerepo=* --enablerepo=zimbra-910-network clean metadata >>$LOGFILE 2>&1
-      yum check-update --disablerepo=* --enablerepo=zimbra-910-network --noplugins >>$LOGFILE 2>&1
-fi
       if [ $? -ne 0 -a $? -ne 100 ]; then
         echo "ERROR: yum check-update failed"
         echo "Please validate ability to install packages"
@@ -2305,9 +1778,7 @@ getInstallPackages() {
 
     # askInstallPkgYN args : PROMPT REQUIRE_STORE=yes|no YES_STORE_DEFAULT=Y|N NO_STORE_DEFAULT=Y|N
 
-    if [ $i = "zimbra-license-tools" ]; then
-      response="yes"
-    elif [ $i = "zimbra-modern-ui" ]; then
+    if [ $i = "zimbra-modern-ui" ]; then
       ifStoreSelectedY
     elif [ $i = "zimbra-modern-zimlets" ]; then
       ifStoreSelectedY
@@ -2317,10 +1788,6 @@ getInstallPackages() {
       response="$MTA_SELECTED"
     elif [ $i = "zimbra-proxy-patch" ]; then
       response="$PROXY_SELECTED"
-    elif [ $i = "zimbra-license-extension" ]; then
-      ifStoreSelectedY
-    elif [ $i = "zimbra-network-store" ]; then
-      ifStoreSelectedY
     elif [ $UPGRADE = "yes" ]; then
       if [ $i = "zimbra-imapd" ]; then
         askInstallPkgYN "Install $i (BETA - for evaluation only)" "no" "N" "N"
@@ -2390,10 +1857,6 @@ getInstallPackages() {
 
   isInstalled zimbra-store
   isToBeInstalled zimbra-store
-
-  if [ "x$PKGINSTALLED" != "x" -o "x$PKGTOBEINSTALLED" != "x" ]; then
-    checkStoreRequirements
-  fi
 
   isOnlyofficeStandalone $ONLYOFFICE_SELECTED
 

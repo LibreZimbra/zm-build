@@ -102,15 +102,6 @@ CreateRhelPackage()
     	${repoDir}/zm-build/${currentScript}.spec
     echo "%attr(444, zimbra, zimbra) /opt/zimbra/docs/*" >> \
     	${repoDir}/zm-build/${currentScript}.spec
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-      echo "%attr(755, zimbra, zimbra) /opt/zimbra/docs/rebranding" >> \
-         ${repoDir}/zm-build/${currentScript}.spec
-      echo "%attr(444, zimbra, zimbra) /opt/zimbra/docs/rebranding/*" >> \
-         ${repoDir}/zm-build/${currentScript}.spec
-    fi
-
     echo "%attr(755, root, root) /opt/zimbra/contrib" >> \
     	${repoDir}/zm-build/${currentScript}.spec
     echo "%attr(755, root, root) /opt/zimbra/libexec" >> \
@@ -600,57 +591,6 @@ main()
    Cpy2 ${repoDir}/zm-ssdb-ephemeral-store/build/dist/zm-ssdb-ephemeral-store*.jar                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_ssdb_ephemeral_store/
    Cpy2 ${repoDir}/zm-zcs-lib/build/dist/jedis-2.9.0.jar                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_ssdb_ephemeral_store/
    Cpy2 ${repoDir}/zm-zcs-lib/build/dist/commons-pool2-2.4.2.jar                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_ssdb_ephemeral_store/
-
-   if [ "${buildType}" == "NETWORK" ]
-   then
-      Copy ${repoDir}/zm-backup-store/docs/backup.txt                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/backup.txt
-      Copy ${repoDir}/zm-backup-store/docs/mailboxMove.txt                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/mailboxMove.txt
-      Copy ${repoDir}/zm-backup-store/docs/soapbackup.txt                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/soapbackup.txt
-      Copy ${repoDir}/zm-backup-store/docs/xml-meta.txt                                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/xml-meta.txt
-      Copy ${repoDir}/zm-backup-store/build/dist/backup-version-init.sql                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/db/backup-version-init.sql
-
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmbackup                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmbackup
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmbackupabort                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmbackupabort
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmbackupquery                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmbackupquery
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmmboxmove                                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmboxmove
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmmboxmovequery                                      ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmmboxmovequery
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmpurgeoldmbox                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmpurgeoldmbox
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmrestore                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmrestore
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmrestoreldap                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmrestoreldap
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmrestoreoffline                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmrestoreoffline
-      Copy ${repoDir}/zm-backup-utilities/src/bin/zmschedulebackup                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmschedulebackup
-      Copy ${repoDir}/zm-backup-utilities/src/db/backup_schema.sql                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/db/backup_schema.sql
-      Copy ${repoDir}/zm-backup-utilities/src/libexec/zmbackupldap                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmbackupldap
-      Copy ${repoDir}/zm-backup-utilities/src/libexec/zmbackupqueryldap                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmbackupqueryldap
-
-      Copy ${repoDir}/zm-hsm/docs/soap-admin.txt                                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/hsm-soap-admin.txt
-
-      Copy ${repoDir}/zm-network-build/rpmconf/Install/Util/modules/postinstall.sh                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/installer/util/modules/postinstall.sh
-      Copy ${repoDir}/zm-network-build/rpmconf/Install/postinstall.pm                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/postinstall.pm
-      Copy ${repoDir}/zm-network-build/rpmconf/Install/preinstall.pm                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/preinstall.pm
-
-      Copy ${repoDir}/zm-network-licenses/thirdparty/oracle_jdk_eula.txt                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/oracle_jdk_eula.txt
-
-      Copy ${repoDir}/zm-postfixjournal/build/dist/postjournal                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/postjournal
-
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/DE_Rebranding_directions.txt                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/DE_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/ES_Rebranding_directions.txt                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/ES_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/FR_Rebranding_directions.txt                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/FR_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/IT_Rebranding_directions.txt                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/IT_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/JA_Rebranding_directions.txt                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/JA_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/NL_Rebranding_directions.txt                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/NL_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/RU_Rebranding_directions.txt                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/RU_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/en_US_Rebranding_directions.txt               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/en_US_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/pt_BR_Rebranding_directions.txt               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/pt_BR_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/zh_CN_Rebranding_directions.txt               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/zh_CN_Rebranding_directions.txt
-      Copy ${repoDir}/zm-rebranding-docs/docs/rebranding/zh_HK_Rebranding_directions.txt               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/rebranding/zh_HK_Rebranding_directions.txt
-
-      Copy ${repoDir}/zm-twofactorauth-store/docs/twofactorauth.md                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/twofactorauth.md
-
-      Copy ${repoDir}/zm-voice-store/docs/ZimbraVoice-Extension.txt                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/ZimbraVoice-Extension.txt
-      Copy ${repoDir}/zm-voice-store/docs/soap-voice-admin.txt                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/soap-voice-admin.txt
-      Copy ${repoDir}/zm-voice-store/docs/soap-voice.txt                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/soap-voice.txt
-   fi
 
    CreatePackage "${os}"
 }

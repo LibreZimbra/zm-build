@@ -1133,12 +1133,6 @@ sub upgrade850BETA1 {
       main::setLocalConfig("mailboxd_java_options", $new_mailboxd_options)
         if ($new_mailboxd_options ne "");
     }
-    if (main::isNetwork()) {
-      my @zimbraReverseProxyUpstreamEwsServers=qx($su "$ZMPROV gacf zimbraReverseProxyUpstreamEwsServers");
-      if (! grep(/$hn/, @zimbraReverseProxyUpstreamEwsServers)) {
-        main::runAsZimbra("$ZMPROV mcf +zimbraReverseProxyUpstreamEwsServers $hn");
-      }
-    }
     main::setLdapServerConfig($hn, '+zimbraServiceEnabled', 'service');
     main::setLdapServerConfig($hn, '+zimbraServiceEnabled', 'zimbra');
     main::setLdapServerConfig($hn, '+zimbraServiceEnabled', 'zimbraAdmin');

@@ -109,7 +109,7 @@ sub InitGlobalBuildVars()
 {
    {
       my $destination_name_func = sub {
-         return "$CFG{BUILD_OS}-$CFG{BUILD_RELEASE}-$CFG{BUILD_RELEASE_NO_SHORT}-$CFG{BUILD_TS}-$CFG{BUILD_TYPE}-$CFG{BUILD_NO}";
+         return "$CFG{BUILD_OS}-$CFG{BUILD_RELEASE}-$CFG{BUILD_RELEASE_NO_SHORT}-$CFG{BUILD_TS}-LIBRE-$CFG{BUILD_NO}";
       };
 
       my $build_dir_func = sub {
@@ -127,7 +127,6 @@ sub InitGlobalBuildVars()
          { name => "BUILD_RELEASE",              type => "=s",  hash_src => \%cmd_hash, default_sub => sub { Die("@_ not specified"); }, },
          { name => "BUILD_RELEASE_NO",           type => "=s",  hash_src => \%cmd_hash, default_sub => sub { Die("@_ not specified"); }, },
          { name => "BUILD_RELEASE_CANDIDATE",    type => "=s",  hash_src => \%cmd_hash, default_sub => sub { Die("@_ not specified"); }, },
-         { name => "BUILD_TYPE",                 type => "=s",  hash_src => \%cmd_hash, default_sub => sub { Die("@_ not specified"); }, },
          { name => "BUILD_THIRDPARTY_SERVER",    type => "=s",  hash_src => \%cmd_hash, default_sub => sub { Die("@_ not specified"); }, },
          { name => "BUILD_PROD_FLAG",            type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 1; }, },
          { name => "BUILD_DEBUG_FLAG",           type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
@@ -259,7 +258,7 @@ sub TranslateToPackagePath
 
    if ( my $pkg_dir = $deploy_pkg_into )
    {
-      $pkg_dir = "zimbra-" . lc( $CFG{BUILD_TYPE} )
+      $pkg_dir = "zimbra-libre"
         if ( $pkg_dir eq "bundle" && $CFG{DISABLE_BUNDLE} );
 
       $pkg_dir .= "-$ENV{ENV_ARCHIVE_SUFFIX_STR}"
@@ -346,7 +345,7 @@ sub LoadRepos()
    my %exclusions = ();
    map { $exclusions{$_} = 1; } split(/,/, $CFG{EXCLUDE_GIT_REPOS});
 
-   push( @agg_repos, grep { !exists $exclusions{$_->{name}} } @{ EvalFile("instructions/$CFG{BUILD_TYPE}_repo_list.pl") } );
+   push( @agg_repos, grep { !exists $exclusions{$_->{name}} } @{ EvalFile("instructions/FOSS_repo_list.pl") } );
 
    return \@agg_repos;
 }
@@ -354,7 +353,7 @@ sub LoadRepos()
 
 sub LoadRemotes()
 {
-   my %details = @{ EvalFile("instructions/$CFG{BUILD_TYPE}_remote_list.pl") };
+   my %details = @{ EvalFile("instructions/FOSS_remote_list.pl") };
 
    return \%details;
 }
@@ -366,7 +365,7 @@ sub LoadBuilds($)
 
    my @agg_builds = ();
 
-   push( @agg_builds, @{ EvalFile("instructions/$CFG{BUILD_TYPE}_staging_list.pl") } );
+   push( @agg_builds, @{ EvalFile("instructions/FOSS_staging_list.pl") } );
 
    my %repo_hash = map { $_->{name} => 1 } @$repo_list;
 
@@ -460,7 +459,6 @@ sub Build($)
          "-Dzimbra.buildinfo.platform=$CFG{BUILD_OS}",
          "-Dzimbra.buildinfo.pkg_os_tag=$CFG{PKG_OS_TAG}",
          "-Dzimbra.buildinfo.version=$CFG{BUILD_RELEASE_NO}_$CFG{BUILD_RELEASE_CANDIDATE}_$CFG{BUILD_NO}",
-         "-Dzimbra.buildinfo.type=$CFG{BUILD_TYPE}",
          "-Dzimbra.buildinfo.release=$CFG{BUILD_TS}",
          "-Dzimbra.buildinfo.date=$CFG{BUILD_TS}",
          "-Dzimbra.buildinfo.host=$CFG{BUILD_HOSTNAME}",
@@ -472,7 +470,6 @@ sub Build($)
          "zimbra.buildinfo.platform=$CFG{BUILD_OS}",
          "zimbra.buildinfo.pkg_os_tag=$CFG{PKG_OS_TAG}",
          "zimbra.buildinfo.version=$CFG{BUILD_RELEASE_NO}_$CFG{BUILD_RELEASE_CANDIDATE}_$CFG{BUILD_NO}",
-         "zimbra.buildinfo.type=$CFG{BUILD_TYPE}",
          "zimbra.buildinfo.release=$CFG{BUILD_TS}",
          "zimbra.buildinfo.date=$CFG{BUILD_TS}",
          "zimbra.buildinfo.host=$CFG{BUILD_HOSTNAME}",
@@ -566,7 +563,7 @@ sub Build($)
          SysExec( "mkdir", "-p", "$CFG{BUILD_DIR}/zm-build/$CFG{BUILD_ARCH}" );
 
          my @ALL_PACKAGES = ();
-         push( @ALL_PACKAGES, @{ EvalFile("instructions/$CFG{BUILD_TYPE}_package_list.pl") } );
+         push( @ALL_PACKAGES, @{ EvalFile("instructions/FOSS_package_list.pl") } );
          push( @ALL_PACKAGES, "zcs-bundle" )
            if ( !$CFG{DISABLE_TAR} );
 
@@ -581,7 +578,6 @@ sub Build($)
                      buildNo='$CFG{BUILD_NO}' \\
                      os='$CFG{BUILD_OS}' \\
                      PKG_OS_TAG='$CFG{PKG_OS_TAG}' \\
-                     buildType='$CFG{BUILD_TYPE}' \\
                      repoDir='$CFG{BUILD_DIR}' \\
                      arch='$CFG{BUILD_ARCH}' \\
                      buildTimeStamp='$CFG{BUILD_TS}' \\

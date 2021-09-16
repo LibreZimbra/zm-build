@@ -35,7 +35,6 @@ sub progress($$$);
 sub detail($);
 sub debugLog($);
 sub getInstalledVersion();
-sub getInstalledType();
 sub usage;
 sub doPatchBuild();
 sub doPatchDeploy();
@@ -57,7 +56,7 @@ GetOptions ("config=s"  => \$options{config},
 my $progName = "zmpatch";
 my $patchBuildNumber;
 my %versionInfo;
-my ($platform, $zmtype, $config);
+my ($platform, $config);
 $options{verbose} = 0 unless $options{verbose};
 
 if ($options{build}) {
@@ -89,8 +88,6 @@ if ($options{build}) {
     exit 1;
   }
 } else {
-  $zmtype=getInstalledType();
-  debugLog("Install type: $zmtype\n");
   unless (-x "/opt/zimbra/libexec/get_plat_tag.sh") {
     print "ZCS Install not found.\n";
     exit 1;
@@ -286,7 +283,6 @@ sub deployPatch($) {
       {
       	$ztype = lc($zref->{type});
       }
-      next if ($zmtype eq "FOSS" && $ztype eq "network");
       my $zimletname=basename($zref->{target}[0]);
       $zimletname =~ s/\.zip//;
       progress("$zimletname...",2,1);
@@ -319,7 +315,6 @@ sub deployPatch($) {
       {
       	$ftype = lc($fref->{type});
       }
-      next if ($zmtype eq "FOSS" && $ftype eq "network");
       foreach my $dstfile (@{$fref->{target}}) {
         progress("$dstfile...",2,1); 
         my $srcfile="./source/$patch->{version}/$package/$dstfile";
@@ -521,10 +516,6 @@ sub getInstalledVersion() {
   progress("Current  version: $versionInfo{current}\n",0,2);
   
   return $versionInfo{current};
-}
-
-sub getInstalledType() {
-  return ((-f "/opt/zimbra/bin/zmbackupquery") ? "NETWORK" : "FOSS");
 }
 
 sub getReleaseString($) {

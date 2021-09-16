@@ -39,17 +39,6 @@ main()
 
     echo -e "\tCopy bin files of /opt/zimbra/" >> ${buildLogFile}
 
-    if [ "${buildType}" == "NETWORK" ]
-    then
-       cp -f ${repoDir}/zm-hsm/src/bin/zmhsm ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmhsm
-       cp -f ${repoDir}/zm-archive-utils/src/bin/zmarchiveconfig ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmarchiveconfig
-       cp -f ${repoDir}/zm-archive-utils/src/bin/zmarchivesearch ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmarchivesearch
-       cp -f ${repoDir}/zm-sync-tools/src/bin/zmsyncreverseproxy ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmsyncreverseproxy
-       cp -f ${repoDir}/zm-sync-store/src/bin/zmdevicesstats ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmdevicesstats
-       cp -f ${repoDir}/zm-sync-store/src/bin/zmgdcutil ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmgdcutil
-    fi
-
-
     cp -f ${repoDir}/zm-migration-tools/zmztozmig.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmztozmig.conf
 
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/owasp_policy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/owasp_policy.xml
@@ -61,65 +50,19 @@ main()
     cp -rf ${repoDir}/zm-openid-consumer-store/build/dist/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer
     rm -rf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer/extensions-extra
 
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-       echo -e "\tCopy extensions-network-extra files of /op/zimbra/" >> ${buildLogFile}
-       mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-network-extra
-       cp -rf ${repoDir}/zm-saml-consumer-store/build/dist/saml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-network-extra/
-    fi
-
     echo -e "\tCopy lib files of /opt/zimbra/" >> ${buildLogFile}
 
     echo -e "\t\tCopy ext files of /opt/zimbra/lib/" >> ${buildLogFile}
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/mitel
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/twofactorauth
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/openidconsumer
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-license
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-freebusy
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraadminversioncheck
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraldaputils
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-oauth-social
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-gql
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/backup
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-archive
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/voice
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/mitel
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/cisco
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrasync
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/network
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_oo
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrahsm
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/smime
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-zulip-proxy-ext
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-doc-server-ext
-
-      cp -f ${repoDir}/zm-backup-store/build/dist/zm-backup-store.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/backup/zimbrabackup.jar
-      cp -f ${repoDir}/zm-archive-store/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-archive/zimbra-archive.jar
-      cp -rf ${repoDir}/zm-voice-store/build/dist/zm-voice-store.jar  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/voice/zimbravoice.jar
-      cp -rf ${repoDir}/zm-voice-mitel-store/build/dist/zm-voice-mitel-store.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/mitel
-      cp -rf ${repoDir}/zm-voice-cisco-store/build/dist/zm-voice-cisco-store.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/cisco
-      cp -rf ${repoDir}/zm-sync-common/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrasync
-      cp -rf ${repoDir}/zm-sync-store/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrasync
-      cp -rf ${repoDir}/zm-sync-tools/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrasync
-      cp -f ${repoDir}/zm-openoffice-store/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_oo
-      mv ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_oo/zm-openoffice-store.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/com_zimbra_oo/com_zimbra_oo.jar
-      cp -f ${repoDir}/zm-twofactorauth-store/build/dist/zm-twofactorauth-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/twofactorauth/zimbratwofactorauth.jar
-      cp -f ${repoDir}/zm-hsm-store/build/zimbrahsm.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbrahsm/zimbrahsm.jar
-      cp -f ${repoDir}/zm-freebusy-provider-store/build/zimbra-freebusyprovider.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbra-freebusy/zimbra-freebusyprovider.jar
-      cp -rf ${repoDir}/zm-smime-store/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/smime
-      cp -f ${repoDir}/zm-network-gql/build/dist/zm-network-gql*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-gql/zmnetworkgql.jar
-      cp -rf ${repoDir}/zm-zulip-proxy-ext/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-zulip-proxy-ext
-      cp -rf ${repoDir}/zm-doc-server-ext/build/dist/*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-doc-server-ext
-    fi
 
     cp -f ${repoDir}/zm-clam-scanner-store/build/dist/zm-clam-scanner-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner/clamscanner.jar
     cp -f ${repoDir}/zm-nginx-lookup-store/build/dist/zm-nginx-lookup-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup/nginx-lookup.jar
@@ -144,13 +87,6 @@ main()
 
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra
 
-    if [ "${buildType}" == "NETWORK" ]
-    then
-      echo "\t\t***** css, public and t content *****" >> ${buildLogFile}
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/css
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/public
-    fi
-
     echo "\t\t***** help content *****" >> ${buildLogFile}
     cp -rf ${repoDir}/zm-help/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/help
 
@@ -166,30 +102,8 @@ main()
     mkdir -p ${downloadsDir}
     cp -rf ${repoDir}/zm-downloads/. ${downloadsDir}
 
-    if [ "${buildType}" == "NETWORK" ]
-    then
-        set -e
-        cd ${downloadsDir}
-        wget -r -nd --no-parent --reject-regex="/backup/" --reject "index.*" http://${zimbraThirdPartyServer}/ZimbraThirdParty/zco-migration-builds/current/
-    fi
-
     echo "\t\t***** help content *****" >> ${buildLogFile}
     rsync -a ${repoDir}/zm-admin-help-common/WebRoot/help ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbraAdmin/
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-       rsync -a ${repoDir}/zm-admin-help-network/WebRoot/help ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbraAdmin/
-    fi
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-      echo -e "\t\tCopy ext-common files of /opt/zimbra/lib/" >> ${buildLogFile}
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common
-      cp -f ${repoDir}/zm-zcs-lib/build/dist/bcpkix-jdk15on-1.64.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
-      cp -f ${repoDir}/zm-zcs-lib/build/dist/bcmail-jdk15on-1.64.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
-      cp -f ${repoDir}/zm-zcs-lib/build/dist/bcprov-jdk15on-1.64.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
-      cp -f ${repoDir}/zm-zcs-lib/build/dist/saaj-impl-1.5.1.jar     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/
-    fi
 
     cp -f ${repoDir}/zm-migration-tools/src/libexec/zmztozmig ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
     cp -f ${repoDir}/zm-migration-tools/src/libexec/zmcleaniplanetics ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
@@ -214,32 +128,6 @@ main()
     done
 
     cp -f ${repoDir}/zm-zimlets/build/dist/zimlets/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets
-
-    if [ "${buildType}" == "NETWORK" ]
-    then
-      echo -e "\tCopy zimlets-network files of /opt/zimbra/" >> ${buildLogFile}
-      mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets-network
-      adminZimlets=( "zm-license-admin-zimlet" \
-                     "zm-backup-restore-admin-zimlet" \
-                     "zm-delegated-admin-zimlet" \
-                     "zm-hsm-admin-zimlet" \
-                     "zm-smime-cert-admin-zimlet" \
-                     "zm-2fa-admin-zimlet" \
-                     "zm-ucconfig-admin-zimlet" \
-                     "zm-securemail-zimlet" \
-                     "zm-smime-applet" \
-                     "zm-mobile-sync-admin-zimlet" )
-      for i in "${adminZimlets[@]}"
-      do
-         cp ${repoDir}/${i}/build/zimlet/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets-network
-      done
-
-      adminUcZimlets=( "cisco" "mitel" "voiceprefs" )
-      for i in "${adminUcZimlets[@]}"
-      do
-         cp ${repoDir}/zm-uc-admin-zimlets/${i}/build/zimlet/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets-network
-      done
-    fi
 
     echo "\t\t***** Building jetty/common/ *****" >> ${buildLogFile}
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/common/endorsed
@@ -345,14 +233,6 @@ CreateRhelPackage()
     	${repoDir}/zm-build/${currentScript}.spec
     echo "%attr(-, zimbra, zimbra) /opt/zimbra/extensions-extra" >> \
     	${repoDir}/zm-build/${currentScript}.spec
-
-   if [ "${buildType}" == "NETWORK" ]
-   then
-      echo "%attr(-, zimbra, zimbra) /opt/zimbra/zimlets-network" >> \
-         ${repoDir}/zm-build/${currentScript}.spec
-      echo "%attr(-, zimbra, zimbra) /opt/zimbra/extensions-network-extra" >> \
-         ${repoDir}/zm-build/${currentScript}.spec
-   fi
 
     echo "%attr(755, root, root) /opt/zimbra/bin" >> \
     	${repoDir}/zm-build/${currentScript}.spec
