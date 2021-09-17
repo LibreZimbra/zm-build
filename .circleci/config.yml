@@ -27,7 +27,6 @@ references:
                   --build-no="$CIRCLE_BUILD_NUM" \
                   --build-ts="$(date "+%Y%m%d%M%H%S")" \
                   --ant-options="-DskipTests=1" \
-                  --no-interactive \
                   --disable-bundle \
                   --dump-config-to="$PWD/config.build" \
                   --stop-after-checkout \
@@ -39,7 +38,6 @@ references:
                sed -i \
                   -e '/^DUMP_CONFIG_TO/d' \
                   -e '/^STOP_AFTER_CHECKOUT/d' \
-                  -e '/^INTERACTIVE/d' \
                   -e '/^BUILD_OS/d' \
                   -e '/^PKG_OS_TAG/d' \
                   -e '/^BUILD_ARCH/d' \
@@ -64,7 +62,6 @@ references:
                   ./build.pl 2>&1 \
                      --build-os="$ZIMBRA_BUILD_OS" \
                      --pkg-os-tag="$ZIMBRA_OS_TAG" \
-                     --no-interactive \
                | tee -a ../BUILDS/build-${ZIMBRA_OS_TAG}.log
          - store_artifacts:
             path: ../BUILDS

@@ -131,7 +131,6 @@ sub InitGlobalBuildVars()
          { name => "BUILD_PROD_FLAG",            type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 1; }, },
          { name => "BUILD_DEBUG_FLAG",           type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
          { name => "BUILD_DEV_TOOL_BASE_DIR",    type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return "$ENV{HOME}/.zm-dev-tools"; }, },
-         { name => "INTERACTIVE",                type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 1; }, },
          { name => "DISABLE_TAR",                type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
          { name => "DISABLE_BUNDLE",             type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
          { name => "EXCLUDE_GIT_REPOS",          type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return ""; }, },
@@ -243,12 +242,6 @@ sub InitGlobalBuildVars()
       }
 
       print "NOTE: DUMPED CONFIG TO FILE - $CFG{DUMP_CONFIG_TO}\n";
-   }
-
-   if ( $CFG{INTERACTIVE} )
-   {
-      print "Press enter to proceed";
-      read STDIN, $_, 1;
    }
 }
 
