@@ -146,7 +146,7 @@ sub InitGlobalBuildVars()
          { name => "BUILD_RELEASE_NO_SHORT",     type => "=s",  hash_src => \%cmd_hash, default_sub => sub { my $x = $CFG{BUILD_RELEASE_NO}; $x =~ s/[.]//g; return $x; }, },
          { name => "DESTINATION_NAME",           type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return &$destination_name_func; }, },
          { name => "BUILD_DIR",                  type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return &$build_dir_func; }, },
-         { name => "DEPLOY_URL_PREFIX",          type => "=s",  hash_src => \%cmd_hash, default_sub => sub { $CFG{LOCAL_DEPLOY} = 1; return "http://" . Net::Domain::hostfqdn . ":8008/$CFG{DESTINATION_NAME}"; }, },
+         { name => "DEPLOY_URL_PREFIX",          type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return "http://" . Net::Domain::hostfqdn . ":8008/$CFG{DESTINATION_NAME}"; }, },
          { name => "DUMP_CONFIG_TO",             type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return undef; }, },
       );
 
@@ -621,17 +621,11 @@ sub Deploy()
 
       if ( -f "/etc/redhat-release" )
       {
-         if ( !$CFG{LOCAL_DEPLOY} || DetectPrerequisite( "createrepo", "", 1 ) )
-         {
             SysExec("cd '$destination_dir/archives/$archive_name/$CFG{PKG_OS_TAG}' && createrepo '.'");
-         }
       }
       else
       {
-         if ( !$CFG{LOCAL_DEPLOY} || DetectPrerequisite( "dpkg-scanpackages", "", 1 ) )
-         {
             SysExec("cd '$destination_dir/archives/$archive_name/$CFG{PKG_OS_TAG}' && dpkg-scanpackages '.' /dev/null > Packages");
-         }
       }
    }
 
@@ -640,10 +634,8 @@ sub Deploy()
    SysExec("cp $CFG{BUILD_DIR}/zm-build/zcs-*.$CFG{BUILD_TS}.tgz $destination_dir/")
      if ( !$CFG{DISABLE_TAR} );
 
-   if ( $CFG{LOCAL_DEPLOY} )
-   {
-      if ( !-f "/etc/nginx/conf.d/zimbra-pkg-archives-host.conf" || !`pgrep -f -P1 '[n]ginx'` )
-      {
+    if ( !-f "/etc/nginx/conf.d/zimbra-pkg-archives-host.conf" || !`pgrep -f -P1 '[n]ginx'` )
+    {
          print "\n";
          print "=========================================================================================================\n";
          print <<EOM_DUMP;
@@ -677,8 +669,7 @@ service nginx status
 EOM_SCRIPT
 @{[color('reset')]}
 EOM_DUMP
-      }
-   }
+    }
 
    print "\n";
    print "=========================================================================================================\n";
