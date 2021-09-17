@@ -606,19 +606,19 @@ sub Deploy()
 
    SysExec( "mkdir", "-p", "$destination_dir/archives" );
 
-   my @archive_names = map { basename($_) } grep { -d $_ && $_ !~ m/\/bundle$/ } glob("$CFG{BUILD_DIR}/zm-packages/*");
+   my @archive_names = map { basename($_) } grep { -d $_ && $_ !~ m/\/bundle$/ } glob("$CFG{BUILD_DIR}/zm-packages/bundle/*");
 
    foreach my $archive_name (@archive_names)
    {
-      SysExec( "rsync", "-av", "--delete", "$CFG{BUILD_DIR}/zm-packages/$archive_name/", "$destination_dir/archives/$archive_name" );
+      SysExec( "rsync", "-av", "--delete", "$CFG{BUILD_DIR}/zm-packages/bundle/$archive_name/", "$destination_dir/archives/$archive_name" );
 
       if ( -f "/etc/redhat-release" )
       {
-            SysExec("cd '$destination_dir/archives/$archive_name/$CFG{PKG_OS_TAG}' && createrepo '.'");
+            SysExec("cd '$destination_dir/archives/$archive_name/' && createrepo '.'");
       }
       else
       {
-            SysExec("cd '$destination_dir/archives/$archive_name/$CFG{PKG_OS_TAG}' && dpkg-scanpackages '.' /dev/null > Packages");
+            SysExec("cd '$destination_dir/archives/$archive_name/' && dpkg-scanpackages '.' /dev/null > Packages");
       }
    }
 
