@@ -57,8 +57,7 @@ CreateDebianPackage()
     cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
         -e "s/@@ARCH@@/${arch}/" -e "s/^Copyright:/Copyright:/" -e "/^%post$/ r ${currentPackage}.post" \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
-    (cd ${repoDir}/zm-build/${currentPackage}; dpkg -b ${repoDir}/zm-build/${currentPackage} ${repoDir}/zm-build/${arch})
-
+    MakeDeb
 }
 
 CreateRhelPackage()

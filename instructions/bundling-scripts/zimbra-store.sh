@@ -197,8 +197,7 @@ CreateDebianPackage()
                -e "/^%post$/ r ${currentScript}.post"
     ) > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
 
-    (cd ${repoDir}/zm-build/${currentPackage}; dpkg -b ${repoDir}/zm-build/${currentPackage} ${repoDir}/zm-build/${arch})
-
+    MakeDeb
 }
 
 CreateRhelPackage()

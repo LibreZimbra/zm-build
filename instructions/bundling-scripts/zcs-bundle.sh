@@ -15,6 +15,8 @@
 # If not, see <https://www.gnu.org/licenses/>.
 # ***** END LICENSE BLOCK *****
 
+packageDir=`realpath ${packageDir}`
+
 cd ${repoDir}/zm-build
 
 ZCS_REL=zcs-${releaseNo}_${releaseCandidate}_${buildNo}.${os}
@@ -42,7 +44,7 @@ cp -f ${repoDir}/zm-core-utils/src/libexec/zmdbintegrityreport                  
 cp -f ${repoDir}/zm-mailbox/store/build/dist/versions-init.sql                          ${ZCS_REL}/data
 
 # all local packages to bundle
-cp -f ${repoDir}/zm-build/${arch}/*.*                                                   ${ZCS_REL}/packages
+cp -f ${packageDir}/*.*                                                                 ${ZCS_REL}/packages
 
 for pkgf in ${repoDir}/zm-packages/bundle/*/*.{rpm,deb,changes}
 do

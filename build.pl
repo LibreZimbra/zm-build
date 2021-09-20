@@ -556,6 +556,7 @@ sub Build($)
                      os='$CFG{BUILD_OS}' \\
                      repoDir='$CFG{BUILD_DIR}' \\
                      arch='$CFG{BUILD_ARCH}' \\
+                     packageDir='../../build/packages' \\
                      buildLogFile='$CFG{BUILD_DIR}/logs/build.log' \\
                      zimbraThirdPartyServer='$CFG{BUILD_THIRDPARTY_SERVER}' \\
                         bash $GLOBAL_PATH_TO_SCRIPT_DIR/instructions/bundling-scripts/$package_script.sh

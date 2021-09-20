@@ -60,3 +60,9 @@ CreatePackage()
 
 }
 
+MakeDeb()
+{
+    packageDir=`realpath $packageDir`
+    mkdir -p ${packageDir}
+    (cd ${repoDir}/zm-build/${currentPackage}; dpkg -b ${repoDir}/zm-build/${currentPackage} ${packageDir})
+}
