@@ -27,15 +27,14 @@
 #-------------------- Build Package ---------------------------
 main()
 {
-    echo -e "\tCreate package directories" >> ${buildLogFile}
+    Log "Create package directories"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/snmp/persist
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/snmp/state
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/share/snmp/mibs
 
-
-    echo -e "\tCopy package files" >> ${buildLogFile}
+    Log "Copy package files"
     cp ${repoDir}/zm-build/rpmconf/Conf/snmp.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/snmp.conf
     cp ${repoDir}/zm-build/rpmconf/Conf/snmpd.conf.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/snmpd.conf.in
     cp ${repoDir}/zm-build/rpmconf/Conf/snmp.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/share/snmp/snmp.conf
@@ -56,7 +55,7 @@ CreateDebianPackage()
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 
-    echo -e "\tCreate debian package" >> ${buildLogFile}
+    Log "Create debian package"
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -print0 | xargs -0 md5sum | sed -e 's| \./| |' \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums)
     cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" -e "s/@@ARCH@@/${arch}/" \

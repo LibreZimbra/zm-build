@@ -27,11 +27,10 @@
 #-------------------- Build Package ---------------------------
 main()
 {
-    echo -e "\tCreate package directories" >> ${buildLogFile}
+    Log "Create package directories"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/httpd/htdocs
 
-
-    echo -e "\tCopy package files" >> ${buildLogFile}
+    Log "Copy package files"
     cp ${repoDir}/zm-aspell/src/php/aspell.php ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/httpd/htdocs/aspell.php
 
     CreatePackage "${os}"
@@ -49,7 +48,7 @@ CreateDebianPackage()
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 
-    echo -e "\tCreate debian package" >> ${buildLogFile}
+    Log "Create debian package"
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -print0 | xargs -0 md5sum | sed -e 's| \./| |' \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums)
     cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" -e "s/@@ARCH@@/${arch}/" \

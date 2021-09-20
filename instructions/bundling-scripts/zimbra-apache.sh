@@ -28,10 +28,10 @@
 
 main()
 {
-    echo -e "\tCreate package directories" >> ${buildLogFile}
+    Log "Create package directories"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf
 
-    echo -e "\tCopy package files" >> ${buildLogFile}
+    Log "Copy package files"
     cp ${repoDir}/zm-aspell/conf/httpd.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/httpd.conf
     cp ${repoDir}/zm-aspell/conf/php.ini ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/php.ini
 
@@ -46,8 +46,8 @@ source "$SCRIPT_DIR/utils.sh"
 
 CreateDebianPackage()
 {
+    Log "Create debian package"
     mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
-    echo -e "\tCreate debian package" >> ${buildLogFile}
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -print0 | xargs -0 md5sum | sed -e 's| \./| |' \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums)
     cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" -e "s/@@ARCH@@/${arch}/" \

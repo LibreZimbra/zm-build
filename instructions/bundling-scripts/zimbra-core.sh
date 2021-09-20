@@ -31,7 +31,7 @@ source "$SCRIPT_DIR/utils.sh"
 
 CreateDebianPackage()
 {
-   echo -e "\tCreate debian package" >> ${buildLogFile}
+    Log "Create debian package"
 
    mkdir -p "${repoDir}/zm-build/${currentPackage}/DEBIAN";
 

@@ -32,6 +32,10 @@ Cpy2()
    cp -f "$src_file" "$dest_dir"
 }
 
+Log()
+{
+    echo "${currentPackage}: $*" >&2
+}
 
 CreatePackage()
 {
@@ -53,11 +57,11 @@ CreatePackage()
     fi
 
     if [ $? -ne 0 ]; then
-        echo -e "\t### ${currentPackage} package building failed ###" >> ${buildLogFile}
+        Log "### package building failed ###"
+        exit 1
     else
-        echo -e "\t*** ${currentPackage} package successfully created ***" >> ${buildLogFile}
+        Log "package successfully created"
     fi
-
 }
 
 MakeDeb()

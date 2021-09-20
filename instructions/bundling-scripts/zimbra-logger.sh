@@ -27,7 +27,7 @@
 #-------------------- Build Package ---------------------------
 main()
 {
-    echo -e "\tCreate package directories..." >> ${buildLogFile}
+    Log "Create package directories..."
     mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/logger/db/data
 
     CreatePackage "${os}"
@@ -42,11 +42,11 @@ source "$SCRIPT_DIR/utils.sh"
 CreateDebianPackage()
 {
     mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
-    echo -e "\tCopy package files..." >> ${buildLogFile}
+    Log "Copy package files..."
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 
-    echo -e "\tCreate debian package..." >> ${buildLogFile}
+    Log "Create debian package..."
     cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" -e "s/@@ARCH@@/${arch}/" \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
     MakeDeb
