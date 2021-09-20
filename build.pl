@@ -468,9 +468,6 @@ sub Build($)
       {
          my $target_dir = "$CFG{BUILD_DIR}/$dir";
 
-         next
-           unless ( !defined $ENV{ENV_BUILD_INCLUDE} || grep { $dir =~ /$_/ } split( ",", $ENV{ENV_BUILD_INCLUDE} ) );
-
          RemoveTargetInDir( $dir, $CFG{BUILD_DIR} )
            if ( ( $ENV{ENV_FORCE_REBUILD} && grep { $dir =~ /$_/ } split( ",", $ENV{ENV_FORCE_REBUILD} ) ) );
 
