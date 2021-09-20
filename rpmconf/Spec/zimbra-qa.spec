@@ -4,7 +4,7 @@
 Summary: Zimbra QA Tests
 Name: zimbra-qatest
 Version: @@VERSION@@
-Release: @@RELEASE@@
+Release: 1%{?dist}
 License: ZPL
 Group: Applications/Messaging
 URL: http://www.zimbra.com

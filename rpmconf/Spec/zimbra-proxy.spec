@@ -4,7 +4,7 @@
 Summary: Zimbra Proxy
 Name: zimbra-proxy
 Version: @@VERSION@@
-Release: @@RELEASE@@
+Release: 1%{?dist}
 License: ZPL and other
 Group: Applications/Messaging
 URL: http://www.zimbra.com

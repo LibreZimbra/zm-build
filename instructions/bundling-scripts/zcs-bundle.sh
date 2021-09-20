@@ -17,7 +17,7 @@
 
 cd ${repoDir}/zm-build
 
-ZCS_REL=zcs-${releaseNo}_${releaseCandidate}_${buildNo}.${os}.${buildTimeStamp}
+ZCS_REL=zcs-${releaseNo}_${releaseCandidate}_${buildNo}.${os}
 
 mkdir -p $ZCS_REL/bin
 mkdir -p $ZCS_REL/data
@@ -81,7 +81,6 @@ echo "${buildNo}"          > ${ZCS_REL}/.BUILD_NUM
 echo "${os}"               > ${ZCS_REL}/.BUILD_PLATFORM
 echo "${releaseNo}"        > ${ZCS_REL}/.BUILD_RELEASE_NO
 echo "${releaseCandidate}" > ${ZCS_REL}/.BUILD_RELEASE_CANDIDATE
-echo "${buildTimeStamp}"   > ${ZCS_REL}/.BUILD_TIME_STAMP
 
 ##########################################
 

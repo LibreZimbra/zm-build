@@ -4,7 +4,7 @@
 Summary: Zimbra Spell
 Name: zimbra-spell
 Version: @@VERSION@@
-Release: @@RELEASE@@
+Release: 1%{?dist}
 License: Various
 Group: Applications/Messaging
 URL: http://www.zimbra.com

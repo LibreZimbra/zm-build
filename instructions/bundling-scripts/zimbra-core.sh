@@ -61,7 +61,6 @@ CreateDebianPackage()
 
       cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb \
          | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
-               -e "s/@@branch@@/${buildTimeStamp}/" \
                -e "s/@@ARCH@@/${arch}/" \
                -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
                -e "/^%post$/ r ${currentScript}.post"
@@ -84,7 +83,6 @@ CreateRhelPackage()
 
     cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
     	sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
-            	-e "s/@@RELEASE@@/${buildTimeStamp}/" \
                 -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
             	-e "/^%pre$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre" \
             	-e "/Best email money can buy/ a Network edition" \

@@ -4,7 +4,7 @@
 Summary: Zimbra IMAP
 Name: zimbra-imapd
 Version: @@VERSION@@
-Release: @@RELEASE@@
+Release: 1%{?dist}
 License: Various
 Group: Applications/Messaging
 URL: http://www.zimbra.com

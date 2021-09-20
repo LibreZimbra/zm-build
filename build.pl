@@ -109,7 +109,7 @@ sub InitGlobalBuildVars()
 {
    {
       my $destination_name_func = sub {
-         return "$CFG{BUILD_OS}-$CFG{BUILD_RELEASE}-$CFG{BUILD_RELEASE_NO_SHORT}-$CFG{BUILD_TS}-LIBRE-$CFG{BUILD_NO}";
+         return "$CFG{BUILD_OS}-$CFG{BUILD_RELEASE}-$CFG{BUILD_RELEASE_NO_SHORT}-LIBRE-$CFG{BUILD_NO}";
       };
 
       my $build_dir_func = sub {
@@ -120,7 +120,6 @@ sub InitGlobalBuildVars()
 
       my @cmd_args = (
          { name => "BUILD_NO",                   type => "=i",  hash_src => \%cmd_hash, default_sub => sub { return GetNewBuildNo(); }, },
-         { name => "BUILD_TS",                   type => "=i",  hash_src => \%cmd_hash, default_sub => sub { return GetNewBuildTs(); }, },
          { name => "BUILD_OS",                   type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return GetBuildOS(); }, },
          { name => "BUILD_DESTINATION_BASE_DIR", type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return "$GLOBAL_PATH_TO_TOP/BUILDS"; }, },
          { name => "BUILD_SOURCES_BASE_DIR",     type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return $GLOBAL_PATH_TO_TOP; }, },
@@ -135,7 +134,6 @@ sub InitGlobalBuildVars()
          { name => "DISABLE_BUNDLE",             type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
          { name => "EXCLUDE_GIT_REPOS",          type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return ""; }, },
          { name => "ANT_OPTIONS",                type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return undef; }, },
-         { name => "BUILD_HOSTNAME",             type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return Net::Domain::hostfqdn; }, },
          { name => "BUILD_ARCH",                 type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return GetBuildArch(); }, },
          { name => "PKG_OS_TAG",                 type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return GetPkgOsTag(); }, },
          { name => "BUILD_RELEASE_NO_SHORT",     type => "=s",  hash_src => \%cmd_hash, default_sub => sub { my $x = $CFG{BUILD_RELEASE_NO}; $x =~ s/[.]//g; return $x; }, },
@@ -268,7 +266,6 @@ sub Prepare()
 
    open( FD, ">", "$GLOBAL_PATH_TO_SCRIPT_DIR/.build.last_no_ts" );
    print FD "BUILD_NO=$CFG{BUILD_NO}\n";
-   print FD "BUILD_TS=$CFG{BUILD_TS}\n";
    close(FD);
 
    SysExec( "mkdir", "-p", "$CFG{BUILD_DIR}" );
@@ -448,9 +445,6 @@ sub Build($)
          "-Dzimbra.buildinfo.platform=$CFG{BUILD_OS}",
          "-Dzimbra.buildinfo.pkg_os_tag=$CFG{PKG_OS_TAG}",
          "-Dzimbra.buildinfo.version=$CFG{BUILD_RELEASE_NO}_$CFG{BUILD_RELEASE_CANDIDATE}_$CFG{BUILD_NO}",
-         "-Dzimbra.buildinfo.release=$CFG{BUILD_TS}",
-         "-Dzimbra.buildinfo.date=$CFG{BUILD_TS}",
-         "-Dzimbra.buildinfo.host=$CFG{BUILD_HOSTNAME}",
          "-Dzimbra.buildinfo.buildnum=$CFG{BUILD_NO}",
       ],
       make => [
@@ -459,9 +453,6 @@ sub Build($)
          "zimbra.buildinfo.platform=$CFG{BUILD_OS}",
          "zimbra.buildinfo.pkg_os_tag=$CFG{PKG_OS_TAG}",
          "zimbra.buildinfo.version=$CFG{BUILD_RELEASE_NO}_$CFG{BUILD_RELEASE_CANDIDATE}_$CFG{BUILD_NO}",
-         "zimbra.buildinfo.release=$CFG{BUILD_TS}",
-         "zimbra.buildinfo.date=$CFG{BUILD_TS}",
-         "zimbra.buildinfo.host=$CFG{BUILD_HOSTNAME}",
          "zimbra.buildinfo.buildnum=$CFG{BUILD_NO}",
       ],
       mvn => [
@@ -490,7 +481,7 @@ sub Build($)
          print color('blue') . "BUILDING: $dir ($cnt of " . scalar(@ALL_BUILDS) . ")" . color('reset') . "\n";
          print "\n";
 
-         if ( $ENV{ENV_RESUME_FLAG} && -f "$target_dir/.built.$CFG{BUILD_TS}" )
+         if ( $ENV{ENV_RESUME_FLAG} && -f "$target_dir/.built" )
          {
             print color('yellow') . "SKIPPING... [TO REBUILD REMOVE '$target_dir']" . color('reset') . "\n";
             print "=========================================================================================================\n";
@@ -533,7 +524,7 @@ sub Build($)
                   if ( !exists $build_info->{partial} )
                   {
                      SysExec( "mkdir", "-p", "$target_dir" );
-                     SysExec( "touch", "$target_dir/.built.$CFG{BUILD_TS}" );
+                     SysExec( "touch", "$target_dir/.built" );
                   }
                },
             );
@@ -569,7 +560,6 @@ sub Build($)
                      PKG_OS_TAG='$CFG{PKG_OS_TAG}' \\
                      repoDir='$CFG{BUILD_DIR}' \\
                      arch='$CFG{BUILD_ARCH}' \\
-                     buildTimeStamp='$CFG{BUILD_TS}' \\
                      buildLogFile='$CFG{BUILD_DIR}/logs/build.log' \\
                      zimbraThirdPartyServer='$CFG{BUILD_THIRDPARTY_SERVER}' \\
                         bash $GLOBAL_PATH_TO_SCRIPT_DIR/instructions/bundling-scripts/$package_script.sh
@@ -620,7 +610,7 @@ sub Deploy()
 
    EchoToFile( "$destination_dir/archive-access-$CFG{PKG_OS_TAG}.txt", EmitArchiveAccessInstructions( \@archive_names ) );
 
-   SysExec("cp $CFG{BUILD_DIR}/zm-build/zcs-*.$CFG{BUILD_TS}.tgz $destination_dir/")
+   SysExec("cp $CFG{BUILD_DIR}/zm-build/zcs-*.tgz $destination_dir/")
      if ( !$CFG{DISABLE_TAR} );
 
     if ( !-f "/etc/nginx/conf.d/zimbra-pkg-archives-host.conf" || !`pgrep -f -P1 '[n]ginx'` )
@@ -687,14 +677,6 @@ sub GetNewBuildNo()
 
    return $line;
 }
-
-sub GetNewBuildTs()
-{
-   chomp( my $x = `date +'%Y%m%d%H%M%S'` );
-
-   return $x;
-}
-
 
 sub GetBuildOS()    # FIXME - use standard mechanism
 {
