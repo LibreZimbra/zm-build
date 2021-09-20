@@ -194,7 +194,6 @@ CreateDebianPackage()
          | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
                -e "s/@@ARCH@@/${arch}/" \
                -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
-               -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/" \
                -e "/^%post$/ r ${currentScript}.post"
     ) > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
 
@@ -213,7 +212,6 @@ CreateRhelPackage()
     cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.spec | \
     	sed -e "s/@@VERSION@@/${releaseNo}_${releaseCandidate}_${buildNo}.${os}/" \
                 -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
-                -e "s/@@PKG_OS_TAG@@/${PKG_OS_TAG}/" \
             	-e "/^%pre$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre" \
             	-e "/^%post$/ r ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post" > ${repoDir}/zm-build/${currentScript}.spec
 

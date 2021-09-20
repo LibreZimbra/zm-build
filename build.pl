@@ -135,7 +135,6 @@ sub InitGlobalBuildVars()
          { name => "EXCLUDE_GIT_REPOS",          type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return ""; }, },
          { name => "ANT_OPTIONS",                type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return undef; }, },
          { name => "BUILD_ARCH",                 type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return GetBuildArch(); }, },
-         { name => "PKG_OS_TAG",                 type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return GetPkgOsTag(); }, },
          { name => "BUILD_RELEASE_NO_SHORT",     type => "=s",  hash_src => \%cmd_hash, default_sub => sub { my $x = $CFG{BUILD_RELEASE_NO}; $x =~ s/[.]//g; return $x; }, },
          { name => "DESTINATION_NAME",           type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return &$destination_name_func; }, },
          { name => "BUILD_DIR",                  type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return &$build_dir_func; }, },
@@ -251,7 +250,7 @@ sub TranslateToPackagePath
       $pkg_dir .= "-$ENV{ENV_ARCHIVE_SUFFIX_STR}"
         if ( $pkg_dir ne "bundle" && $ENV{ENV_ARCHIVE_SUFFIX_STR} );
 
-      return "$CFG{BUILD_DIR}/zm-packages/$pkg_dir/$CFG{PKG_OS_TAG}";
+      return "$CFG{BUILD_DIR}/zm-packages/$pkg_dir/";
    }
    else
    {
@@ -396,7 +395,7 @@ cat > /etc/yum.repos.d/zimbra-packages.repo <<EOM
       map {
 "[$_]
 name=Zimbra Package Archive ($_)
-baseurl=$CFG{DEPLOY_URL_PREFIX}/archives/$_/$CFG{PKG_OS_TAG}/
+baseurl=$CFG{DEPLOY_URL_PREFIX}/archives/$_/
 enabled=1
 gpgcheck=0
 protect=0"
@@ -420,7 +419,7 @@ cat > /etc/apt/sources.list.d/zimbra-packages.list << EOM
 @{[
    join("\n",
       map {
-"deb [trusted=yes] $CFG{DEPLOY_URL_PREFIX}/archives/$_/$CFG{PKG_OS_TAG} ./ # Zimbra Package Archive ($_)"
+"deb [trusted=yes] $CFG{DEPLOY_URL_PREFIX}/archives/$_ ./ # Zimbra Package Archive ($_)"
       }
       @$archive_names
    )]}
@@ -443,7 +442,6 @@ sub Build($)
          "-Ddebug=$CFG{BUILD_DEBUG_FLAG}",
          "-Dis-production=$CFG{BUILD_PROD_FLAG}",
          "-Dzimbra.buildinfo.platform=$CFG{BUILD_OS}",
-         "-Dzimbra.buildinfo.pkg_os_tag=$CFG{PKG_OS_TAG}",
          "-Dzimbra.buildinfo.version=$CFG{BUILD_RELEASE_NO}_$CFG{BUILD_RELEASE_CANDIDATE}_$CFG{BUILD_NO}",
          "-Dzimbra.buildinfo.buildnum=$CFG{BUILD_NO}",
       ],
@@ -451,7 +449,6 @@ sub Build($)
          "debug=$CFG{BUILD_DEBUG_FLAG}",
          "is-production=$CFG{BUILD_PROD_FLAG}",
          "zimbra.buildinfo.platform=$CFG{BUILD_OS}",
-         "zimbra.buildinfo.pkg_os_tag=$CFG{PKG_OS_TAG}",
          "zimbra.buildinfo.version=$CFG{BUILD_RELEASE_NO}_$CFG{BUILD_RELEASE_CANDIDATE}_$CFG{BUILD_NO}",
          "zimbra.buildinfo.buildnum=$CFG{BUILD_NO}",
       ],
@@ -518,7 +515,7 @@ sub Build($)
                   if ( my $packages_path = TranslateToPackagePath( $build_info->{deploy_pkg_into} ) )
                   {
                      SysExec( "mkdir", "-p", $packages_path );
-                     SysExec( "rsync", "-av", "build/dist/$CFG{PKG_OS_TAG}/", "$packages_path/" );
+                     SysExec( "rsync", "-av", "build/dist/", "$packages_path/" );
                   }
 
                   if ( !exists $build_info->{partial} )
@@ -557,7 +554,6 @@ sub Build($)
                      branch='$CFG{BUILD_RELEASE}-$CFG{BUILD_RELEASE_NO_SHORT}' \\
                      buildNo='$CFG{BUILD_NO}' \\
                      os='$CFG{BUILD_OS}' \\
-                     PKG_OS_TAG='$CFG{PKG_OS_TAG}' \\
                      repoDir='$CFG{BUILD_DIR}' \\
                      arch='$CFG{BUILD_ARCH}' \\
                      buildLogFile='$CFG{BUILD_DIR}/logs/build.log' \\
@@ -608,7 +604,7 @@ sub Deploy()
       }
    }
 
-   EchoToFile( "$destination_dir/archive-access-$CFG{PKG_OS_TAG}.txt", EmitArchiveAccessInstructions( \@archive_names ) );
+   EchoToFile( "$destination_dir/archive-access.txt", EmitArchiveAccessInstructions( \@archive_names ) );
 
    SysExec("cp $CFG{BUILD_DIR}/zm-build/zcs-*.tgz $destination_dir/")
      if ( !$CFG{DISABLE_TAR} );
@@ -708,20 +704,6 @@ sub GetBuildArch()
 
    Die("Could not determine BUILD_ARCH");
 }
-
-sub GetPkgOsTag()
-{
-   my $b_os = $CFG{BUILD_OS};
-
-   return "u$1"
-     if ( $b_os =~ /UBUNTU([0-9]+)_/ );
-
-   return "r$1"
-     if ( $b_os =~ /RHEL([0-9]+)_/ || $b_os =~ /CENTOS([0-9]+)_/ );
-
-   Die("Could not determine PKG_OS_TAG");
-}
-
 
 ##############################################################################################
 
