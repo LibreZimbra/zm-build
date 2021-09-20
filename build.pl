@@ -514,7 +514,7 @@ sub Build($)
 
                   if ( my $packages_path = TranslateToPackagePath( $build_info->{deploy_pkg_into} ) )
                   {
-                     SysExec( "mkdir", "-p", $packages_path );
+                     SysExec( "mkdir", "-p", $packages_path, "build/dist/" );
                      SysExec( "rsync", "-av", "build/dist/", "$packages_path/" );
                   }
 
