@@ -10,7 +10,6 @@ main()
     PkgImageDirs \
         /etc/sudoers.d \
         /opt/zimbra/common/conf \
-        /opt/zimbra/data/amavisd/mysql \
         /opt/zimbra/data/altermime \
         /opt/zimbra/data/cbpolicyd/db \
         /opt/zimbra/data/clamav \
@@ -22,7 +21,6 @@ main()
     cp ${repoDir}/zm-postfix/conf/postfix/master.cf.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/master.cf.in
     cp ${repoDir}/zm-postfix/conf/postfix/tag_as_foreign.re.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/tag_as_foreign.re.in
     cp ${repoDir}/zm-postfix/conf/postfix/tag_as_originating.re.in ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/tag_as_originating.re.in
-    cp -f ${repoDir}/zm-amavis/conf/amavisd/mysql/antispamdb.sql ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/amavisd/mysql/antispamdb.sql
 
     CreatePackage "${os}"
 }
@@ -54,8 +52,6 @@ CreateRhelPackage()
     echo "%attr(-, zimbra, zimbra) /opt/zimbra/common/conf/tag_as_foreign.re.in" >> \
         ${repoDir}/zm-build/${currentScript}.spec
     echo "%attr(-, zimbra, zimbra) /opt/zimbra/common/conf/tag_as_originating.re.in" >> \
-        ${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/amavisd" >> \
         ${repoDir}/zm-build/${currentScript}.spec
     echo "%attr(-, zimbra, zimbra) /opt/zimbra/data/clamav" >> \
         ${repoDir}/zm-build/${currentScript}.spec

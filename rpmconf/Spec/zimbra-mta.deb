@@ -5,7 +5,7 @@ Maintainer: info@metux.net
 Section: Mail
 Priority: optional
 Architecture: @@ARCH@@
-Depends: zimbra-core, zimbra-mta-components
+Depends: zimbra-core, zimbra-mta-components, zimbra-amavis
 Provides: mail-transport-agent
 Conflicts: mail-transport-agent
 Replaces: mail-transport-agent

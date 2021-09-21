@@ -242,7 +242,7 @@
    },
    {
       "dir"         => "zm-amavis",
-      "ant_targets" => undef,
+      "ant_targets" => ["pkg"],
       "stage_cmd"   => sub {
          SysExec("cp -f -r ../zm-amavis $CFG{BUILD_DIR}");
       },
