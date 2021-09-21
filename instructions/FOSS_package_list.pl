@@ -7,7 +7,6 @@
    "zimbra-snmp",
    "zimbra-store",
    "zimbra-apache",
-   "zimbra-spell",
    "zimbra-proxy",
    "zimbra-imapd",
 );

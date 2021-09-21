@@ -228,7 +228,7 @@
    },
    {
       "dir"         => "zm-aspell",
-      "ant_targets" => undef,
+      "ant_targets" => ["pkg"],
       "stage_cmd"   => sub {
          SysExec("cp -f -r ../zm-aspell $CFG{BUILD_DIR}");
       },

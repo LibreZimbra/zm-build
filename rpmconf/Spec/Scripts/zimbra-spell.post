@@ -1,4 +1,0 @@
-#!/bin/bash
-# SPDX-License-Identifier: GPL-2.0-only
-
-chown root:root /opt/zimbra/data/httpd/htdocs/aspell.php
