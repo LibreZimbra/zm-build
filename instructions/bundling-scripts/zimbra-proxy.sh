@@ -1,11 +1,13 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-2.0-only
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/utils.sh"
+
 #-------------------- Configuration ---------------------------
 
     currentScript=`basename $0 | cut -d "." -f 1`                          # zimbra-proxy
     currentPackage=`echo ${currentScript}build | cut -d "-" -f 2` # proxybuild
-
 
 #-------------------- Build Package ---------------------------
 main()
@@ -23,10 +25,6 @@ main()
 }
 
 #-------------------- Util Functions ---------------------------
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-source "$SCRIPT_DIR/utils.sh"
 
 CreateDebianPackage()
 {
