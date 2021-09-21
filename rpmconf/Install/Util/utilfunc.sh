@@ -1,23 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-2.0-only
 
-displayLicense() {
-  echo ""
-  echo ""
-  if [ -f ${MYDIR}/docs/zcl.txt ]; then
-    cat $MYDIR/docs/zcl.txt
-  fi
-  echo ""
-  echo ""
-  if [ x$DEFAULTFILE = "x" ]; then
-    askYN "Do you agree with the terms of the software license agreement?" "N"
-    if [ $response != "yes" ]; then
-      exit
-    fi
-  fi
-  echo ""
-}
-
 isFQDN() {
   #fqdn is > 2 dots.  because I said so.
   if [ x"$1" = "x" ]; then

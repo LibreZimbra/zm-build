@@ -3271,17 +3271,6 @@ sub setSpellUrl {
     $config{SPELLURL});
 }
 
-sub setLicenseFile {
-  $config{LICENSEFILE} = askFileName("Enter the name of the file that contains the license:",
-    $config{LICENSEFILE});
-  system("cp $config{LICENSEFILE} /opt/zimbra/conf/ZCSLicense.xml")
-    if ($config{LICENSEFILE} ne "/opt/zimbra/conf/ZCSLicense.xml");
-  if ( -f "/opt/zimbra/conf/ZCSLicense.xml") {
-    qx(chown zimbra:zimbra /opt/zimbra/conf/ZCSLicense.xml);
-    qx(chmod 444 /opt/zimbra/conf/ZCSLicense.xml);
-  }
-}
-
 sub setTimeZone {
   my $timezones="/opt/zimbra/conf/timezones.ics";
   if (-f $timezones) {

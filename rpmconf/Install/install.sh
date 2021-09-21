@@ -23,7 +23,6 @@ done
 
 UNINSTALL="no"
 SOFTWAREONLY="no"
-SKIP_ACTIVATION_CHECK="no"
 SKIP_UPGRADE_CHECK="no"
 ALLOW_PLATFORM_OVERRIDE="no"
 FORCE_UPGRADE="no"
@@ -32,15 +31,11 @@ usage() {
   echo "$0 [-r <dir> -l <file> -a <file> -u -s -c type -x -h] [defaultsfile]"
   echo ""
   echo "-h|--help               Usage"
-  echo "-l|--license <file>     License file to install."
-  echo "-a|--activation <file>  License activation file to install. [Upgrades only]"
   echo "-r|--restore <dir>      Restore contents of <dir> to localconfig"
   echo "-s|--softwareonly       Software only installation."
   echo "-u|--uninstall          Uninstall ZCS"
   echo "-x|--skipspacecheck     Skip filesystem capacity checks."
-  echo "--beta-support          Allows installer to upgrade Network Edition Betas."
   echo "--platform-override     Allows installer to continue on an unknown OS."
-  echo "--skip-activation-check Allows installer to continue if license activation checks fail."
   echo "--skip-upgrade-check    Allows installer to skip upgrade validation checks."
   echo "--force-upgrade         Force upgrade to be set to YES. Used if there is package installation failure for remote packages."
   echo "[defaultsfile]          File containing default install values."
@@ -54,34 +49,6 @@ while [ $# -ne 0 ]; do
       shift
       RESTORECONFIG=$1
       ;;
-    -l|--license)
-      shift
-      LICENSE=$1
-      if [ x"$LICENSE" = "x" ]; then
-        echo "Valid license file required for -l."
-        usage
-      fi
-
-      if [ ! -f "$LICENSE" ]; then
-        echo "Valid license file required for -l."
-        echo "${LICENSE}: file not found."
-        usage
-      fi
-      ;;
-    -a|--activation)
-      shift
-      ACTIVATION=$1
-      if [ x"$ACTIVATION" = "x" ]; then
-        echo "Valid license activation file required for -a."
-        usage
-      fi
-
-      if [ ! -f "$ACTIVATION" ]; then
-        echo "Valid license activation file required for -a."
-        echo "${ACTIVATION}: file not found."
-        usage
-      fi
-      ;;
     -u|--uninstall)
       UNINSTALL="yes"
       ;;
@@ -93,12 +60,6 @@ while [ $# -ne 0 ]; do
       ;;
     -platform-override|--platform-override)
       ALLOW_PLATFORM_OVERRIDE="yes"
-      ;;
-    -beta-support|--beta-support)
-      BETA_SUPPORT="yes"
-      ;;
-    -skip-activation-check|--skip-activation-check)
-      SKIP_ACTIVATION_CHECK="yes"
       ;;
     -skip-upgrade-check|--skip-upgrade-check)
       SKIP_UPGRADE_CHECK="yes"
@@ -138,30 +99,7 @@ else
 	AUTOINSTALL="no"
 fi
 
-if [ x"$LICENSE" != "x" ] && [ -e $LICENSE ]; then
-  if [ ! -d "/opt/zimbra/conf" ]; then
-    mkdir -p /opt/zimbra/conf
-  fi
-  cp $LICENSE /opt/zimbra/conf/ZCSLicense.xml
-  chown zimbra:zimbra /opt/zimbra/conf/ZCSLicense.xml 2> /dev/null
-  chmod 444 /opt/zimbra/conf/ZCSLicense.xml
-fi
-
-if [ x"$ACTIVATION" != "x" ] && [ -e $ACTIVATION ]; then
-  if [ ! -d "/opt/zimbra/conf" ]; then
-    mkdir -p /opt/zimbra/conf
-  fi
-  cp $ACTIVATION /opt/zimbra/conf/ZCSLicense-activated.xml
-  chown zimbra:zimbra /opt/zimbra/conf/ZCSLicense-activated.xml 2> /dev/null
-  chmod 444 /opt/zimbra/conf/ZCSLicense-activated.xml
-fi
-
 checkExistingInstall
-
-if [ x"$INSTALLED" != "xyes" ] && [ x"$ACTIVATION" != "x" ]; then
-  echo "License activation file option is only available on upgrade."
-  usage
-fi
 
 if [ x$UNINSTALL = "xyes" ]; then
 	askYN "Completely remove existing installation?" "N"
@@ -173,8 +111,6 @@ if [ x$UNINSTALL = "xyes" ]; then
 	fi
 	exit 1
 fi
-
-displayLicense
 
 checkUser root
 
@@ -276,26 +212,6 @@ if [ $UPGRADE = "yes" ]; then
   # deprecated by move of zimlets to /opt/zimbra/zimlets-deployed which isn't removed on upgrade
   #restoreZimlets
 fi
-
-if [ "x$LICENSE" != "x" ] && [ -f "$LICENSE" ]; then
-  echo "Installing /opt/zimbra/conf/ZCSLicense.xml"
-  if [ ! -d "/opt/zimbra/conf" ]; then
-    mkdir -p /opt/zimbra/conf
-  fi
-  cp -f $LICENSE /opt/zimbra/conf/ZCSLicense.xml
-  chown zimbra:zimbra /opt/zimbra/conf/ZCSLicense.xml
-  chmod 644 /opt/zimbra/conf/ZCSLicense.xml
-fi
-if [ "x$ACTIVATION" != "x" ] && [ -f "$ACTIVATION" ]; then
-  echo "Installing /opt/zimbra/conf/ZCSLicense.xml"
-  if [ ! -d "/opt/zimbra/conf" ]; then
-    mkdir -p /opt/zimbra/conf
-  fi
-  cp -f $ACTIVATION /opt/zimbra/conf/ZCSLicense-activated.xml
-  chown zimbra:zimbra /opt/zimbra/conf/ZCSLicense-activated.xml
-  chmod 644 /opt/zimbra/conf/ZCSLicense-activated.xml
-fi
-
 
 if [ $SOFTWAREONLY = "yes" ]; then
 
