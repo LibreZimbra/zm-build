@@ -1,22 +1,5 @@
 #!/usr/bin/perl
-#
-# ***** BEGIN LICENSE BLOCK *****
-# Zimbra Collaboration Suite Server
-# Copyright (C) 2014, 2015, 2016 Synacor, Inc.
-#
-# This program is free software: you can redistribute it and/or modify it under
-# the terms of the GNU General Public License as published by the Free Software Foundation,
-# version 2 of the License.
-#
-# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-# without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License along with this program.
-# If not, see <https://www.gnu.org/licenses/>.
-# ***** END LICENSE BLOCK *****
-#
-# Must be run on a system where the ldap_url key is set to contain all of the
-# replicas, as that is how the script determines what replicas exist.
+# SPDX-License-Identifier: GPL-2.0-only
 
 use strict;
 use lib qw(/opt/zimbra/common/lib/perl5/ /opt/zimbra/zimbramon/lib);

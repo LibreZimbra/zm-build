@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
 package Zimbra::Util::Timezone;
 use strict;
 our %TIMEZONES;
