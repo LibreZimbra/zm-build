@@ -131,7 +131,6 @@ sub InitGlobalBuildVars()
          { name => "BUILD_DEBUG_FLAG",           type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
          { name => "BUILD_DEV_TOOL_BASE_DIR",    type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return "$ENV{HOME}/.zm-dev-tools"; }, },
          { name => "DISABLE_TAR",                type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
-         { name => "DISABLE_BUNDLE",             type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
          { name => "EXCLUDE_GIT_REPOS",          type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return ""; }, },
          { name => "ANT_OPTIONS",                type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return undef; }, },
          { name => "BUILD_ARCH",                 type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return GetBuildArch(); }, },
@@ -244,9 +243,6 @@ sub TranslateToPackagePath
 
    if ( my $pkg_dir = $deploy_pkg_into )
    {
-      $pkg_dir = "zimbra-libre"
-        if ( $pkg_dir eq "bundle" && $CFG{DISABLE_BUNDLE} );
-
       $pkg_dir .= "-$ENV{ENV_ARCHIVE_SUFFIX_STR}"
         if ( $pkg_dir ne "bundle" && $ENV{ENV_ARCHIVE_SUFFIX_STR} );
 
@@ -558,14 +554,6 @@ sub Build($)
                         bash $GLOBAL_PATH_TO_SCRIPT_DIR/instructions/bundling-scripts/$package_script.sh
                   "
                );
-
-               if ( $CFG{DISABLE_BUNDLE} )    # move created packages out of the tar for independent deployment in archive.
-               {
-                  my $alt_dest_pkg_dir = TranslateToPackagePath("bundle");
-
-                  SysExec( "mkdir", "-p", $alt_dest_pkg_dir );
-                  SysExec( "rsync", "-av", "--remove-source-files", "$CFG{BUILD_DIR}/zm-build/$CFG{BUILD_ARCH}/", "$alt_dest_pkg_dir/" );
-               }
             }
          }
       },
