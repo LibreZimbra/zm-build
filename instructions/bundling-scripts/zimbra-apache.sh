@@ -28,8 +28,7 @@ main()
 
 CreateDebianPackage()
 {
-    Log "Create debian package"
-    PkgImageDirs /DEBIAN
+    DebianBegin
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -print0 | xargs -0 md5sum | sed -e 's| \./| |' \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums)
     DebianFinish

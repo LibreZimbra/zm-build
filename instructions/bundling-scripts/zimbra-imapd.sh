@@ -27,11 +27,7 @@ main()
 
 CreateDebianPackage()
 {
-    PkgImageDirs /DEBIAN
-    cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
-    chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
-
-    Log "Create debian package"
+    DebianBegin
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -print0 | xargs -0 md5sum | sed -e 's| \./| |' \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums)
     DebianFinish

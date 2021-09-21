@@ -13,15 +13,7 @@ currentPackage="$(echo ${currentScript}build | cut -d "-" -f 2)" # corebuild
 
 CreateDebianPackage()
 {
-    Log "Create debian package"
-
-    PkgImageDirs /DEBIAN
-
-   cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post > ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
-   cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre  > ${repoDir}/zm-build/${currentPackage}/DEBIAN/preinst
-
-   chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/preinst
-   chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
+    DebianBegin
 
    (
       set -e;

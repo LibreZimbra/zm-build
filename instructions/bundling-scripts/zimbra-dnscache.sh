@@ -21,9 +21,7 @@ main()
 
 CreateDebianPackage()
 {
-    PkgImageDirs /DEBIAN
-    cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
-    chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
+    DebianBegin
 
     PkgImageDirs /etc/resolvconf/update.d
     cp ${repoDir}/zm-dnscache/conf/dns/zimbra-unbound ${repoDir}/zm-build/${currentPackage}/etc/resolvconf/update.d

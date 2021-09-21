@@ -86,3 +86,17 @@ DebianFinish()
 
     (cd ${repoDir}/zm-build/${currentPackage}; dpkg -b ${repoDir}/zm-build/${currentPackage} ${packageDir})
 }
+
+DebianBegin()
+{
+    PkgImageDirs /DEBIAN
+    if [ -f ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post ]; then
+        cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
+        chmod ugo+x ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
+    fi
+
+    if [ -f ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre ]; then
+        cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/preinst
+        chmod ugo+x ${repoDir}/zm-build/${currentPackage}/DEBIAN/preinst
+    fi
+}

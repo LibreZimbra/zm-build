@@ -21,10 +21,7 @@ main()
 
 CreateDebianPackage()
 {
-    PkgImageDirs /DEBIAN
-    Log "Copy package files..."
-    cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
-    chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
+    DebianBegin
     DebianFinish
 }
 
