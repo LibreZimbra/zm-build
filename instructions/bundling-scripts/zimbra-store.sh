@@ -6,12 +6,6 @@ source "$SCRIPT_DIR/utils.sh"
 
 set -e
 
-#-------------------- Configuration ---------------------------
-
-    currentScript=`basename $0 | cut -d "." -f 1`                          # zimbra-store
-    currentPackage=`echo ${currentScript}build | cut -d "-" -f 2` # storebuild
-
-#-------------------- Build Package ---------------------------
 main()
 {
     Log "Create package directories"

@@ -4,13 +4,6 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/utils.sh"
 
-#-------------------- Configuration ---------------------------
-
-    currentScript=`basename $0 | cut -d "." -f 1`                          # zimbra-logger
-    currentPackage=`echo ${currentScript}build | cut -d "-" -f 2` # loggerbuild
-
-
-#-------------------- Build Package ---------------------------
 main()
 {
     PkgImageDirs /opt/zimbra/logger/db/data

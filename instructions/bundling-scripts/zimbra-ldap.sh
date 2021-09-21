@@ -4,15 +4,8 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/utils.sh"
 
-#-------------------- Configuration ---------------------------
-
-    currentScript=`basename $0 | cut -d "." -f 1`                          # zimbra-ldap
-    currentPackage=`echo ${currentScript}build | cut -d "-" -f 2` # ldapbuild
-
     ldapSchemaDir=${repoDir}/zm-ldap-utilities/build/dist
 
-
-#-------------------- Build Package ---------------------------
 main()
 {
     Log "Create package directories"

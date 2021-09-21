@@ -4,13 +4,6 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/utils.sh"
 
-#-------------------- Configuration ---------------------------
-
-    currentScript=`basename $0 | cut -d "." -f 1`                          # zimbra-dnscache
-    currentPackage=`echo ${currentScript}build | cut -d "-" -f 2` # dnscachebuild
-
-
-#-------------------- Build Package ---------------------------
 main()
 {
     PkgImageDirs /etc/sudoers.d /opt/zimbra/data/dns/ca /opt/zimbra/data/dns/trust

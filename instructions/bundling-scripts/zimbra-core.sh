@@ -4,13 +4,6 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/utils.sh"
 
-#-------------------- Configuration ---------------------------
-
-currentScript="$(basename "$0" | cut -d "." -f 1)"               # zimbra-core
-currentPackage="$(echo ${currentScript}build | cut -d "-" -f 2)" # corebuild
-
-#-------------------- Util Functions ---------------------------
-
 CreateDebianPackage()
 {
     DebianBegin
