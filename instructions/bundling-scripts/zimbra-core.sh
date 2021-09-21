@@ -63,10 +63,6 @@ CreateRhelPackage()
     	${repoDir}/zm-build/${currentScript}.spec
     echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/*" >> \
     	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/externaldirsync" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
-    echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/externaldirsync/*" >> \
-    	${repoDir}/zm-build/${currentScript}.spec
     echo "%attr(755, zimbra, zimbra) /opt/zimbra/conf/sasl2" >> \
     	${repoDir}/zm-build/${currentScript}.spec
     echo "%attr(644, zimbra, zimbra) /opt/zimbra/conf/sasl2/*" >> \
@@ -471,41 +467,6 @@ main()
 
    Copy ${repoDir}/zm-launcher/build/dist/zmmailboxdmgr                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmailboxdmgr
    Copy ${repoDir}/zm-launcher/build/dist/zmmailboxdmgr.unrestricted                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmailboxdmgr.unrestricted 
-
-   Copy ${repoDir}/zm-ldap-utilities/conf/externaldirsync/Exchange2000.xml                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/externaldirsync/Exchange2000.xml
-   Copy ${repoDir}/zm-ldap-utilities/conf/externaldirsync/Exchange2003.xml                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/externaldirsync/Exchange2003.xml
-   Copy ${repoDir}/zm-ldap-utilities/conf/externaldirsync/Exchange5.5.xml                           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/externaldirsync/Exchange5.5.xml
-   Copy ${repoDir}/zm-ldap-utilities/conf/externaldirsync/domino.xml                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/externaldirsync/domino.xml
-   Copy ${repoDir}/zm-ldap-utilities/conf/externaldirsync/novellGroupWise.xml                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/externaldirsync/novellGroupWise.xml
-   Copy ${repoDir}/zm-ldap-utilities/conf/externaldirsync/openldap.xml                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/externaldirsync/openldap.xml
-   Copy ${repoDir}/zm-ldap-utilities/conf/freshclam.conf.in                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/freshclam.conf.in
-   Copy ${repoDir}/zm-ldap-utilities/conf/zmconfigd.cf                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmconfigd.cf
-   Copy ${repoDir}/zm-ldap-utilities/conf/zmconfigd.log4j.properties                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmconfigd.log4j.properties
-   Copy ${repoDir}/zm-ldap-utilities/src/ldap/migration/migrate20110615-AddDynlist.pl               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/migrate20110615-AddDynlist.pl
-   Copy ${repoDir}/zm-ldap-utilities/src/ldap/migration/migrate20110721-AddUnique.pl                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/migrate20110721-AddUnique.pl
-   Copy ${repoDir}/zm-ldap-utilities/src/ldap/migration/migrate20111019-UniqueZimbraId.pl           ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/migrate20111019-UniqueZimbraId.pl
-   Copy ${repoDir}/zm-ldap-utilities/src/ldap/migration/migrate20120210-AddSearchNoOp.pl            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/migrate20120210-AddSearchNoOp.pl
-   Copy ${repoDir}/zm-ldap-utilities/src/ldap/migration/migrate20120507-UniqueDKIMSelector.pl       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/migrate20120507-UniqueDKIMSelector.pl
-   Copy ${repoDir}/zm-ldap-utilities/src/ldap/migration/migrate20140728-AddSSHA512.pl               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/migrate20140728-AddSSHA512.pl
-   Copy ${repoDir}/zm-ldap-utilities/src/ldap/migration/migrate20141022-AddTLSBits.pl               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/migrate20141022-AddTLSBits.pl
-   Copy ${repoDir}/zm-ldap-utilities/src/ldap/migration/migrate20150930-AddSyncpovSessionlog.pl     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/scripts/migrate20150930-AddSyncpovSessionlog.pl
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapanon                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapanon
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapapplyldif                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapapplyldif
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapenable-mmr                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapenable-mmr
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapenablereplica                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapenablereplica
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapinit                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapinit
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapmmrtool                                      ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapmmrtool
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapmonitordb                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapmonitordb
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldappromote-replica-mmr                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldappromote-replica-mmr
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapreplicatool                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapreplicatool
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapschema                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapschema
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmldapupdateldif                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmldapupdateldif
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmreplchk                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmreplchk
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmslapadd                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmslapadd
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmslapcat                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmslapcat
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmslapd                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmslapd
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmslapindex                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmslapindex
-   Copy ${repoDir}/zm-ldap-utilities/src/libexec/zmstat-ldap                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-ldap
 
    Copy ${repoDir}/zm-licenses/zimbra/ypl-full.txt                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/YPL.txt
    Copy ${repoDir}/zm-licenses/zimbra/zpl-full.txt                                                  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/ZPL.txt
