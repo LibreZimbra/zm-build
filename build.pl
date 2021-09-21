@@ -586,21 +586,6 @@ sub Deploy()
    SysExec( "mkdir", "-p", "$destination_dir/archives" );
 
    my @archive_names = map { basename($_) } grep { -d $_ && $_ !~ m/\/bundle$/ } glob("$CFG{BUILD_DIR}/zm-packages/bundle/*");
-
-   foreach my $archive_name (@archive_names)
-   {
-      SysExec( "rsync", "-av", "--delete", "$CFG{BUILD_DIR}/zm-packages/bundle/$archive_name/", "$destination_dir/archives/$archive_name" );
-
-      if ( -f "/etc/redhat-release" )
-      {
-            SysExec("cd '$destination_dir/archives/$archive_name/' && createrepo '.'");
-      }
-      else
-      {
-            SysExec("cd '$destination_dir/archives/$archive_name/' && dpkg-scanpackages '.' /dev/null > Packages");
-      }
-   }
-
    EchoToFile( "$destination_dir/archive-access.txt", EmitArchiveAccessInstructions( \@archive_names ) );
 
    SysExec("cp $CFG{BUILD_DIR}/zm-build/zcs-*.tgz $destination_dir/")

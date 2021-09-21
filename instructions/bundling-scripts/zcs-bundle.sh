@@ -43,29 +43,21 @@ cp -f ${repoDir}/zm-build/rpmconf/Install/install.sh                            
 cp -f ${repoDir}/zm-core-utils/src/libexec/zmdbintegrityreport                          ${ZCS_REL}/bin
 cp -f ${repoDir}/zm-mailbox/store/build/dist/versions-init.sql                          ${ZCS_REL}/data
 
-# all local packages to bundle
-cp -f ${packageDir}/*.*                                                                 ${ZCS_REL}/packages
-
-for pkgf in ${repoDir}/zm-packages/bundle/*/*.{rpm,deb,changes}
-do
-   if ! [[ "$pkgf" =~ src.rpm$ ]]
-   then
-      [ -f "$pkgf" ] && cp -f "$pkgf"                                                   ${ZCS_REL}/packages
-   fi
-done
-
 if [ -f "/etc/redhat-release" ]
 then
    if \which createrepo 2>&-
    then
-      ( cd ${ZCS_REL}/packages && createrepo . ) # Create index of packages
+      ( cd ${packageDir} && createrepo . ) # Create index of packages
    fi
 else
    if \which dpkg-scanpackages 2>&-
    then
-      ( cd ${ZCS_REL}/packages && dpkg-scanpackages . /dev/null > Packages ) # Create index of packages
+      ( cd ${packageDir} && dpkg-scanpackages . /dev/null > Packages ) # Create index of packages
    fi
 fi
+
+# all local packages to bundle
+cp -f ${packageDir}/*.*                                                                 ${ZCS_REL}/packages
 
 chmod 755 ${ZCS_REL}/bin/checkService.pl
 chmod 755 ${ZCS_REL}/bin/zmValidateLdap.pl
