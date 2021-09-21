@@ -45,11 +45,7 @@ CreateDebianPackage()
     Log "Copy package files..."
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
-
-    Log "Create debian package..."
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" -e "s/@@ARCH@@/${arch}/" \
-        > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
-    MakeDeb
+    DebianFinish
 }
 
 CreateRhelPackage()

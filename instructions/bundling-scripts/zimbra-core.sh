@@ -51,22 +51,12 @@ CreateDebianPackage()
          | sort \
    ) > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums
 
-   (
-      set -e;
-      MORE_DEPENDS=", zimbra-timezone-data (>= 1.0.1+1510156506-1) $(find ${repoDir}/zm-packages/ -name \*.deb \
+    export MORE_DEPENDS=", zimbra-timezone-data (>= 1.0.1+1510156506-1) $(find ${repoDir}/zm-packages/ -name \*.deb \
                          | xargs -n1 basename \
                          | sed -e 's/_[0-9].*//' \
                          | grep -e zimbra-common- \
                          | sed '1s/^/, /; :a; {N;s/\n/, /;ba}')";
-
-      cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb \
-         | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
-               -e "s/@@ARCH@@/${arch}/" \
-               -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
-               -e "/^%post$/ r ${currentScript}.post"
-   ) > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
-
-   MakeDeb
+    DebianFinish
 }
 
 CreateRhelPackage()

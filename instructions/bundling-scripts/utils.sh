@@ -64,9 +64,18 @@ CreatePackage()
     fi
 }
 
-MakeDeb()
+DebianFinish()
 {
     packageDir=`realpath $packageDir`
-    mkdir -p ${packageDir}
+    mkdir -p ${packageDir} ${repoDir}/zm-build/${currentPackage}/DEBIAN
+
+    # fixme: check for post script
+    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb \
+    | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" \
+          -e "s/@@ARCH@@/${arch}/" \
+          -e "s/@@MORE_DEPENDS@@/${MORE_DEPENDS}/" \
+          -e "/^%post$/ r ${currentPackage}.post" \
+    > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
+
     (cd ${repoDir}/zm-build/${currentPackage}; dpkg -b ${repoDir}/zm-build/${currentPackage} ${packageDir})
 }

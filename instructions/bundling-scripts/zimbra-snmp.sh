@@ -58,9 +58,7 @@ CreateDebianPackage()
     Log "Create debian package"
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -print0 | xargs -0 md5sum | sed -e 's| \./| |' \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums)
-    cat ${repoDir}/zm-build/rpmconf/Spec/${currentScript}.deb | sed -e "s/@@VERSION@@/${releaseNo}.${releaseCandidate}.${buildNo}.${os/_/.}/" -e "s/@@ARCH@@/${arch}/" \
-        > ${repoDir}/zm-build/${currentPackage}/DEBIAN/control
-    MakeDeb
+    DebianFinish
 }
 
 CreateRhelPackage()
