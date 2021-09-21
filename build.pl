@@ -530,7 +530,6 @@ sub Build($)
       cd    => "$GLOBAL_PATH_TO_SCRIPT_DIR",
       child => sub {
          SysExec( "rsync", "-az", "--delete", ".", "$CFG{BUILD_DIR}/zm-build" );
-         SysExec( "mkdir", "-p", "$CFG{BUILD_DIR}/zm-build/$CFG{BUILD_ARCH}" );
 
          my @ALL_PACKAGES = ();
          push( @ALL_PACKAGES, @{ EvalFile("instructions/FOSS_package_list.pl") } );
