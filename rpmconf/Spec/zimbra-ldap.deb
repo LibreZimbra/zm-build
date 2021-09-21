@@ -1,7 +1,7 @@
 Package: zimbra-ldap
 Version: @@VERSION@@
-Description: Best email money can buy
-Maintainer: build@zimbra.com
+Description: LibreZimbra
+Maintainer: info@metux.net
 Section: Mail
 Priority: optional
 Architecture: @@ARCH@@

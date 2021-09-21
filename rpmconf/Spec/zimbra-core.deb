@@ -1,7 +1,7 @@
 Package: zimbra-core
 Version: @@VERSION@@
-Description: Best email money can buy
-Maintainer: build@zimbra.com
+Description: LibreZimbra
+Maintainer: info@metux.net
 Section: mail
 Priority: optional
 Architecture: @@ARCH@@
