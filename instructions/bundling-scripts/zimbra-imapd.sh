@@ -6,11 +6,9 @@ source "$SCRIPT_DIR/utils.sh"
 
 main()
 {
-    Log "Create package directories"
-    PkgImageDirs /opt/zimbra/bin /opt/zimbra/conf /opt/zimbra/lib/jars
-
-    Log "Copy package files"
-    cp ${repoDir}/zm-core-utils/src/bin/zmimapdctl ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmimapdctl
+    PkgImageDirs /opt/zimbra/conf /opt/zimbra/lib/jars
+    PkgImageBinCmds ${repoDir}/zm-core-utils/src/bin \
+        zmimapdctl
     cp ${repoDir}/zm-zcs-lib/build/dist/oauth-1.4.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars/oauth-1.4.jar
     cp ${repoDir}/zm-mailbox/store-conf/conf/imapd.log4j.properties ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/imapd.log4j.properties
     CreatePackage "${os}"

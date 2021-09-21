@@ -71,6 +71,19 @@ PkgImageDirs()
     done
 }
 
+PkgImageBinCmds()
+{
+    local srcdir="$1"
+    local target="${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin"
+    mkdir -p $target
+    shift
+    while [ "$1" ]; do
+        cp $srcdir/$1 $target
+        chmod ugo+x $target/$1
+        shift
+    done
+}
+
 DebianFinish()
 {
     packageDir=`realpath $packageDir`
