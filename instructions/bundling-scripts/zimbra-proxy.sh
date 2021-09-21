@@ -13,9 +13,10 @@ source "$SCRIPT_DIR/utils.sh"
 main()
 {
     Log "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/nginx/includes
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/nginx/templates
+    PkgImageDirs \
+        /etc/sudoers.d \
+        /opt/zimbra/conf/nginx/includes \
+        /opt/zimbra/conf/nginx/templates
 
     Log "Copy package files"
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
@@ -28,7 +29,7 @@ main()
 
 CreateDebianPackage()
 {
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
+    PkgImageDirs /DEBIAN
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 

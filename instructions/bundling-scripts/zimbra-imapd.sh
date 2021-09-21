@@ -14,9 +14,7 @@ source "$SCRIPT_DIR/utils.sh"
 main()
 {
     Log "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars
+    PkgImageDirs /opt/zimbra/bin /opt/zimbra/conf /opt/zimbra/lib/jars
 
     Log "Copy package files"
     cp ${repoDir}/zm-core-utils/src/bin/zmimapdctl ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmimapdctl
@@ -29,7 +27,7 @@ main()
 
 CreateDebianPackage()
 {
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
+    PkgImageDirs /DEBIAN
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 

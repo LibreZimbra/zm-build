@@ -16,8 +16,7 @@ source "$SCRIPT_DIR/utils.sh"
 main()
 {
     Log "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/etc/openldap/zimbra
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
+    PkgImageDirs /opt/zimbra/common/etc/openldap/zimbra /etc/sudoers.d
 
     Log "Copy package files"
     cp -rf ${ldapSchemaDir}/*  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/etc/openldap/zimbra
@@ -30,7 +29,7 @@ main()
 
 CreateDebianPackage()
 {
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
+    PkgImageDirs /DEBIAN
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 

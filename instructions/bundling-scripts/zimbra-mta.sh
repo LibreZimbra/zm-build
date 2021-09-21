@@ -14,14 +14,15 @@ source "$SCRIPT_DIR/utils.sh"
 main()
 {
     Log "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/amavisd/mysql
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/altermime
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/cbpolicyd/db
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/clamav
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/opendkim
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/postfix
+    PkgImageDirs \
+        /etc/sudoers.d \
+        /opt/zimbra/common/conf \
+        /opt/zimbra/data/amavisd/mysql \
+        /opt/zimbra/data/altermime \
+        /opt/zimbra/data/cbpolicyd/db \
+        /opt/zimbra/data/clamav \
+        /opt/zimbra/data/opendkim \
+        /opt/zimbra/data/postfix
 
     Log "Copy package files"
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
@@ -37,7 +38,7 @@ main()
 
 CreateDebianPackage()
 {
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
+    PkgImageDirs /DEBIAN
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 

@@ -15,11 +15,34 @@ set -e
 main()
 {
     Log "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/templates
-
-    Log "Copy package files"
+    PkgImageDirs \
+        /etc/sudoers.d \
+        /opt/zimbra/bin \
+        /opt/zimbra/conf/templates \
+        /opt/zimbra/extensions-extra/openidconsumer \
+        /opt/zimbra/lib/jars \
+        /opt/zimbra/libexec \
+        /opt/zimbra/lib/ext/mitel \
+        /opt/zimbra/lib/ext/clamscanner \
+        /opt/zimbra/lib/ext/nginx-lookup \
+        /opt/zimbra/lib/ext/openidconsumer \
+        /opt/zimbra/lib/ext/zimbraadminversioncheck \
+        /opt/zimbra/lib/ext/zimbraldaputils \
+        /opt/zimbra/lib/ext/zm-oauth-social \
+        /opt/zimbra/lib/ext/zm-gql \
+        /opt/zimbra/lib/ext-common \
+        /opt/zimbra/jetty_base/ \
+        /opt/zimbra/jetty_base/common/endorsed \
+        /opt/zimbra/jetty_base/common/lib \
+        /opt/zimbra/jetty_base/webapps/service/WEB-INF/lib \
+        /opt/zimbra/jetty_base/webapps/zimbra \
+        /opt/zimbra/jetty_base/webapps/zimbra/portals/example \
+        /opt/zimbra/jetty_base/temp \
+        /opt/zimbra/log \
+        /opt/zimbra/zimlets \
+        /opt/zimbra/jetty_base/etc \
+        /opt/zimbra/jetty_base/modules \
+        /opt/zimbra/jetty_base/start.d
 
     Log "Copy etc files"
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
@@ -33,23 +56,10 @@ main()
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/custom-mimetypes.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/custom-mimetypes.xml
 
     Log "Copy extensions-extra files of /opt/zimbra/"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer
     cp -rf ${repoDir}/zm-openid-consumer-store/build/dist/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer
     rm -rf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer/extensions-extra
 
-    Log "Copy lib files of /opt/zimbra/"
-
     Log "Copy ext files of /opt/zimbra/lib/"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/openidconsumer
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraadminversioncheck
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraldaputils
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-oauth-social
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-gql
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common
 
     cp -f ${repoDir}/zm-clam-scanner-store/build/dist/zm-clam-scanner-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner/clamscanner.jar
     cp -f ${repoDir}/zm-nginx-lookup-store/build/dist/zm-nginx-lookup-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup/nginx-lookup.jar
@@ -66,19 +76,14 @@ main()
 #-------------------- Get wars content (service.war, zimbra.war and zimbraAdmin.war) ---------------------------
 
     Log "service.war content"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF/lib
     cp ${repoDir}/zm-zimlets/conf/zimbra.tld ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF
     cp ${repoDir}/zm-taglib/build/zm-taglib*.jar         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF/lib
     cp ${repoDir}/zm-zimlets/build/dist/zimlettaglib.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/service/WEB-INF/lib
-
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra
 
     Log "help content"
     cp -rf ${repoDir}/zm-help/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/help
 
     Log "portals example content"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/portals/example
     cp -rf ${repoDir}/zm-webclient-portal-example/example ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/portals
 
     Log "robots.txt content"
@@ -97,11 +102,9 @@ main()
     cp -f ${repoDir}/zm-versioncheck-utilities/src/libexec/zmcheckversion ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
 
     Log "Copy log files of /opt/zimbra/"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log
     cp -f ${repoDir}/zm-build/rpmconf/Conf/hotspot_compiler ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log/.hotspot_compiler
 
     Log "Copy zimlets files of /opt/zimbra/"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets
     zimletsArray=( "zm-versioncheck-admin-zimlet" \
                    "zm-bulkprovision-admin-zimlet" \
                    "zm-certificate-manager-admin-zimlet" \
@@ -117,16 +120,10 @@ main()
     cp -f ${repoDir}/zm-zimlets/build/dist/zimlets/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets
 
     Log "Building jetty/common/"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/common/endorsed
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/common/lib
 
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/temp
     touch ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/temp/.emptyfile
 
     Log "Create jetty conf"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/modules
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/start.d
 
     cp -f ${repoDir}/zm-jetty-conf/conf/jetty/jettyrc  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/
     cp -f ${repoDir}/zm-jetty-conf/conf/jetty/zimbra.policy.example ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/etc/
@@ -151,7 +148,7 @@ main()
 
 CreateDebianPackage()
 {
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
+    PkgImageDirs /DEBIAN
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 

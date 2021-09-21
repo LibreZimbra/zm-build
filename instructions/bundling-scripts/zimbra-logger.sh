@@ -13,9 +13,7 @@ source "$SCRIPT_DIR/utils.sh"
 #-------------------- Build Package ---------------------------
 main()
 {
-    Log "Create package directories..."
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/logger/db/data
-
+    PkgImageDirs /opt/zimbra/logger/db/data
     CreatePackage "${os}"
 }
 
@@ -23,7 +21,7 @@ main()
 
 CreateDebianPackage()
 {
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
+    PkgImageDirs /DEBIAN
     Log "Copy package files..."
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*

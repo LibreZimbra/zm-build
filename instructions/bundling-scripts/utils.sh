@@ -64,6 +64,13 @@ CreatePackage()
     fi
 }
 
+PkgImageDirs()
+{
+    for d in "$@" ; do
+        mkdir -p ${repoDir}/zm-build/${currentPackage}/$d
+    done
+}
+
 DebianFinish()
 {
     packageDir=`realpath $packageDir`

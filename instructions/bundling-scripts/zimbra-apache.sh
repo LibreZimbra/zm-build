@@ -15,7 +15,7 @@ source "$SCRIPT_DIR/utils.sh"
 main()
 {
     Log "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf
+    PkgImageDirs /opt/zimbra/conf
 
     Log "Copy package files"
     cp ${repoDir}/zm-aspell/conf/httpd.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/httpd.conf
@@ -29,7 +29,7 @@ main()
 CreateDebianPackage()
 {
     Log "Create debian package"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
+    PkgImageDirs /DEBIAN
     (cd ${repoDir}/zm-build/${currentPackage}; find . -type f ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -print0 | xargs -0 md5sum | sed -e 's| \./| |' \
         > ${repoDir}/zm-build/${currentPackage}/DEBIAN/md5sums)
     DebianFinish

@@ -13,12 +13,12 @@ source "$SCRIPT_DIR/utils.sh"
 #-------------------- Build Package ---------------------------
 main()
 {
-    Log "Create package directories"
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/snmp/persist
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/data/snmp/state
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/share/snmp/mibs
+    PkgImageDirs \
+        /opt/zimbra/data/snmp/persist \
+        /opt/zimbra/data/snmp/state \
+        /opt/zimbra/conf \
+        /opt/zimbra/common/conf \
+        /opt/zimbra/common/share/snmp/mibs
 
     Log "Copy package files"
     cp ${repoDir}/zm-build/rpmconf/Conf/snmp.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/conf/snmp.conf
@@ -34,7 +34,7 @@ main()
 
 CreateDebianPackage()
 {
-    mkdir -p ${repoDir}/zm-build/${currentPackage}/DEBIAN
+    PkgImageDirs /DEBIAN
     cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post >> ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
     chmod 555 ${repoDir}/zm-build/${currentPackage}/DEBIAN/*
 

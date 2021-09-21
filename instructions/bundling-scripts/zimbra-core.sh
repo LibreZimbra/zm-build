@@ -15,7 +15,7 @@ CreateDebianPackage()
 {
     Log "Create debian package"
 
-   mkdir -p "${repoDir}/zm-build/${currentPackage}/DEBIAN";
+    PkgImageDirs /DEBIAN
 
    cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.post > ${repoDir}/zm-build/${currentPackage}/DEBIAN/postinst
    cat ${repoDir}/zm-build/rpmconf/Spec/Scripts/${currentScript}.pre  > ${repoDir}/zm-build/${currentPackage}/DEBIAN/preinst
