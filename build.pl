@@ -18,6 +18,9 @@ my $GLOBAL_PATH_TO_SCRIPT_DIR;
 my $GLOBAL_PATH_TO_TOP;
 my $CWD;
 
+# we're in pkg/zm-build
+my $CACHE_DIR=getcwd.'/../../tmp';
+
 my %CFG = ();
 
 BEGIN
@@ -256,8 +259,8 @@ sub TranslateToPackagePath
 
 sub Prepare()
 {
-   RemoveTargetInDir( ".zcs-deps",   $ENV{HOME} ) if ( $ENV{ENV_CACHE_CLEAR_FLAG} );
-   RemoveTargetInDir( ".ivy2/cache", $ENV{HOME} ) if ( $ENV{ENV_CACHE_CLEAR_FLAG} );
+   RemoveTargetInDir( ".zcs-deps",   $CACHE_DIR ) if ( $ENV{ENV_CACHE_CLEAR_FLAG} );
+   RemoveTargetInDir( ".ivy2/cache", $CACHE_DIR ) if ( $ENV{ENV_CACHE_CLEAR_FLAG} );
 
    open( FD, ">", "$GLOBAL_PATH_TO_SCRIPT_DIR/.build.last_no_ts" );
    print FD "BUILD_NO=$CFG{BUILD_NO}\n";
@@ -265,8 +268,8 @@ sub Prepare()
 
    SysExec( "mkdir", "-p", "$CFG{BUILD_DIR}" );
    SysExec( "mkdir", "-p", "$CFG{BUILD_DIR}/logs" );
-   SysExec( "mkdir", "-p", "$ENV{HOME}/.zcs-deps" );
-   SysExec( "mkdir", "-p", "$ENV{HOME}/.ivy2/cache" );
+   SysExec( "mkdir", "-p", "$CACHE_DIR/.zcs-deps" );
+   SysExec( "mkdir", "-p", "$CACHE_DIR/.ivy2/cache" );
 
    SysExec( "find", $CFG{BUILD_DIR}, "-type", "f", "-name", ".built.*", "-delete" ) if ( $ENV{ENV_CACHE_CLEAR_FLAG} );
 
@@ -281,7 +284,7 @@ sub Prepare()
 
    for my $j_url (@TP_JARS)
    {
-      if ( my $f = "$ENV{HOME}/.zcs-deps/" . basename($j_url) )
+      if ( my $f = "$CACHE_DIR/.zcs-deps/" . basename($j_url) )
       {
          if ( !-f $f )
          {
