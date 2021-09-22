@@ -514,6 +514,17 @@ sub Build($)
                      SysExec( "rsync", "-av", "build/dist/", "$packages_path/" );
                   }
 
+                  if ( my $package = $build_info->{package} )
+                  {
+                     SysExec( "debian/rules", "debian/changelog", "debian/control" );
+                     SysExec( "dpkg-buildpackage", "-b" );
+
+                     my @debfiles = glob("../$package*.{deb,buildinfo,changes}");
+                     for my $f (@debfiles) {
+                        SysExec( "mv", $f, "../../build/packages" );
+                     }
+                  }
+
                   if ( !exists $build_info->{partial} )
                   {
                      SysExec( "mkdir", "-p", "$target_dir" );
