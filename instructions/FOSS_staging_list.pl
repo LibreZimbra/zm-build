@@ -46,7 +46,7 @@
    },
    {
       "dir"         => "zm-ldap-utilities",
-      "ant_targets" => ["pkg"],
+      "package"     => "zimbra-ldap-utilities",
       "stage_cmd"   => sub {
          SysExec("(cd .. && rsync -az --relative zm-ldap-utilities/build/dist $CFG{BUILD_DIR}/)");
          SysExec("(cd .. && rsync -az --relative zm-ldap-utilities/src/ldap/migration $CFG{BUILD_DIR}/)");
