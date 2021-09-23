@@ -12,7 +12,11 @@ Vendor: Zimbra, Inc.
 Packager: Zimbra, Inc.
 BuildRoot: /opt/zimbra
 AutoReqProv: no
-Requires: zimbra-core, zimbra-ldap-components
+Requires: zimbra-core
+Requires: zimbra-ldap-base, zimbra-lmdb >= 2.4.59-1zimbra8.8b4.el8
+Requires: zimbra-openldap-server >= 2.4.59-1zimbra8.8b4.el8
+Requires: zimbra-openssl >= 1.1.1k-1zimbra8.7b4.el8, zimbra-openssl-libs >= 1.1.1k-1zimbra8.7b4.el8
+Requires: zimbra-core-components >= 3.0.8-1zimbra8.8b1.el8
 
 %description
 Best email money can buy
