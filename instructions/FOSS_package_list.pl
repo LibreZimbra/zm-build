@@ -1,6 +1,5 @@
 @ENTRIES = (
    "zimbra-core",
-   "zimbra-ldap",
    "zimbra-logger",
    "zimbra-mta",
    "zimbra-dnscache",

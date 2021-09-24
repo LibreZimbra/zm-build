@@ -46,13 +46,8 @@
    },
    {
       "dir"         => "zm-ldap-utilities",
-      "package"     => "zimbra-ldap-utilities",
-      "stage_cmd"   => sub {
-         SysExec("(cd .. && rsync -az --relative zm-ldap-utilities/build/dist $CFG{BUILD_DIR}/)");
-         SysExec("(cd .. && rsync -az --relative zm-ldap-utilities/src/ldap/migration $CFG{BUILD_DIR}/)");
-         SysExec("(cd .. && rsync -az --relative zm-ldap-utilities/conf $CFG{BUILD_DIR}/)");
-         SysExec("(cd .. && rsync -az --relative zm-ldap-utilities/src/libexec $CFG{BUILD_DIR}/)");
-      },
+      "package"     => "zimbra-ldap",
+      "stage_cmd"   => undef,
    },
    {
       "dir"         => "zm-ajax",
