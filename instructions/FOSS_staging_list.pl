@@ -45,6 +45,10 @@
       "stage_cmd"   => undef,
    },
    {
+      "dir"         => "zm-openldap",
+      "package"     => "zimbra-openldap",
+   },
+   {
       "dir"         => "zm-ldap-utilities",
       "package"     => "zimbra-ldap",
       "stage_cmd"   => undef,
