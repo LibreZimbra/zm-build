@@ -17,6 +17,7 @@ my $GLOBAL_PATH_TO_SCRIPT_FILE;
 my $GLOBAL_PATH_TO_SCRIPT_DIR;
 my $GLOBAL_PATH_TO_TOP;
 my $CWD;
+my $PACKAGE_DIR;
 
 # we're in pkg/zm-build
 my $CACHE_DIR=getcwd.'/../../tmp';
@@ -30,6 +31,12 @@ BEGIN
    $GLOBAL_PATH_TO_SCRIPT_DIR  = dirname($GLOBAL_PATH_TO_SCRIPT_FILE);
    $GLOBAL_PATH_TO_TOP         = dirname($GLOBAL_PATH_TO_SCRIPT_DIR);
    $CWD                        = getcwd();
+   if (defined $ENV{PACKAGE_DIR}) {
+        $PACKAGE_DIR = $ENV{PACKAGE_DIR};
+   } else {
+        $PACKAGE_DIR = $CWD+'../../build/packages';
+   }
+   print "-- package dir: $PACKAGE_DIR\n";
 }
 
 chdir($GLOBAL_PATH_TO_TOP);
@@ -521,7 +528,7 @@ sub Build($)
 
                      my @debfiles = glob("../$package*.{deb,buildinfo,changes}");
                      for my $f (@debfiles) {
-                        SysExec( "mv", $f, "../../build/packages" );
+                        SysExec( "mv", $f, $PACKAGE_DIR );
                      }
                   }
 
@@ -562,7 +569,7 @@ sub Build($)
                      os='$CFG{BUILD_OS}' \\
                      repoDir='$CFG{BUILD_DIR}' \\
                      arch='$CFG{BUILD_ARCH}' \\
-                     packageDir='../../build/packages' \\
+                     packageDir='$PACKAGE_DIR' \\
                      zimbraThirdPartyServer='$CFG{BUILD_THIRDPARTY_SERVER}' \\
                         bash $GLOBAL_PATH_TO_SCRIPT_DIR/instructions/bundling-scripts/$package_script.sh
                   "
