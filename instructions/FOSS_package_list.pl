@@ -7,5 +7,4 @@
    "zimbra-store",
    "zimbra-apache",
    "zimbra-proxy",
-   "zimbra-imapd",
 );

@@ -68,7 +68,6 @@ my @packageList = (
   "zimbra-spell",
   "zimbra-memcached",
   "zimbra-proxy",
-  "zimbra-imapd",
   "zimbra-onlyoffice",
 );
 
@@ -79,7 +78,6 @@ my %packageServiceMap = (
   opendkim  => "zimbra-mta",
   cbpolicyd => "zimbra-mta",
   dnscache  => "zimbra-dnscache",
-  imapd     => "zimbra-imapd",
   mta       => "zimbra-mta",
   logger    => "zimbra-logger",
   mailbox   => "zimbra-store",
@@ -1558,10 +1556,8 @@ sub setDefaults {
 
   }
 
-  if (isEnabled("zimbra-imapd")) {
-    progress  "setting defaults for zimbra-imapd.\n" if $options{d};
-    $config{DOADDUPSTREAMIMAP} = "no";
-  }
+  progress  "setting defaults for zimbra-imapd.\n" if $options{d};
+  $config{DOADDUPSTREAMIMAP} = "no";
 
   $config{zimbra_require_interprocess_security} = 1;
   $config{ZIMBRA_REQ_SECURITY}="yes";
@@ -5513,7 +5509,6 @@ sub configCreateCert {
   }
 
   my $rc;
-  if (isInstalled("zimbra-imapd")) {
     if ( !-f "$config{imapd_keystore}" && !-f "/opt/zimbra/conf/server.crt" ) {
       progress ( "Creating SSL zimbra-imapd certificate..." );
       $rc = runAsZimbra("/opt/zimbra/bin/zmcertmgr createcrt $needNewCert");
@@ -5533,7 +5528,6 @@ sub configCreateCert {
         progress ( "done.\n" );
       }
     }
-  }
 
   if (isInstalled("zimbra-store")) {
     if ( !-f "$config{mailboxd_keystore}" && !-f "/opt/zimbra/ssl/zimbra/server/server.crt" ) {
@@ -5696,7 +5690,7 @@ sub configInstallCert {
 
   if ($configStatus{configInstallCertImap} eq "CONFIGURED" && $needNewCert eq "") {
     configLog("configInstallCertImap");
-  } elsif (isInstalled("zimbra-imapd")) {
+  } else {
     if (! (-f "$config{imapd_keystore}") || $needNewCert ne "") {
       progress ("Installing imapd SSL certificates...");
       detail("$config{imapd_keystore} didn't exist.")
@@ -6959,9 +6953,7 @@ sub applyConfig {
   setLdapServerConfig($config{HOSTNAME}, 'zimbraServerVersionType', $curVersionType);
   setLdapServerConfig($config{HOSTNAME}, 'zimbraServerVersionBuild', $curVersionBuild);
 
-  if (isEnabled("zimbra-imapd")) {
-    configImap();
-  }
+  configImap();
 
   configureOnlyoffice();
 

@@ -40,8 +40,11 @@ main()
 
     Log "Copy etc files"
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
+    cp ${repoDir}/zm-mailbox/store-conf/conf/imapd.log4j.properties ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/imapd.log4j.properties
 
     Log "Copy bin files of /opt/zimbra/"
+
+    cp ${repoDir}/zm-core-utils/src/bin/zmimapdctl ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmimapdctl
 
     cp -f ${repoDir}/zm-migration-tools/zmztozmig.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmztozmig.conf
 
@@ -54,6 +57,8 @@ main()
     rm -rf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer/extensions-extra
 
     Log "Copy ext files of /opt/zimbra/lib/"
+
+    cp ${repoDir}/zm-zcs-lib/build/dist/oauth-1.4.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars/oauth-1.4.jar
 
     cp -f ${repoDir}/zm-clam-scanner-store/build/dist/zm-clam-scanner-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner/clamscanner.jar
     cp -f ${repoDir}/zm-nginx-lookup-store/build/dist/zm-nginx-lookup-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup/nginx-lookup.jar

@@ -1757,15 +1757,9 @@ getInstallPackages() {
     elif [ $i = "zimbra-proxy-patch" ]; then
       response="$PROXY_SELECTED"
     elif [ $UPGRADE = "yes" ]; then
-      if [ $i = "zimbra-imapd" ]; then
-        askInstallPkgYN "Install $i (BETA - for evaluation only)" "no" "N" "N"
-      else
         askYN "Install $i" "N"
-      fi
     else
-      if [ $i = "zimbra-imapd" ]; then
-        askInstallPkgYN "Install $i (BETA - for evaluation only)" "no" "N" "N"
-      elif [ $i = "zimbra-dnscache" ]; then
+      if [ $i = "zimbra-dnscache" ]; then
         if [ $MTA_SELECTED = "yes" ]; then
           askYN "Install $i" "Y"
         else
