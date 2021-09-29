@@ -218,13 +218,6 @@
       },
    },
    {
-      "dir"         => "zm-dnscache",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-dnscache $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-amavis",
       "ant_targets" => ["pkg"],
       "stage_cmd"   => sub {

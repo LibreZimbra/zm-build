@@ -1,2 +1,0 @@
-%zimbra ALL=NOPASSWD:/opt/zimbra/libexec/zmunbound
-%zimbra ALL=NOPASSWD:/sbin/resolvconf *

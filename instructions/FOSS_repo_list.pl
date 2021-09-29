@@ -19,7 +19,6 @@
    { name => "zm-clam-scanner-store",                },
    { name => "zm-clientuploader-admin-zimlet",       },
    { name => "zm-clientuploader-store",              },
-   { name => "zm-dnscache",                          },
    { name => "zm-downloads",                         },
    { name => "zm-freshclam",                         },
    { name => "zm-help",                              },
