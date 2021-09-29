@@ -213,14 +213,6 @@
       },
    },
    {
-      "dir"         => "zm-db-conf",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("(cd .. && rsync -az --relative zm-db-conf/src/db/migration $CFG{BUILD_DIR}/)");
-         SysExec("(cd .. && rsync -az --relative zm-db-conf/src/db/mysql     $CFG{BUILD_DIR}/)");
-      },
-   },
-   {
       "dir"         => "zm-admin-console",
       "ant_targets" => ["pkg"],
       "deploy_pkg_into" => "bundle",
