@@ -185,13 +185,6 @@
       },
    },
    {
-      "dir"         => "zm-admin-help-common",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-admin-help-common $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-versioncheck-utilities",
       "ant_targets" => undef,
       "stage_cmd"   => sub {

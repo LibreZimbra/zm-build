@@ -48,8 +48,6 @@ chmod 755 ${ZCS_REL}/bin/checkService.pl
 chmod 755 ${ZCS_REL}/bin/zmValidateLdap.pl
 chmod 755 ${ZCS_REL}/install.sh
 
-cp -f ${repoDir}/zm-admin-help-common/WebRoot/help/en_US/admin/pdf/*.pdf                ${ZCS_REL}/docs/en_US
-cp -f ${repoDir}/zm-admin-help-common/WebRoot/help/en_US/admin/txt/readme_binary.txt    ${ZCS_REL}/readme_binary_en_US.txt
 cp -f ${repoDir}/zm-licenses/zimbra/zcl.txt                                             ${ZCS_REL}/docs
 
 ##########################################
