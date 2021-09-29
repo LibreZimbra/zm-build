@@ -353,13 +353,6 @@
       "deploy_pkg_into" => "bundle",
    },
    {
-      "dir"         => "zm-jython",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("(cd .. && rsync -az --relative zm-jython $CFG{BUILD_DIR}/)");
-      },
-   },
-   {
       "dir"         => "zm-mta",
       "ant_targets" => undef,
       "stage_cmd"   => sub {

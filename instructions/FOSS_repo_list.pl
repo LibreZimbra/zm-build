@@ -28,7 +28,6 @@
    { name => "zm-help",                              },
    { name => "zm-helptooltip-zimlet",                },
    { name => "zm-jetty-conf",                        },
-   { name => "zm-jython",                            },
    { name => "zm-launcher",                          },
    { name => "zm-ldap-utilities",                    },
    { name => "zm-ldap-utils-store",                  },
