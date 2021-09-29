@@ -26,7 +26,6 @@ cp -f ${repoDir}/zm-build/rpmconf/Install/Util/modules/postinstall.sh           
 cp -f ${repoDir}/zm-build/rpmconf/Install/Util/modules/install_rabbitmq.sh              ${ZCS_REL}/util/modules
 cp -f ${repoDir}/zm-build/rpmconf/Install/Util/utilfunc.sh                              ${ZCS_REL}/util
 cp -f ${repoDir}/zm-build/rpmconf/Install/install.sh                                    ${ZCS_REL}/
-cp -f ${repoDir}/zm-core-utils/src/libexec/zmdbintegrityreport                          ${ZCS_REL}/bin
 cp -f ${repoDir}/zm-mailbox/store/build/dist/versions-init.sql                          ${ZCS_REL}/data
 
 if [ -f "/etc/redhat-release" ]
@@ -47,7 +46,6 @@ cp -f ${packageDir}/*.*                                                         
 
 chmod 755 ${ZCS_REL}/bin/checkService.pl
 chmod 755 ${ZCS_REL}/bin/zmValidateLdap.pl
-chmod 755 ${ZCS_REL}/bin/zmdbintegrityreport
 chmod 755 ${ZCS_REL}/install.sh
 
 cp -f ${repoDir}/zm-admin-help-common/WebRoot/help/en_US/admin/pdf/*.pdf                ${ZCS_REL}/docs/en_US

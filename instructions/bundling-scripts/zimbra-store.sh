@@ -44,8 +44,6 @@ main()
 
     Log "Copy bin files of /opt/zimbra/"
 
-    cp ${repoDir}/zm-core-utils/src/bin/zmimapdctl ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmimapdctl
-
     cp -f ${repoDir}/zm-migration-tools/zmztozmig.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmztozmig.conf
 
     cp -f ${repoDir}/zm-mailbox/store-conf/conf/owasp_policy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/owasp_policy.xml

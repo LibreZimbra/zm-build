@@ -261,13 +261,6 @@
       },
    },
    {
-      "dir"         => "zm-core-utils",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-core-utils $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-migration-tools",
       "ant_targets" => undef,
       "stage_cmd"   => sub {

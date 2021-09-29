@@ -20,7 +20,6 @@
    { name => "zm-clam-scanner-store",                },
    { name => "zm-clientuploader-admin-zimlet",       },
    { name => "zm-clientuploader-store",              },
-   { name => "zm-core-utils",                        },
    { name => "zm-db-conf",                           },
    { name => "zm-dnscache",                          },
    { name => "zm-downloads",                         },
