@@ -125,7 +125,6 @@ The `build.pl` command is used to build the product. Run it with the `-h` option
        --build-release-no=s
        --build-release-candidate=s
        --build-type=s
-       --build-thirdparty-server=s
        --build-prod-flag!
        --build-debug-flag!
        --build-dev-tool-base-dir=s
@@ -139,8 +138,7 @@ You _can_ specify all the options on the command-line, as follows:
 
     ./build.pl --build-no=1713 --build-ts=`date +'%Y%m%d%H%M%S'` \
       --build-release=JUDASPRIEST --build-release-no=8.7.6 \
-      --build-release-candidate=GA --build-type=FOSS \
-      --build-thirdparty-server=files.zimbra.com
+      --build-release-candidate=GA --build-type=FOSS
 
 The completed build will be archived into a `*.tgz` file that is stored in the appropriate platform and release-specific
 subdirectory of the `BUILDS` directory.  The above command, run on an Ubuntu 16.04 machine, created the following:
@@ -156,7 +154,6 @@ directory.  For example:
     BUILD_RELEASE_NO            = 8.7.6
     BUILD_RELEASE_CANDIDATE     = GA
     BUILD_TYPE                  = FOSS
-    BUILD_THIRDPARTY_SERVER     = files.zimbra.com
 
 Then just run `./build.pl`.
 

@@ -136,7 +136,6 @@ sub InitGlobalBuildVars()
          { name => "BUILD_RELEASE",              type => "=s",  hash_src => \%cmd_hash, default_sub => sub { Die("@_ not specified"); }, },
          { name => "BUILD_RELEASE_NO",           type => "=s",  hash_src => \%cmd_hash, default_sub => sub { Die("@_ not specified"); }, },
          { name => "BUILD_RELEASE_CANDIDATE",    type => "=s",  hash_src => \%cmd_hash, default_sub => sub { Die("@_ not specified"); }, },
-         { name => "BUILD_THIRDPARTY_SERVER",    type => "=s",  hash_src => \%cmd_hash, default_sub => sub { Die("@_ not specified"); }, },
          { name => "BUILD_PROD_FLAG",            type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 1; }, },
          { name => "BUILD_DEBUG_FLAG",           type => "!",   hash_src => \%cmd_hash, default_sub => sub { return 0; }, },
          { name => "BUILD_DEV_TOOL_BASE_DIR",    type => "=s",  hash_src => \%cmd_hash, default_sub => sub { return "$ENV{HOME}/.zm-dev-tools"; }, },
@@ -279,27 +278,6 @@ sub Prepare()
    SysExec( "mkdir", "-p", "$CACHE_DIR/.ivy2/cache" );
 
    SysExec( "find", $CFG{BUILD_DIR}, "-type", "f", "-name", ".built.*", "-delete" ) if ( $ENV{ENV_CACHE_CLEAR_FLAG} );
-
-   my @TP_JARS = (
-      "https://files.zimbra.com/repository/ant-1.7.0-ziputil-patched/ant-1.7.0-ziputil-patched-1.0.jar",
-      "https://files.zimbra.com/repository/ant-contrib/ant-contrib-1.0b1.jar",
-      "https://files.zimbra.com/repository/jruby/jruby-complete-1.6.3.jar",
-      "https://files.zimbra.com/repository/applet/plugin.jar",
-      "https://files.zimbra.com/repository/servlet-api/servlet-api-3.1.jar",
-      "https://files.zimbra.com/repository/unbound-ldapsdk/unboundid-ldapsdk-2.3.5-se.jar",
-   );
-
-   for my $j_url (@TP_JARS)
-   {
-      if ( my $f = "$CACHE_DIR/.zcs-deps/" . basename($j_url) )
-      {
-         if ( !-f $f )
-         {
-            SysExec( "wget", $j_url, "-O", "$f.tmp" );
-            SysExec( "mv", "$f.tmp", $f );
-         }
-      }
-   }
 
    my ( $MAJOR, $MINOR, $MICRO ) = split( /[.]/, $CFG{BUILD_RELEASE_NO} );
 
@@ -570,7 +548,6 @@ sub Build($)
                      repoDir='$CFG{BUILD_DIR}' \\
                      arch='$CFG{BUILD_ARCH}' \\
                      packageDir='$PACKAGE_DIR' \\
-                     zimbraThirdPartyServer='$CFG{BUILD_THIRDPARTY_SERVER}' \\
                         bash $GLOBAL_PATH_TO_SCRIPT_DIR/instructions/bundling-scripts/$package_script.sh
                   "
                );
