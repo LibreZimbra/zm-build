@@ -1727,8 +1727,6 @@ getInstallPackages() {
           fi
         fi
         INSTALL_PACKAGES="$INSTALL_PACKAGES $i"
-        if [ $i = "zimbra-apache" ]; then
-          APACHE_SELECTED="yes"
         elif [ $i = "zimbra-logger" ]; then
           LOGGER_SELECTED="yes"
         elif [ $i = "zimbra-store" ]; then
@@ -1775,8 +1773,6 @@ getInstallPackages() {
         LOGGER_SELECTED="yes"
       elif [ $i = "zimbra-store" ]; then
         STORE_SELECTED="yes"
-      elif [ $i = "zimbra-apache" ]; then
-        APACHE_SELECTED="yes"
       elif [ $i = "zimbra-mta" ]; then
         MTA_SELECTED="yes"
       elif [ $i = "zimbra-proxy" ]; then
@@ -1805,10 +1801,6 @@ getInstallPackages() {
           echo ""
           exit 1
         fi
-      fi
-      if [ $i = "zimbra-spell" -a $APACHE_SELECTED = "no" ]; then
-        APACHE_SELECTED="yes"
-        INSTALL_PACKAGES="$INSTALL_PACKAGES zimbra-apache"
       fi
 
       INSTALL_PACKAGES="$INSTALL_PACKAGES $i"

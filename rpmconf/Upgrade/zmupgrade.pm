@@ -172,7 +172,6 @@ my @packageList = (
   "zimbra-mta",
   "zimbra-snmp",
   "zimbra-logger",
-  "zimbra-apache",
   "zimbra-spell",
   );
 

@@ -10,7 +10,6 @@
    { name => "zm-ajax",                              },
    { name => "zm-admin-ajax",                        },
    { name => "zm-amavis",                            },
-   { name => "zm-aspell",                            },
    { name => "zm-bulkprovision-admin-zimlet",        },
    { name => "zm-bulkprovision-store",               },
    { name => "zm-certificate-manager-admin-zimlet",  },

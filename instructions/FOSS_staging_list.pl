@@ -211,13 +211,6 @@
       "deploy_pkg_into" => "bundle",
    },
    {
-      "dir"         => "zm-aspell",
-      "ant_targets" => ["pkg"],
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-aspell $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-amavis",
       "ant_targets" => ["pkg"],
       "stage_cmd"   => sub {

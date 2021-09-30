@@ -12,7 +12,6 @@ zimbra-mta \
 zimbra-dnscache \
 zimbra-snmp \
 zimbra-store \
-zimbra-apache \
 zimbra-spell \
 zimbra-memcached \
 zimbra-proxy \

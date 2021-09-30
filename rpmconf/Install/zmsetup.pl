@@ -64,7 +64,6 @@ my @packageList = (
   "zimbra-dnscache",
   "zimbra-snmp",
   "zimbra-store",
-  "zimbra-apache",
   "zimbra-spell",
   "zimbra-memcached",
   "zimbra-proxy",
@@ -4509,7 +4508,6 @@ sub createMainMenu {
   $i++;
   foreach my $package (@packageList) {
     if ($package eq "zimbra-core") {next;}
-    if ($package eq "zimbra-apache") {next;}
     if ($package eq "zimbra-memcached") {next;}
     if (defined($installedPackages{$package})) {
       if ($package =~ /logger|spell/) {
@@ -6750,7 +6748,6 @@ sub configSetEnabledServices {
       push(@installedServiceList, ('zimbraServiceInstalled','stats'));
       next;
     }
-    if ($p eq "zimbra-apache") {next;}
     $p =~ s/zimbra-//;
     if ($p eq "store") {$p = "mailbox";}
     push(@installedServiceList, ('zimbraServiceInstalled', "$p"));
@@ -6761,7 +6758,6 @@ sub configSetEnabledServices {
       push(@enabledServiceList, ('zimbraServiceEnabled', 'stats'));
       next;
     }
-    if ($p eq "zimbra-apache") {next;}
     if ($enabledPackages{$p} eq "Enabled") {
       $p =~ s/zimbra-//;
       if ($p eq "store") {
