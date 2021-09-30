@@ -81,7 +81,6 @@ my @packageList = (
   "zimbra-store",
   "zimbra-apache",
   "zimbra-spell",
-  "zimbra-convertd",
   "zimbra-memcached",
   "zimbra-proxy",
   "zimbra-imapd",
@@ -106,7 +105,6 @@ my %packageServiceMap = (
   'vmware-ha' => "zimbra-core",
   memcached => "zimbra-memcached",
   proxy     => "zimbra-proxy",
-  convertd  => "zimbra-convertd",
   service   => "zimbra-store",
   zimbra    => "zimbra-store",
   zimbraAdmin   => "zimbra-store",
@@ -412,7 +410,6 @@ sub checkPortConflicts {
     7025 => 'zimbra-store',
     7071 => 'zimbra-store',
     7072 => 'zimbra-store',
-    7047 => 'zimbra-convertd',
     7306 => 'zimbra-store',
     7307 => 'zimbra-store',
     7780 => 'zimbra-spell',
@@ -4611,7 +4608,7 @@ sub createMainMenu {
     if ($package eq "zimbra-apache") {next;}
     if ($package eq "zimbra-memcached") {next;}
     if (defined($installedPackages{$package})) {
-      if ($package =~ /logger|spell|convertd/) {
+      if ($package =~ /logger|spell/) {
         $mm{menuitems}{$i} = {
           "prompt" => "$package:",
           "var" => \$enabledPackages{$package},
@@ -5929,22 +5926,6 @@ sub configSpellServer {
   configLog("configSpellServer");
 }
 
-sub configConvertdURL {
-  my $tmpval = getLdapConfigValue("zimbraConvertdURL");
-  if ( $tmpval eq "" ) {
-    my $host;
-    if (!$newinstall) {
-      $host = $config{zimbra_server_hostname};
-    } else {
-      $host = lc($config{HOSTNAME});
-    }
-    progress("Setting convertd URL...");
-    my $rc = setLdapGlobalConfig("zimbraConvertdURL", "http://$host:7047/convert");
-    progress(($rc == 0) ? "done.\n" : "failed.\n");
-
-  }
-}
-
 sub configSetStoreDefaults {
   if(isEnabled("zimbra-proxy") || $config{zimbraMailProxy} eq "TRUE" || $config{zimbraWebProxy} eq "TRUE") {
     $config{zimbraReverseProxyLookupTarget}="TRUE";
@@ -6365,72 +6346,20 @@ sub removeNetworkComponents {
     my @zmprov_args = ();
     foreach my $component (split(/\n/,$components)) {
       push(@zmprov_args, ('-zimbraComponentAvailable', $component))
-        if ($component =~ /HSM|convertd|hotbackup/);
-
-      if ($component =~ /convertd/) {
-        my $rc = 0;
-        progress ("Removing convertd mime tree from ldap...");
-        my $ldap_pass = getLocalConfig("zimbra_ldap_password");
-        my $ldap_master_url = getLocalConfig("ldap_master_url");
-        my $ldap;
-        my @masters=split(/ /, $ldap_master_url);
-        my $master_ref=\@masters;
-        unless($ldap = Net::LDAP->new($master_ref)) {
-          detail("Unable to contact $ldap_master_url: $!");
-          $rc = 1;
-        }
-        my $ldap_dn = $config{zimbra_ldap_userdn};
-        my $ldap_base = "";
-
-        my $result = $ldap->bind($ldap_dn, password => $ldap_pass);
-        if ($result->code()) {
-          detail("ldap bind failed for $ldap_dn");
-          $rc = 1;
-        } else {
-          $result = $ldap->modify('cn=text/enriched,cn=mime,cn=config,cn=zimbra',
-            replace => [ 'zimbraMimeHandlerClass' => 'TextEnrichedHandler' ] );
-
-          $result = $ldap->modify('cn=text/plain,cn=mime,cn=config,cn=zimbra',
-            replace => [ 'zimbraMimeHandlerClass' => 'TextPlainHandler' ] );
-
-          $result = $ldap->modify('cn=all,cn=mime,cn=config,cn=zimbra',
-            changes => [
-              replace => [ 'zimbraMimeHandlerClass' => 'UnknownTypeHandler' ],
-              delete => [ 'zimbraMimeHandlerExtension' => []]
-            ] );
-
-          $result = $ldap->delete('cn=application/x-zip-compressed,cn=mime,cn=config,cn=zimbra');
-          $result = $ldap->delete('cn=application/zip,cn=mime,cn=config,cn=zimbra');
-          $result = $ldap->delete('cn=text/rtf,cn=mime,cn=config,cn=zimbra');
-          $result = $ldap->delete('cn=unsupported,cn=mime,cn=config,cn=zimbra');
-
-          $result = $ldap->unbind;
-          $result = $ldap->disconnect;
-        }
-        progress (($rc == 0) ? "done.\n" : "failed. This may impact system functionality.\n");
-
-        progress ("Removing convertd from zimbraServiceEnabled list...");
-        my $rc = setLdapServerConfig($config{HOSTNAME}, '-zimbraServiceEnabled', 'convertd');
-        progress (($rc == 0) ? "done.\n" : "failed. This may impact system functionality.\n");
-      }
+        if ($component =~ /HSM|hotbackup/);
     }
 	if (@zmprov_args) {
       progress ("Removing network components from ldap...");
       my $rc = setLdapGlobalConfig( @zmprov_args );
       progress (($rc == 0) ? "done.\n" : "failed. This may impact system functionality.\n");
     }
-    foreach my $zimlet (qw(com_zimbra_backuprestore com_zimbra_convertd com_zimbra_domainadmin com_zimbra_hsm com_zimbra_license com_zimbra_mobilesync zimbra_xmbxsearch com_zimbra_xmbxsearch com_zimbra_smime_cert_admin com_zimbra_delegatedadmin com_zimbra_smime com_zimbra_two_factor_auth)) {
+    foreach my $zimlet (qw(com_zimbra_backuprestore com_zimbra_domainadmin com_zimbra_hsm com_zimbra_license com_zimbra_mobilesync zimbra_xmbxsearch com_zimbra_xmbxsearch com_zimbra_smime_cert_admin com_zimbra_delegatedadmin com_zimbra_smime com_zimbra_two_factor_auth)) {
       system("rm -rf $config{mailboxd_directory}/webapps/service/zimlet/$zimlet")
         if (-d "$config{mailboxd_directory}/webapps/service/zimlet/$zimlet" );
       system("rm -rf /opt/zimbra/zimlets-deployed/$zimlet")
         if (-d "/opt/zimbra/zimlets-deployed/$zimlet" );
     }
 
-    if (isEnabled("zimbra-ldap") && -x "/opt/zimbra/libexec/zmconvertdmod") {
-      progress ("Removing convertd mime tree from ldap...");
-      my $rc = runAsZimbra("/opt/zimbra/libexec/zmconvertdmod -d");
-      progress (($rc == 0) ? "done.\n" : "failed. This may impact system functionality.\n");
-    }
     setLdapGlobalConfig("zimbraReverseProxyUpstreamEwsServers","");
 }
 
@@ -6520,7 +6449,7 @@ sub removeNetworkZimlets {
   } else {
     detail("ldap bind done for $ldap_dn");
     progress("Checking for network zimlets in LDAP...");
-    $result = $ldap->search(base => $ldap_base, scope => 'one', filter => "(|(cn=com_zimbra_backuprestore)(cn=com_zimbra_domainadmin)(cn=com_zimbra_mobilesync)(cn=com_zimbra_hsm)(cn=com_zimbra_convertd)(cn=com_zimbra_license)(cn=zimbra_xmbxsearch)(cn=com_zimbra_xmbxsearch)(cn=com_zimbra_smime)(cn=com_zimbra_smime_cert_admin)(cn=com_zimbra_two_factor_auth))", attrs => ['cn']);
+    $result = $ldap->search(base => $ldap_base, scope => 'one', filter => "(|(cn=com_zimbra_backuprestore)(cn=com_zimbra_domainadmin)(cn=com_zimbra_mobilesync)(cn=com_zimbra_hsm)(cn=com_zimbra_license)(cn=zimbra_xmbxsearch)(cn=com_zimbra_xmbxsearch)(cn=com_zimbra_smime)(cn=com_zimbra_smime_cert_admin)(cn=com_zimbra_two_factor_auth))", attrs => ['cn']);
     progress (($result->code()) ? "failed.\n" : "done.\n");
     return $result if ($result->code());
 
@@ -7170,11 +7099,6 @@ sub applyConfig {
     configSetStoreDefaults();
   }
   configSetupEphemeralBackend();
-
-  if (isNetwork() && isEnabled("zimbra-convertd")) {
-    configConvertdURL();
-    runAsZimbra("/opt/zimbra/libexec/zmconvertdmod -e");
-  }
 
   if (isEnabled("zimbra-dnscache")) {
     configSetDNSCacheDefaults();

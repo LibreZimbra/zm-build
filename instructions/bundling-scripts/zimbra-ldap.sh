@@ -36,10 +36,6 @@ main()
 
     echo -e "\tCopy package files" >> ${buildLogFile}
     cp -rf ${ldapSchemaDir}/*  ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/etc/openldap/zimbra
-    if [ "${buildType}" == "NETWORK" ]
-    then
-      cp -f ${repoDir}/zm-convertd-native/conf/ldap/zimbra_mimehandlers.ldif ${repoDir}/zm-build/${currentPackage}/opt/zimbra/common/etc/openldap/zimbra/convertd_mimehandlers.ldif
-    fi
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/
 
     CreatePackage "${os}"

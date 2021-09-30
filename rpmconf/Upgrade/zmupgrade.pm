@@ -31,10 +31,7 @@ use File::Path;
 use XML::Simple;
 
 my $zmlocalconfig="/opt/zimbra/bin/zmlocalconfig";
-my $type = qx(${zmlocalconfig} -m nokey convertd_stub_name 2> /dev/null);
-chomp $type;
-if ($type eq "") {$type = "FOSS";}
-else {$type = "NETWORK";}
+my $type = "FOSS";
 
 my $rundir = qx(dirname $0);
 chomp $rundir;
@@ -227,11 +224,6 @@ sub upgrade {
   }
 
   getInstalledPackages();
-
-  # Bug #73840 - need to delete /opt/zimbra/keyview before we try stopping services
-  if ((! main::isInstalled("zimbra-convertd")) && (-l "/opt/zimbra/keyview")) {
-    unlink("/opt/zimbra/keyview");
-  }
 
   if (stopZimbra()) { return 1; }
 

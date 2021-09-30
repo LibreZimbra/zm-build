@@ -48,7 +48,6 @@ cat $TEMPLATE | sed -e "s/@@CORESIZE@@/$CORESIZE/g" \
 	-e "s/@@ARCHIVINGSIZE@@/$ARCHIVINGSIZE/g" \
 	-e "s/@@APACHESIZE@@/$APACHESIZE/g" \
 	-e "s/@@STORESIZE@@/$STORESIZE/g" \
-	-e "s/@@CONVERTDSIZE@@/$CONVERTDSIZE/g" \
 	-e "s/@@MEMCACHEDSIZE@@/$MEMCACHEDSIZE/g" \
 	-e "s/@@MTASIZE@@/$MTASIZE/g" \
 	-e "s/@@PROXYSIZE@@/$PROXYSIZE/g" \

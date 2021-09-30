@@ -2328,9 +2328,7 @@ getInstallPackages() {
         askYN "Install $i" "N"
       fi
     else
-      if [ $i = "zimbra-convertd" ]; then
-        askInstallPkgYN "Install $i" "no" "Y" "N"
-      elif [ $i = "zimbra-imapd" ]; then
+      if [ $i = "zimbra-imapd" ]; then
         askInstallPkgYN "Install $i (BETA - for evaluation only)" "no" "N" "N"
       elif [ $i = "zimbra-dnscache" ]; then
         if [ $MTA_SELECTED = "yes" ]; then
@@ -2380,11 +2378,6 @@ getInstallPackages() {
         fi
       fi
       if [ $i = "zimbra-spell" -a $APACHE_SELECTED = "no" ]; then
-        APACHE_SELECTED="yes"
-        INSTALL_PACKAGES="$INSTALL_PACKAGES zimbra-apache"
-      fi
-
-      if [ $i = "zimbra-convertd" -a $APACHE_SELECTED = "no" ]; then
         APACHE_SELECTED="yes"
         INSTALL_PACKAGES="$INSTALL_PACKAGES zimbra-apache"
       fi

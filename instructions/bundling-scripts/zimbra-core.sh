@@ -369,7 +369,6 @@ main()
    Copy ${repoDir}/zm-core-utils/src/libexec/zmspamextract                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmspamextract
    Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-allprocs                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-allprocs
    Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-cleanup                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-cleanup
-   Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-convertd                                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-convertd
    Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-cpu                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-cpu
    Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-df                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-df
    Copy ${repoDir}/zm-core-utils/src/libexec/zmstat-fd                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmstat-fd
@@ -623,10 +622,6 @@ main()
       Copy ${repoDir}/zm-backup-utilities/src/db/backup_schema.sql                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/db/backup_schema.sql
       Copy ${repoDir}/zm-backup-utilities/src/libexec/zmbackupldap                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmbackupldap
       Copy ${repoDir}/zm-backup-utilities/src/libexec/zmbackupqueryldap                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmbackupqueryldap
-
-      Copy ${repoDir}/zm-convertd-native/conf/convertd.log4j.properties                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/convertd.log4j.properties
-      Copy ${repoDir}/zm-convertd-native/src/bin/zmconvertctl                                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/bin/zmconvertctl
-      Copy ${repoDir}/zm-convertd-native/src/libexec/zmconvertdmod                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmconvertdmod
 
       Copy ${repoDir}/zm-hsm/docs/soap-admin.txt                                                       ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/hsm-soap-admin.txt
 
