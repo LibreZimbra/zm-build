@@ -647,9 +647,6 @@ main()
 
       Copy ${repoDir}/zm-twofactorauth-store/docs/twofactorauth.md                                     ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/twofactorauth.md
 
-      Copy ${repoDir}/zm-vmware-appmonitor/build/dist/libexec/vmware-appmonitor                        ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/vmware-appmonitor
-      Copy ${repoDir}/zm-vmware-appmonitor/build/dist/lib/libappmonitorlib.so                          ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/libappmonitorlib.so
-
       Copy ${repoDir}/zm-voice-store/docs/ZimbraVoice-Extension.txt                                    ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/ZimbraVoice-Extension.txt
       Copy ${repoDir}/zm-voice-store/docs/soap-voice-admin.txt                                         ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/soap-voice-admin.txt
       Copy ${repoDir}/zm-voice-store/docs/soap-voice.txt                                               ${repoDir}/zm-build/${currentPackage}/opt/zimbra/docs/soap-voice.txt

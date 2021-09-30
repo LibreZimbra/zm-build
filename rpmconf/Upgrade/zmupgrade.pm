@@ -1086,11 +1086,6 @@ sub upgrade805GA {
 
 sub upgrade806GA {
   my ($startBuild, $targetVersion, $targetBuild) = (@_);
-  if (main::isZCA()) {
-    main::progress("ZCA Install detected.  Removing VAMI Components...");
-    my $rc = main::runAsRoot("${scriptDir}/migrate20131014-removezca.pl");
-    main::progress(($rc == 0) ? "done.\n" : "failed. exiting.\n");
-  }
   my @zimbraStatThreadNamePrefix=qx($su "$ZMPROV gacf zimbraStatThreadNamePrefix");
   if (! grep ( /qtp/, @zimbraStatThreadNamePrefix)) {
     main::runAsZimbra("$ZMPROV mcf +zimbraStatThreadNamePrefix qtp");
@@ -1988,9 +1983,6 @@ sub upgrade870BETA2 {
     main::setLdapServerConfig($hn, 'zimbraMtaSenderCanonicalMaps', "");
     main::setLdapGlobalConfig('zimbraMtaSenderCanonicalMaps',"");
     main::runAsZimbra("/opt/zimbra/bin/postconf -e sender_canonical_maps=''");
-  }
-  if (main::isFoss()) {
-    main::setLdapServerConfig($hn, '-zimbraServiceEnabled', 'vmware-ha');
   }
 
   return 0;

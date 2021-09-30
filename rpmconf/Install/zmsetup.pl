@@ -102,7 +102,6 @@ my %packageServiceMap = (
   ldap      => "zimbra-ldap",
   spell     => "zimbra-spell",
   stats     => "zimbra-core",
-  'vmware-ha' => "zimbra-core",
   memcached => "zimbra-memcached",
   proxy     => "zimbra-proxy",
   service   => "zimbra-store",
@@ -3435,18 +3434,6 @@ sub setEnabledDependencies {
     }
   }
 
-  if (isEnabled("zimbra-core")) {
-    if ($newinstall) {
-      $config{RUNVMHA} = "no";
-    } else {
-      if(isNetwork()) {
-        $config{RUNVMHA} = (isServiceEnabled("vmware-ha") ? "yes" : "no");
-      } else {
-        $config{RUNVMHA} = "no";
-      }
-    }
-  }
-
   if (isEnabled("zimbra-spell")) {
     $config{USESPELL} = "yes";
     $config{SPELLURL} = "http://$config{HOSTNAME}:7780/aspell.php";
@@ -3503,10 +3490,6 @@ sub isLdapMaster {
 
 sub isZCS {
   return((grep(/\b\w+-store\b/,@packageList)) ? 1 : 0);
-}
-
-sub isZCA {
-  return (glob("/opt/vmware-zca-installer/conf/optConfig/*.cfg") ? 1 : 0);
 }
 
 sub isFoss {
@@ -4627,21 +4610,6 @@ sub createMainMenu {
       $i++;
     } else {
       #push @mm, "$package not installed";
-    }
-  }
-  if (defined($installedPackages{"zimbra-core"}) && isNetwork()) {
-    # simple test to see if we are running in a VM.
-    if ( -x "/usr/lib/vmware-tools/sbin64/vmware-checkvm") {
-      my $rc = runAsRoot("/usr/lib/vmware-tools/sbin64/vmware-checkvm");
-      if ($rc == 0) {
-        $mm{menuitems}{$i} = {
-          "prompt" => "Enable VMware HA:",
-          "var" => \$config{RUNVMHA},
-          "callback" => \&toggleYN,
-          "arg" => "RUNVMHA",
-          };
-        $i++;
-      }
     }
   }
   if (defined($installedPackages{"zimbra-store"})) {
@@ -6818,14 +6786,6 @@ sub configInitCore {
     configLog("configInitCore");
     return 0;
   }
-  if (isEnabled("zimbra-core")) {
-    progress ( "Initializing core config..." );
-    if(isNetwork()) {
-      if ($config{RUNVMHA} eq "yes") {
-        push(@enabledServiceList, ('zimbraServiceEnabled', 'vmware-ha'));
-      }
-    }
-  }
   configLog("configInitCore");
 }
 
@@ -6957,14 +6917,6 @@ sub configSetEnabledServices {
   foreach my $p (keys %installedPackages) {
     if ($p eq "zimbra-core") {
       push(@installedServiceList, ('zimbraServiceInstalled','stats'));
-      if(isNetwork()) {
-        if ( -x "/usr/lib/vmware-tools/sbin64/vmware-checkvm" || $config{INSTVMHA} eq "yes") {
-          my $rc = runAsRoot("/usr/lib/vmware-tools/sbin64/vmware-checkvm");
-          if ($rc == 0 || $config{INSTVMHA} eq "yes") {
-            push(@installedServiceList, ('zimbraServiceInstalled','vmware-ha'));
-          }
-        }
-      }
       next;
     }
     if ($p eq "zimbra-apache") {next;}
