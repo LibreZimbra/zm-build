@@ -21,7 +21,6 @@
    { name => "zm-downloads",                         },
    { name => "zm-freshclam",                         },
    { name => "zm-helptooltip-zimlet",                },
-   { name => "zm-jetty-conf",                        },
    { name => "zm-launcher",                          },
    { name => "zm-ldap-utilities",                    },
    { name => "zm-ldap-utils-store",                  },

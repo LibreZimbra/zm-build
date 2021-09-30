@@ -325,14 +325,6 @@
       },
    },
    {
-      "dir"         => "zm-jetty-conf",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-jetty-conf $CFG{BUILD_DIR}");
-      },
-   },
-   
-   {
       "dir"         => "zm-oauth-social",
       "ant_targets" => ["publish-local", "oauth-social-common-jar", "oauth-social-jar"],
       "stage_cmd"   => sub {
