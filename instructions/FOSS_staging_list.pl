@@ -192,13 +192,6 @@
       },
    },
    {
-      "dir"         => "zm-webclient-portal-example",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-webclient-portal-example $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-downloads",
       "ant_targets" => undef,
       "stage_cmd"   => sub {

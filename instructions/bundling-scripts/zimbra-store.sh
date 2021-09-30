@@ -30,7 +30,6 @@ main()
         /opt/zimbra/jetty_base/common/lib \
         /opt/zimbra/jetty_base/webapps/service/WEB-INF/lib \
         /opt/zimbra/jetty_base/webapps/zimbra \
-        /opt/zimbra/jetty_base/webapps/zimbra/portals/example \
         /opt/zimbra/jetty_base/temp \
         /opt/zimbra/log \
         /opt/zimbra/zimlets \
@@ -79,9 +78,6 @@ main()
 
     Log "help content"
     cp -rf ${repoDir}/zm-help/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/help
-
-    Log "portals example content"
-    cp -rf ${repoDir}/zm-webclient-portal-example/example ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/portals
 
     Log "robots.txt content"
     cp -f ${repoDir}/zm-jetty-conf/conf/robots.txt ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/robots.txt
