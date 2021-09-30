@@ -319,15 +319,6 @@ sub LoadRepos()
    return \@agg_repos;
 }
 
-
-sub LoadRemotes()
-{
-   my %details = @{ EvalFile("instructions/FOSS_remote_list.pl") };
-
-   return \%details;
-}
-
-
 sub LoadBuilds($)
 {
    my $repo_list = shift;
