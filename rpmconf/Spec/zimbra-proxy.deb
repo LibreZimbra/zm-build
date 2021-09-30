@@ -1,8 +1,0 @@
-Package: zimbra-proxy
-Version: @@VERSION@@
-Description: LibreZimbra
-Maintainer: info@metux.net
-Section: Mail
-Priority: optional
-Architecture: @@ARCH@@
-Depends: zimbra-core, zimbra-proxy-components, zimbra-memcached

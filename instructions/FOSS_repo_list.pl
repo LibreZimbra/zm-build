@@ -27,7 +27,6 @@
    { name => "zm-mailbox",                           },
    { name => "zm-migration-tools",                   },
    { name => "zm-mta",                               },
-   { name => "zm-nginx-conf",                        },
    { name => "zm-nginx-lookup-store",                },
    { name => "zm-openid-consumer-store",             },
    { name => "zm-pkg-tool",                          },

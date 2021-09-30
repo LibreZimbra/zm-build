@@ -4,5 +4,4 @@
    "zimbra-mta",
    "zimbra-snmp",
    "zimbra-store",
-   "zimbra-proxy",
 );

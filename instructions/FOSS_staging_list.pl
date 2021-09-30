@@ -200,13 +200,6 @@
       },
    },
    {
-      "dir"         => "zm-nginx-conf",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-nginx-conf $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-postfix",
       "ant_targets" => undef,
       "stage_cmd"   => sub {
