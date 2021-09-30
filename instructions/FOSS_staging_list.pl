@@ -292,13 +292,6 @@
       "deploy_pkg_into" => "bundle",
    },
    {
-      "dir"         => "zm-mta",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("(cd .. && rsync -az --relative zm-mta $CFG{BUILD_DIR}/)");
-      },
-   },
-   {
       "dir"          => "zm-launcher",
       "make_targets" => ["JAVA_BINARY=/opt/zimbra/common/bin/java"],
       "stage_cmd"    => sub {
