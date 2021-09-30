@@ -19,7 +19,6 @@
    { name => "zm-clientuploader-admin-zimlet",       },
    { name => "zm-clientuploader-store",              },
    { name => "zm-downloads",                         },
-   { name => "zm-freshclam",                         },
    { name => "zm-helptooltip-zimlet",                },
    { name => "zm-launcher",                          },
    { name => "zm-ldap-utilities",                    },

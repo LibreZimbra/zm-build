@@ -149,8 +149,6 @@ main()
    Copy ${repoDir}/zm-build/rpmconf/Install/zmsetup.pl                                              ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmsetup.pl
    Copy ${repoDir}/zm-build/rpmconf/Upgrade/zmupgrade.pm                                            ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmupgrade.pm
 
-   Copy ${repoDir}/zm-freshclam/freshclam.conf.in                                                   ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/freshclam.conf.in
-
    Copy ${repoDir}/zm-launcher/build/dist/zmmailboxdmgr                                             ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmailboxdmgr
    Copy ${repoDir}/zm-launcher/build/dist/zmmailboxdmgr.unrestricted                                ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec/zmmailboxdmgr.unrestricted 
 

@@ -306,13 +306,6 @@
       },
    },
    {
-      "dir"         => "zm-freshclam",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("(cd .. && rsync -az --relative zm-freshclam $CFG{BUILD_DIR}/)");
-      },
-   },
-   {
       "dir"          => "zm-launcher",
       "make_targets" => ["JAVA_BINARY=/opt/zimbra/common/bin/java"],
       "stage_cmd"    => sub {
