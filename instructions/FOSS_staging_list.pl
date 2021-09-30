@@ -178,13 +178,6 @@
       "deploy_pkg_into" => "bundle",
    },
    {
-      "dir"         => "zm-help",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-help $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-versioncheck-utilities",
       "ant_targets" => undef,
       "stage_cmd"   => sub {

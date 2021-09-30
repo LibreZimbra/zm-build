@@ -20,7 +20,6 @@
    { name => "zm-clientuploader-store",              },
    { name => "zm-downloads",                         },
    { name => "zm-freshclam",                         },
-   { name => "zm-help",                              },
    { name => "zm-helptooltip-zimlet",                },
    { name => "zm-jetty-conf",                        },
    { name => "zm-launcher",                          },
