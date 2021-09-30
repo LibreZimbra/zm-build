@@ -29,7 +29,6 @@
    { name => "zm-nginx-lookup-store",                },
    { name => "zm-openid-consumer-store",             },
    { name => "zm-pkg-tool",                          },
-   { name => "zm-postfix",                           },
    { name => "zm-proxy-config-admin-zimlet",         },
    { name => "zm-ssdb-ephemeral-store",              },
    { name => "zm-taglib",                            },

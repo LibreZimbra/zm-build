@@ -200,13 +200,6 @@
       },
    },
    {
-      "dir"         => "zm-postfix",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-postfix $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-migration-tools",
       "ant_targets" => undef,
       "stage_cmd"   => sub {
