@@ -84,7 +84,6 @@ my @packageList = (
   "zimbra-convertd",
   "zimbra-memcached",
   "zimbra-proxy",
-  "zimbra-archiving",
   "zimbra-imapd",
   "zimbra-onlyoffice",
 );
@@ -107,7 +106,6 @@ my %packageServiceMap = (
   'vmware-ha' => "zimbra-core",
   memcached => "zimbra-memcached",
   proxy     => "zimbra-proxy",
-  archiving => "zimbra-archiving",
   convertd  => "zimbra-convertd",
   service   => "zimbra-store",
   zimbra    => "zimbra-store",
@@ -3429,7 +3427,6 @@ sub setEnabledDependencies {
       $config{RUNAV} = "yes";
       $config{RUNSA} = "yes";
       $config{RUNDKIM} = "yes";
-      $config{RUNARCHIVING} = "no";
       $config{RUNCBPOLICYD} = "no";
     } else {
       $config{RUNSA} = (isServiceEnabled("antispam") ? "yes" : "no");
@@ -3437,7 +3434,6 @@ sub setEnabledDependencies {
       if ($config{RUNDKIM} ne "yes") {
         $config{RUNDKIM} = (isServiceEnabled("opendkim") ? "yes" : "no");
       }
-      $config{RUNARCHIVING} = (isServiceEnabled("archiving") ? "yes" : "no");
       $config{RUNCBPOLICYD} = (isServiceEnabled("cbpolicyd") ? "yes" : "no");
     }
   }
@@ -3846,16 +3842,6 @@ sub createLdapUsersMenu {
   return $lm;
 }
 
-sub createArchivingMenu {
-  my $package = shift;
-  my $lm = genPackageMenu($package);
-  $$lm{title} = "Archiving configuration";
-  $$lm{createsub} = \&createArchivingMenu;
-  $$lm{createarg} = $package;
-  my $i = 2;
-  return $lm;
-}
-
 sub createSnmpMenu {
   my $package = shift;
   my $lm = genPackageMenu($package);
@@ -3944,15 +3930,6 @@ sub createMtaMenu {
         "prompt" => "Notification address for AV alerts:",
         "var" => \$config{AVUSER},
         "callback" => \&setAvUser,
-        };
-      $i++;
-    }
-    if (isEnabled("zimbra-archiving") || isComponentAvailable("archiving")) {
-      $$lm{menuitems}{$i} = {
-        "prompt" => "Enable Archiving and Discovery:",
-        "var" => \$config{RUNARCHIVING},
-        "callback" => \&toggleYN,
-        "arg" => "RUNARCHIVING",
         };
       $i++;
     }
@@ -4632,7 +4609,6 @@ sub createMainMenu {
   foreach my $package (@packageList) {
     if ($package eq "zimbra-core") {next;}
     if ($package eq "zimbra-apache") {next;}
-    if ($package eq "zimbra-archiving") {next;}
     if ($package eq "zimbra-memcached") {next;}
     if (defined($installedPackages{$package})) {
       if ($package =~ /logger|spell|convertd/) {
@@ -6389,7 +6365,7 @@ sub removeNetworkComponents {
     my @zmprov_args = ();
     foreach my $component (split(/\n/,$components)) {
       push(@zmprov_args, ('-zimbraComponentAvailable', $component))
-        if ($component =~ /HSM|convertd|archiving|hotbackup/);
+        if ($component =~ /HSM|convertd|hotbackup/);
 
       if ($component =~ /convertd/) {
         my $rc = 0;
@@ -6948,10 +6924,6 @@ sub configInitMta {
       if ($config{RUNAV} eq "yes") {
         push(@enabledServiceList, ('zimbraServiceEnabled', 'antivirus'));
       }
-      if ($config{RUNARCHIVING} eq "yes") {
-        push(@installedServiceList, ('zimbraServiceInstalled', 'archiving'));
-        push(@enabledServiceList, ('zimbraServiceEnabled', 'archiving'));
-      }
       if ($config{RUNSA} eq "yes") {
         push(@enabledServiceList, ('zimbraServiceEnabled', 'antispam'));
       }
@@ -7067,7 +7039,6 @@ sub configSetEnabledServices {
       next;
     }
     if ($p eq "zimbra-apache") {next;}
-    if ($p eq "zimbra-archiving") {next;}
     $p =~ s/zimbra-//;
     if ($p eq "store") {$p = "mailbox";}
     push(@installedServiceList, ('zimbraServiceInstalled', "$p"));
@@ -7079,7 +7050,6 @@ sub configSetEnabledServices {
       next;
     }
     if ($p eq "zimbra-apache") {next;}
-    if ($p eq "zimbra-archiving") {next;}
     if ($enabledPackages{$p} eq "Enabled") {
       $p =~ s/zimbra-//;
       if ($p eq "store") {

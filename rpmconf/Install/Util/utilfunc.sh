@@ -683,16 +683,7 @@ checkExistingInstall() {
       fi
       INSTALLED_PACKAGES="$INSTALLED_PACKAGES $i"
     else
-      if [ x$i = "xzimbra-archiving" ]; then
-        if [ -f "/opt/zimbra/lib/ext/zimbra_xmbxsearch/zimbra_xmbxsearch.jar" -a -f "/opt/zimbra/zimlets-network/zimbra_xmbxsearch.zip" ]; then
-          echo "FOUND zimbra-cms"
-          INSTALLED_PACKAGES="$INSTALLED_PACKAGES zimbra-archiving"
-        else
-          echo "NOT FOUND"
-        fi
-      else
          echo "NOT FOUND"
-      fi
     fi
   done
 
@@ -2331,17 +2322,13 @@ getInstallPackages() {
     elif [ $i = "zimbra-network-store" ]; then
       ifStoreSelectedY
     elif [ $UPGRADE = "yes" ]; then
-      if [ $i = "zimbra-archiving" ]; then
-        askInstallPkgYN "Install $i" "yes" "N" "N"
-      elif [ $i = "zimbra-imapd" ]; then
+      if [ $i = "zimbra-imapd" ]; then
         askInstallPkgYN "Install $i (BETA - for evaluation only)" "no" "N" "N"
       else
         askYN "Install $i" "N"
       fi
     else
-      if [ $i = "zimbra-archiving" ]; then
-        askInstallPkgYN "Install $i" "yes" "N" "N"
-      elif [ $i = "zimbra-convertd" ]; then
+      if [ $i = "zimbra-convertd" ]; then
         askInstallPkgYN "Install $i" "no" "Y" "N"
       elif [ $i = "zimbra-imapd" ]; then
         askInstallPkgYN "Install $i (BETA - for evaluation only)" "no" "N" "N"
