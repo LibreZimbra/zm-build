@@ -193,13 +193,6 @@
       "deploy_pkg_into" => "bundle",
    },
    {
-      "dir"         => "zm-amavis",
-      "ant_targets" => ["pkg"],
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-amavis $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-migration-tools",
       "ant_targets" => undef,
       "stage_cmd"   => sub {
