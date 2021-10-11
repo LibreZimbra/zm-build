@@ -26,7 +26,6 @@ cp -f ${repoDir}/zm-build/rpmconf/Install/Util/modules/postinstall.sh           
 cp -f ${repoDir}/zm-build/rpmconf/Install/Util/modules/install_rabbitmq.sh              ${ZCS_REL}/util/modules
 cp -f ${repoDir}/zm-build/rpmconf/Install/Util/utilfunc.sh                              ${ZCS_REL}/util
 cp -f ${repoDir}/zm-build/rpmconf/Install/install.sh                                    ${ZCS_REL}/
-cp -f ${repoDir}/zm-mailbox/store/build/dist/versions-init.sql                          ${ZCS_REL}/data
 
 if [ -f "/etc/redhat-release" ]
 then

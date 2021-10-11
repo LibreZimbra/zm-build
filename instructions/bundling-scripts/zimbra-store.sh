@@ -39,15 +39,10 @@ main()
 
     Log "Copy etc files"
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
-    cp ${repoDir}/zm-mailbox/store-conf/conf/imapd.log4j.properties ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/imapd.log4j.properties
 
     Log "Copy bin files of /opt/zimbra/"
 
     cp -f ${repoDir}/zm-migration-tools/zmztozmig.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmztozmig.conf
-
-    cp -f ${repoDir}/zm-mailbox/store-conf/conf/owasp_policy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/owasp_policy.xml
-    cp -f ${repoDir}/zm-mailbox/store-conf/conf/antisamy.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/antisamy.xml
-    cp -f ${repoDir}/zm-mailbox/store-conf/conf/custom-mimetypes.xml ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/custom-mimetypes.xml
 
     Log "Copy extensions-extra files of /opt/zimbra/"
     cp -rf ${repoDir}/zm-openid-consumer-store/build/dist/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer
