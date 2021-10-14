@@ -178,6 +178,11 @@ sub InitGlobalBuildVars()
         if ( $CFG{BUILD_RELEASE_NO} !~ m/^\d+[.]\d+[.]\d+$/ );
    }
 
+   my @ver = split('\.', $CFG{BUILD_RELEASE_NO});
+   $CFG{BUILD_RELEASE_MAJOR} = $ver[0];
+   $CFG{BUILD_RELEASE_MINOR} = $ver[1];
+   $CFG{BUILD_RELEASE_MICRO} = $ver[2];
+
    foreach my $x (`grep -o '\\<[E][N][V]_[A-Z_]*\\>' '$GLOBAL_PATH_TO_SCRIPT_FILE' | sort | uniq`)
    {
       chomp($x);
@@ -418,6 +423,9 @@ sub Build($)
          "-Dis-production=$CFG{BUILD_PROD_FLAG}",
          "-Dzimbra.buildinfo.platform=$CFG{BUILD_OS}",
          "-Dzimbra.buildinfo.version=$CFG{BUILD_RELEASE_NO}_$CFG{BUILD_RELEASE_CANDIDATE}_$CFG{BUILD_NO}",
+         "-Dzimbra.buildinfo.majorversion=$CFG{BUILD_RELEASE_MAJOR}",
+         "-Dzimbra.buildinfo.minorversion=$CFG{BUILD_RELEASE_MINOR}",
+         "-Dzimbra.buildinfo.microversion=$CFG{BUILD_RELEASE_MICRO}",
          "-Dzimbra.buildinfo.buildnum=$CFG{BUILD_NO}",
       ],
       make => [
