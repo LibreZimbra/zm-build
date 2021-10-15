@@ -278,14 +278,6 @@
       "deploy_pkg_into" => "bundle",
    },
    {
-      "dir"          => "zm-launcher",
-      "make_targets" => ["JAVA_BINARY=/opt/zimbra/common/bin/java"],
-      "stage_cmd"    => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-launcher/build/dist");
-         SysExec("cp -f build/zmmailboxd* $CFG{BUILD_DIR}/zm-launcher/build/dist");
-      },
-   },
-   {
       "dir"         => "zm-oauth-social",
       "ant_targets" => ["publish-local", "oauth-social-common-jar", "oauth-social-jar"],
       "stage_cmd"   => sub {

@@ -19,7 +19,6 @@
    { name => "zm-clientuploader-store",              },
    { name => "zm-downloads",                         },
    { name => "zm-helptooltip-zimlet",                },
-   { name => "zm-launcher",                          },
    { name => "zm-ldap-utilities",                    },
    { name => "zm-ldap-utils-store",                  },
    { name => "zm-licenses",                          },
