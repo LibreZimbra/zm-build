@@ -20,7 +20,6 @@
    { name => "zm-downloads",                         },
    { name => "zm-helptooltip-zimlet",                },
    { name => "zm-ldap-utilities",                    },
-   { name => "zm-ldap-utils-store",                  },
    { name => "zm-licenses",                          },
    { name => "zm-mailbox",                           },
    { name => "zm-migration-tools",                   },

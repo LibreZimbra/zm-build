@@ -10,4 +10,5 @@ Depends: zimbra-core, zimbra-store-components, zimbra-jetty-distribution (>= 9.4
   zimbra-common-core-jar, zimbra-common-mbox-docs, zimbra-common-mbox-conf,
   zimbra-common-mbox-native-lib, zimbra-common-mbox-conf-attrs, zimbra-mbox-conf,
   zimbra-common-mbox-conf-msgs, zimbra-mbox-service, zimbra-common-mbox-conf-rights,
-  zimbra-mbox-war, zimbra-common-mbox-db, zimbra-taglib, zimbra-admin-help-common@@MORE_DEPENDS@@
+  zimbra-mbox-war, zimbra-common-mbox-db, zimbra-taglib, zimbra-ldap-utils-store,
+  zimbra-admin-help-common@@MORE_DEPENDS@@

@@ -56,8 +56,7 @@ main()
     cp -f ${repoDir}/zm-nginx-lookup-store/build/dist/zm-nginx-lookup-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup/nginx-lookup.jar
     cp -f ${repoDir}/zm-openid-consumer-store/build/dist/guice*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/openidconsumer/
     cp -f ${repoDir}/zm-versioncheck-store/build/zm-versioncheck-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraadminversioncheck/zimbraadminversioncheck.jar
-    cp -f ${repoDir}/zm-ldap-utils-store/build/zm-ldap-utils-*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraldaputils/zimbraldaputils.jar
-    
+
     cp -f ${repoDir}/zm-oauth-social/build/dist/zm-oauth-social.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-oauth-social/zmoauthsocial.jar
     cp -f ${repoDir}/zm-oauth-social/build/dist/zm-oauth-social-common.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/zm-oauth-social-common.jar
     

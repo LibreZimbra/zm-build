@@ -232,14 +232,6 @@
       },
    },
    {
-      "dir"         => "zm-ldap-utils-store",
-      "ant_targets" => ["jar"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-ldap-utils-store");
-         SysExec("cp -f -r ../zm-ldap-utils-store/build $CFG{BUILD_DIR}/zm-ldap-utils-store");
-      },
-   },
-   {
       "dir"         => "ant-1.7.0-ziputil-patched",
       "ant_targets" => ["jar"],
       "stage_cmd"   => undef,
