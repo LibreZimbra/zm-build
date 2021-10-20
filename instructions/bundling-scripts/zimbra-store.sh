@@ -50,8 +50,6 @@ main()
 
     Log "Copy ext files of /opt/zimbra/lib/"
 
-    cp ${repoDir}/zm-zcs-lib/build/dist/oauth-1.4.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/jars/oauth-1.4.jar
-
     cp -f ${repoDir}/zm-clam-scanner-store/build/dist/zm-clam-scanner-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner/clamscanner.jar
     cp -f ${repoDir}/zm-nginx-lookup-store/build/dist/zm-nginx-lookup-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup/nginx-lookup.jar
     cp -f ${repoDir}/zm-openid-consumer-store/build/dist/guice*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/openidconsumer/
