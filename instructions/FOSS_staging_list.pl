@@ -32,14 +32,6 @@
       },
    },
    {
-      "dir"         => "zm-taglib",
-      "ant_targets" => ["publish-local"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-taglib/build");
-         SysExec("cp -f build/zm-taglib*.jar  $CFG{BUILD_DIR}/zm-taglib/build/");
-      },
-   },
-   {
       "dir"         => "zm-charset",
       "ant_targets" => ["publish-local"],
       "stage_cmd"   => undef,
