@@ -10,7 +10,6 @@
    { name => "zm-bulkprovision-store",               },
    { name => "zm-certificate-manager-admin-zimlet",  },
    { name => "zm-certificate-manager-store",         },
-   { name => "zm-clam-scanner-store",                },
    { name => "zm-clientuploader-admin-zimlet",       },
    { name => "zm-clientuploader-store",              },
    { name => "zm-downloads",                         },

@@ -17,7 +17,6 @@ main()
         /opt/zimbra/lib/jars \
         /opt/zimbra/libexec \
         /opt/zimbra/lib/ext/mitel \
-        /opt/zimbra/lib/ext/clamscanner \
         /opt/zimbra/lib/ext/nginx-lookup \
         /opt/zimbra/lib/ext/openidconsumer \
         /opt/zimbra/lib/ext/zimbraadminversioncheck \
@@ -49,7 +48,6 @@ main()
 
     Log "Copy ext files of /opt/zimbra/lib/"
 
-    cp -f ${repoDir}/zm-clam-scanner-store/build/dist/zm-clam-scanner-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/clamscanner/clamscanner.jar
     cp -f ${repoDir}/zm-nginx-lookup-store/build/dist/zm-nginx-lookup-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/nginx-lookup/nginx-lookup.jar
     cp -f ${repoDir}/zm-openid-consumer-store/build/dist/guice*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/openidconsumer/
     cp -f ${repoDir}/zm-versioncheck-store/build/zm-versioncheck-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraadminversioncheck/zimbraadminversioncheck.jar

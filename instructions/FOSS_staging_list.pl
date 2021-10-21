@@ -53,14 +53,6 @@
       },
    },
    {
-      "dir"         => "zm-clam-scanner-store",
-      "ant_targets" => ["publish-local"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-clam-scanner-store/build/dist");
-         SysExec("cp -f -rp build/zm-clam-scanner-store-*.jar $CFG{BUILD_DIR}/zm-clam-scanner-store/build/dist");
-      },
-   },
-   {
       "dir"         => "zm-licenses",
       "ant_targets" => undef,
       "stage_cmd"   => sub {
