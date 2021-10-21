@@ -32,11 +32,6 @@
       },
    },
    {
-      "dir"         => "zm-charset",
-      "ant_targets" => ["publish-local"],
-      "stage_cmd"   => undef,
-   },
-   {
       "dir"         => "zm-ldap-utilities",
       "package"     => "zimbra-ldap",
       "stage_cmd"   => undef,
