@@ -50,11 +50,6 @@
       "stage_cmd"   => undef,
    },
    {
-      "dir"         => "zm-ajax",
-      "ant_targets" => ["publish-local"],
-      "stage_cmd"   => undef,
-   },
-   {
       "dir"         => "zm-admin-ajax",
       "ant_targets" => ["publish-local"],
       "stage_cmd"   => undef,
@@ -167,11 +162,6 @@
          SysExec("mkdir -p $CFG{BUILD_DIR}/zm-zimlets/build/dist");
          SysExec("cp -f build/dist/lib/zimlettaglib.jar $CFG{BUILD_DIR}/zm-zimlets/build/dist/zimlettaglib.jar");
       },
-   },
-   {
-      "dir"         => "zm-web-client",
-      "ant_targets"     => ["pkg"],
-      "deploy_pkg_into" => "bundle",
    },
    {
       "dir"         => "zm-versioncheck-utilities",
