@@ -23,7 +23,6 @@ main()
         /opt/zimbra/lib/ext/zimbraadminversioncheck \
         /opt/zimbra/lib/ext/zimbraldaputils \
         /opt/zimbra/lib/ext/zm-oauth-social \
-        /opt/zimbra/lib/ext/zm-gql \
         /opt/zimbra/lib/ext-common \
         /opt/zimbra/jetty_base/ \
         /opt/zimbra/jetty_base/common/endorsed \
@@ -59,7 +58,6 @@ main()
     cp -f ${repoDir}/zm-oauth-social/build/dist/zm-oauth-social-common.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext-common/zm-oauth-social-common.jar
     
     cp -f ${repoDir}/zm-zcs-lib/build/dist/java-jwt-3.2.0.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-oauth-social/
-    cp -f ${repoDir}/zm-gql/build/dist/zm-gql*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zm-gql/zmgql.jar
 
 #-------------------- Get wars content (service.war, zimbra.war and zimbraAdmin.war) ---------------------------
 

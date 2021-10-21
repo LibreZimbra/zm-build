@@ -36,5 +36,4 @@
    { name => "zm-zcs-lib",                           },
    { name => "zm-zimlets",                           },
    { name => "zm-oauth-social",                      },
-   { name => "zm-gql",		                     },
 );
