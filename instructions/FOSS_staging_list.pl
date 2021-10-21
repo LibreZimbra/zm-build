@@ -50,11 +50,6 @@
       "stage_cmd"   => undef,
    },
    {
-      "dir"         => "zm-admin-ajax",
-      "ant_targets" => ["publish-local"],
-      "stage_cmd"   => undef,
-   },
-   {
       "dir"         => "zm-ssdb-ephemeral-store",
       "ant_targets" => ["publish-local"],
       "stage_cmd"   => sub {
@@ -176,11 +171,6 @@
       "stage_cmd"   => sub {
          SysExec("cp -f -r ../zm-downloads $CFG{BUILD_DIR}");
       },
-   },
-   {
-      "dir"         => "zm-admin-console",
-      "ant_targets" => ["pkg"],
-      "deploy_pkg_into" => "bundle",
    },
    {
       "dir"         => "zm-migration-tools",
