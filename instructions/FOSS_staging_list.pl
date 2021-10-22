@@ -117,14 +117,6 @@
       },
    },
    {
-      "dir"         => "zm-viewmail-admin-zimlet",
-      "ant_targets" => ["package-zimlet"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-viewmail-admin-zimlet/build/zimlet");
-         SysExec("cp -f build/zimlet/*.zip $CFG{BUILD_DIR}/zm-viewmail-admin-zimlet/build/zimlet");
-      },
-   },
-   {
       "dir"         => "zm-versioncheck-utilities",
       "ant_targets" => undef,
       "stage_cmd"   => sub {

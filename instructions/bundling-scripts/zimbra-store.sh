@@ -71,8 +71,7 @@ main()
                    "zm-certificate-manager-admin-zimlet" \
                    "zm-clientuploader-admin-zimlet" \
                    "zm-proxy-config-admin-zimlet" \
-                   "zm-helptooltip-zimlet" \
-                   "zm-viewmail-admin-zimlet" )
+                   "zm-helptooltip-zimlet" )
     for i in "${zimletsArray[@]}"
     do
         cp ${repoDir}/${i}/build/zimlet/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets

@@ -30,7 +30,6 @@
    { name => "zm-versioncheck-admin-zimlet",         },
    { name => "zm-versioncheck-store",                },
    { name => "zm-versioncheck-utilities",            },
-   { name => "zm-viewmail-admin-zimlet",             },
    { name => "zm-zcs",                               },
    { name => "zm-zcs-lib",                           },
 );
