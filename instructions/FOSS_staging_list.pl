@@ -77,14 +77,6 @@
       },
    },
    {
-      "dir"         => "zm-certificate-manager-admin-zimlet",
-      "ant_targets" => ["package-zimlet"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-certificate-manager-admin-zimlet/build/zimlet");
-         SysExec("cp -f build/zimlet/*.zip $CFG{BUILD_DIR}/zm-certificate-manager-admin-zimlet/build/zimlet");
-      },
-   },
-   {
       "dir"         => "zm-clientuploader-admin-zimlet",
       "ant_targets" => ["package-zimlet"],
       "stage_cmd"   => sub {
