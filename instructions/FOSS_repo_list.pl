@@ -6,7 +6,6 @@
    { name => "nekohtml-1.9.13",                      },
    { name => "java-html-sanitizer-release-20190610.1",remote => "zm-ow",},
    { name => "antisamy", remote => "zm-ow",          },
-   { name => "zm-bulkprovision-admin-zimlet",        },
    { name => "zm-bulkprovision-store",               },
    { name => "zm-certificate-manager-admin-zimlet",  },
    { name => "zm-certificate-manager-store",         },
