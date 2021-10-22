@@ -33,5 +33,4 @@
    { name => "zm-viewmail-admin-zimlet",             },
    { name => "zm-zcs",                               },
    { name => "zm-zcs-lib",                           },
-   { name => "zm-zimlets",                           },
 );

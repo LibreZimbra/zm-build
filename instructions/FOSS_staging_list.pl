@@ -125,19 +125,6 @@
       },
    },
    {
-      "dir"         => "zm-zimlets",
-      "ant_targets" => [ "package-zimlets", "jar" ],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-zimlets/conf");
-         SysExec("cp -f conf/zimbra.tld $CFG{BUILD_DIR}/zm-zimlets/conf");
-         SysExec("cp -f conf/web.xml.production $CFG{BUILD_DIR}/zm-zimlets/conf");
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-zimlets/build/dist/zimlets");
-         SysExec("cp -f build/dist/zimlets/*.zip $CFG{BUILD_DIR}/zm-zimlets/build/dist/zimlets");
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-zimlets/build/dist");
-         SysExec("cp -f build/dist/lib/zimlettaglib.jar $CFG{BUILD_DIR}/zm-zimlets/build/dist/zimlettaglib.jar");
-      },
-   },
-   {
       "dir"         => "zm-versioncheck-utilities",
       "ant_targets" => undef,
       "stage_cmd"   => sub {
