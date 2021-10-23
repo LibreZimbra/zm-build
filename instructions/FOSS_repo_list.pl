@@ -8,7 +8,6 @@
    { name => "antisamy", remote => "zm-ow",          },
    { name => "zm-bulkprovision-store",               },
    { name => "zm-certificate-manager-store",         },
-   { name => "zm-clientuploader-admin-zimlet",       },
    { name => "zm-clientuploader-store",              },
    { name => "zm-downloads",                         },
    { name => "zm-ldap-utilities",                    },

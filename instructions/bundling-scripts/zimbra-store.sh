@@ -68,7 +68,6 @@ main()
     Log "Copy zimlets files of /opt/zimbra/"
     zimletsArray=( "zm-versioncheck-admin-zimlet" \
                    "zm-certificate-manager-admin-zimlet" \
-                   "zm-clientuploader-admin-zimlet" \
                    "zm-proxy-config-admin-zimlet" \
                    "zm-helptooltip-zimlet" )
     for i in "${zimletsArray[@]}"
