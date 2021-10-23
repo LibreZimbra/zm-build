@@ -11,7 +11,6 @@
    { name => "zm-clientuploader-admin-zimlet",       },
    { name => "zm-clientuploader-store",              },
    { name => "zm-downloads",                         },
-   { name => "zm-helptooltip-zimlet",                },
    { name => "zm-ldap-utilities",                    },
    { name => "zm-licenses",                          },
    { name => "zm-mailbox",                           },
