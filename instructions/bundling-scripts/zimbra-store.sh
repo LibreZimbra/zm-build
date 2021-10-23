@@ -66,8 +66,7 @@ main()
     cp -f ${repoDir}/zm-build/rpmconf/Conf/hotspot_compiler ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log/.hotspot_compiler
 
     Log "Copy zimlets files of /opt/zimbra/"
-    zimletsArray=( "zm-versioncheck-admin-zimlet" \
-                   "zm-certificate-manager-admin-zimlet" \
+    zimletsArray=( "zm-certificate-manager-admin-zimlet" \
                    "zm-proxy-config-admin-zimlet" \
                    "zm-helptooltip-zimlet" )
     for i in "${zimletsArray[@]}"

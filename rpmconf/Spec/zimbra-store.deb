@@ -13,4 +13,5 @@ Depends: zimbra-core, zimbra-store-components, zimbra-jetty-distribution (>= 9.4
   zimbra-mbox-war, zimbra-common-mbox-db, zimbra-taglib, zimbra-ldap-utils-store,
   zimbra-gql, zimbra-clam-scanner-store, zimbra-oauth-social, zimbra-bulkprovision-admin-zimlet,
   zimbra-certificate-manager-admin-zimlet, zimbra-helptooltip-zimlet, zimbra-clientuploader-admin-zimlet,
+  zimbra-versioncheck-admin-zimlet,
   zimbra-admin-help-common@@MORE_DEPENDS@@
