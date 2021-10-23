@@ -17,7 +17,6 @@
    { name => "zm-nginx-lookup-store",                },
    { name => "zm-openid-consumer-store",             },
    { name => "zm-pkg-tool",                          },
-   { name => "zm-proxy-config-admin-zimlet",         },
    { name => "zm-ssdb-ephemeral-store",              },
       # zm-timezones repo can be removed and made independent of zm-zextras
       # zm-timezones cannot be done unless the packages from it are pushed to public repo
