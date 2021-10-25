@@ -147,11 +147,6 @@
       "stage_cmd"   => undef,
    },
    {
-      "dir"         => "ical4j-0.9.16-patched",
-      "ant_targets" => [ "clean-compile", "package" ],
-      "stage_cmd"   => undef,
-   },
-   {
       "dir"         => "zm-zcs-lib",
       "ant_targets" => ["dist", "pkg"],
       "stage_cmd"   => sub {
