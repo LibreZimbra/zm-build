@@ -5,4 +5,6 @@ Maintainer: info@metux.net
 Section: mail
 Priority: optional
 Architecture: @@ARCH@@
-Depends: zimbra-core-components, zimbra-core-utils, zimbra-ldap-utilities, zimbra-db-conf, zimbra-freshclam, zimbra-mta-conf, zimbra-launcher, zimbra-jython@@MORE_DEPENDS@@
+Depends: zimbra-core-components, zimbra-core-utils, zimbra-ldap-utilities,
+  zimbra-db-conf, zimbra-freshclam, zimbra-mta-conf, zimbra-launcher,
+  zimbra-bulkprovision-store, zimbra-jython@@MORE_DEPENDS@@

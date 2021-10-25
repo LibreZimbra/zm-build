@@ -90,14 +90,6 @@
       },
    },
    {
-      "dir"         => "zm-bulkprovision-store",
-      "ant_targets" => ["jar"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-bulkprovision-store");
-         SysExec("cp -f -r ../zm-bulkprovision-store/build $CFG{BUILD_DIR}/zm-bulkprovision-store");
-      },
-   },
-   {
       "dir"         => "zm-certificate-manager-store",
       "ant_targets" => ["jar"],
       "stage_cmd"   => sub {

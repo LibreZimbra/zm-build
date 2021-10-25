@@ -13,6 +13,7 @@ Packager: Zimbra, Inc.
 BuildRoot: /opt/zimbra
 AutoReqProv: no
 Requires: zimbra-core-components, zimbra-core-utils, zimbra-ldap-utilities, zimbra-core, zimbra-freshclam, zimbra-mta-conf, zimbra-launcher, zimbra-jython@@MORE_DEPENDS@@
+Requires: zimbra-bulkprovision-store
 
 %description
 Best email money can buy
