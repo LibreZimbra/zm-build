@@ -65,13 +65,6 @@ main()
     Log "Copy log files of /opt/zimbra/"
     cp -f ${repoDir}/zm-build/rpmconf/Conf/hotspot_compiler ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log/.hotspot_compiler
 
-    Log "Copy zimlets files of /opt/zimbra/"
-    zimletsArray=( "zm-certificate-manager-admin-zimlet" )
-    for i in "${zimletsArray[@]}"
-    do
-        cp ${repoDir}/${i}/build/zimlet/*.zip ${repoDir}/zm-build/${currentPackage}/opt/zimbra/zimlets
-    done
-
     Log "Building jetty/common/"
 
     touch ${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/temp/.emptyfile
