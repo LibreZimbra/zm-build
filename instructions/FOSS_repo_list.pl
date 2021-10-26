@@ -11,7 +11,6 @@
    { name => "zm-licenses",                          },
    { name => "zm-mailbox",                           },
    { name => "zm-migration-tools",                   },
-   { name => "zm-openid-consumer-store",             },
    { name => "zm-pkg-tool",                          },
    { name => "zm-ssdb-ephemeral-store",              },
       # zm-timezones repo can be removed and made independent of zm-zextras

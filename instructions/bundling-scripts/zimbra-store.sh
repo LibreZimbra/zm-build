@@ -13,11 +13,9 @@ main()
         /etc/sudoers.d \
         /opt/zimbra/bin \
         /opt/zimbra/conf/templates \
-        /opt/zimbra/extensions-extra/openidconsumer \
         /opt/zimbra/lib/jars \
         /opt/zimbra/libexec \
         /opt/zimbra/lib/ext/mitel \
-        /opt/zimbra/lib/ext/openidconsumer \
         /opt/zimbra/lib/ext/zimbraadminversioncheck \
         /opt/zimbra/lib/ext/zimbraldaputils \
         /opt/zimbra/lib/ext-common \
@@ -40,13 +38,8 @@ main()
 
     cp -f ${repoDir}/zm-migration-tools/zmztozmig.conf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/conf/zmztozmig.conf
 
-    Log "Copy extensions-extra files of /opt/zimbra/"
-    cp -rf ${repoDir}/zm-openid-consumer-store/build/dist/. ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer
-    rm -rf ${repoDir}/zm-build/${currentPackage}/opt/zimbra/extensions-extra/openidconsumer/extensions-extra
-
     Log "Copy ext files of /opt/zimbra/lib/"
 
-    cp -f ${repoDir}/zm-openid-consumer-store/build/dist/guice*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/openidconsumer/
     cp -f ${repoDir}/zm-versioncheck-store/build/zm-versioncheck-store*.jar ${repoDir}/zm-build/${currentPackage}/opt/zimbra/lib/ext/zimbraadminversioncheck/zimbraadminversioncheck.jar
 
 #-------------------- Get wars content (service.war, zimbra.war and zimbraAdmin.war) ---------------------------

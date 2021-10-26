@@ -45,14 +45,6 @@
       },
    },
    {
-      "dir"         => "zm-openid-consumer-store",
-      "ant_targets" => ["dist-package"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-openid-consumer-store/build/dist");
-         SysExec("cp -f -r build/dist $CFG{BUILD_DIR}/zm-openid-consumer-store/build/");
-      },
-   },
-   {
       "dir"         => "zm-licenses",
       "ant_targets" => undef,
       "stage_cmd"   => sub {
