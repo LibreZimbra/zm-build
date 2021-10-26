@@ -14,4 +14,4 @@ Depends: zimbra-core, zimbra-store-components, zimbra-jetty-distribution (>= 9.4
   zimbra-gql, zimbra-clam-scanner-store, zimbra-oauth-social, zimbra-bulkprovision-admin-zimlet,
   zimbra-certificate-manager-admin-zimlet, zimbra-helptooltip-zimlet, zimbra-clientuploader-admin-zimlet,
   zimbra-versioncheck-admin-zimlet, zimbra-proxy-config-admin-zimlet, zimbra-helptooltip-zimlet,
-  zimbra-admin-help-common@@MORE_DEPENDS@@
+  zimbra-nginx-lookup-store, zimbra-admin-help-common@@MORE_DEPENDS@@
