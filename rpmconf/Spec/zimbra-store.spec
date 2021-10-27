@@ -12,7 +12,25 @@ Vendor: Zimbra, Inc.
 Packager: Zimbra, Inc.
 BuildRoot: /opt/zimbra
 AutoReqProv: no
-requires: zimbra-core, zimbra-store-components, zimbra-jetty-distribution >= 9.4.18.v20190429-2, zimbra-webclient-portal-example, zimbra-help, zimbra-jetty-conf, zimbra-taglib, zimbra-gql, zimbra-clam-scanner-store, zimbra-oauth-social, zimbra-zimlets, zimbra-bulkprovision-admin-zimlet, zimbra-certificate-manager-admin-zimlet, zimbra-helptooltip-zimlet, zimbra-clientuploader-admin-zimlet, zimbra-versioncheck-admin-zimlet, zimbra-proxy-config-admin-zimlet, zimbra-helptooltip-zimlet, zimbra-nginx-lookup-store
+Requires: zimbra-core
+Requires: zimbra-store-components
+Requires: zimbra-jetty-distribution >= 9.4.18.v20190429-2
+Requires: zimbra-webclient-portal-example
+Requires: zimbra-help
+Requires: zimbra-jetty-conf
+Requires: zimbra-taglib
+Requires: zimbra-gql
+Requires: zimbra-clam-scanner-store
+Requires: zimbra-oauth-social
+Requires: zimbra-zimlets
+Requires: zimbra-bulkprovision-admin-zimlet
+Requires: zimbra-certificate-manager-admin-zimlet
+Requires: zimbra-helptooltip-zimlet
+Requires: zimbra-clientuploader-admin-zimlet
+Requires: zimbra-versioncheck-admin-zimlet
+Requires: zimbra-proxy-config-admin-zimlet
+Requires: zimbra-helptooltip-zimlet
+Requires: zimbra-nginx-lookup-store
 Requires: zimbra-openid-consumer-store
 Requires: zimbra-viewmail-admin-zimleton@@MORE_DEPENDS@@
 
