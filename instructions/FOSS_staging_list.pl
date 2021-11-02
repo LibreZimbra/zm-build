@@ -32,11 +32,6 @@
       },
    },
    {
-      "dir"         => "zm-ldap-utilities",
-      "package"     => "zimbra-ldap",
-      "stage_cmd"   => undef,
-   },
-   {
       "dir"         => "zm-ssdb-ephemeral-store",
       "ant_targets" => ["publish-local"],
       "stage_cmd"   => sub {

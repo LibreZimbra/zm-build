@@ -6,7 +6,6 @@
    { name => "antisamy", remote => "zm-ow",          },
    { name => "zm-clientuploader-store",              },
    { name => "zm-downloads",                         },
-   { name => "zm-ldap-utilities",                    },
    { name => "zm-licenses",                          },
    { name => "zm-mailbox",                           },
    { name => "zm-migration-tools",                   },
