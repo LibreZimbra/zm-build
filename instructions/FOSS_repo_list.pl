@@ -4,7 +4,6 @@
    { name => "nekohtml-1.9.13",                      },
    { name => "java-html-sanitizer-release-20190610.1",remote => "zm-ow",},
    { name => "antisamy", remote => "zm-ow",          },
-   { name => "zm-clientuploader-store",              },
    { name => "zm-downloads",                         },
    { name => "zm-licenses",                          },
    { name => "zm-mailbox",                           },

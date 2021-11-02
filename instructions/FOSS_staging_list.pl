@@ -69,14 +69,6 @@
       },
    },
    {
-      "dir"         => "zm-clientuploader-store",
-      "ant_targets" => ["jar"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-clientuploader-store");
-         SysExec("cp -f -r ../zm-clientuploader-store/build $CFG{BUILD_DIR}/zm-clientuploader-store");
-      },
-   },
-   {
       "dir"         => "zm-versioncheck-store",
       "ant_targets" => ["jar"],
       "stage_cmd"   => sub {

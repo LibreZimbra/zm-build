@@ -32,6 +32,7 @@ Requires: zimbra-proxy-config-admin-zimlet
 Requires: zimbra-helptooltip-zimlet
 Requires: zimbra-nginx-lookup-store
 Requires: zimbra-openid-consumer-store
+Requires: zimbra-clientuploader-store
 Requires: zimbra-viewmail-admin-zimleton@@MORE_DEPENDS@@
 
 %description
