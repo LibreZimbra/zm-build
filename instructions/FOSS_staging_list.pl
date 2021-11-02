@@ -90,11 +90,6 @@
       },
    },
    {
-      "dir"         => "ant-1.7.0-ziputil-patched",
-      "ant_targets" => ["jar"],
-      "stage_cmd"   => undef,
-   },
-   {
       "dir"         => "ant-tar-patched",
       "ant_targets" => ["jar"],
       "stage_cmd"   => undef,

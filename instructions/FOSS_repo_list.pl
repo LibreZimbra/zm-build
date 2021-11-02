@@ -1,5 +1,4 @@
 @ENTRIES = (
-   { name => "ant-1.7.0-ziputil-patched",            },
    { name => "ant-tar-patched",                      },
    { name => "junixsocket",                         tag    => "junixsocket-parent-2.0.4", remote => "gh-ks",},
    { name => "nekohtml-1.9.13",                      },
