@@ -32,14 +32,6 @@
       },
    },
    {
-      "dir"         => "zm-ssdb-ephemeral-store",
-      "ant_targets" => ["publish-local"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-ssdb-ephemeral-store/build/dist");
-         SysExec("cp -f build/zm-ssdb-ephemeral-store*.jar $CFG{BUILD_DIR}/zm-ssdb-ephemeral-store/build/dist");
-      },
-   },
-   {
       "dir"         => "zm-licenses",
       "ant_targets" => undef,
       "stage_cmd"   => sub {

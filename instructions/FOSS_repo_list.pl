@@ -9,7 +9,6 @@
    { name => "zm-mailbox",                           },
    { name => "zm-migration-tools",                   },
    { name => "zm-pkg-tool",                          },
-   { name => "zm-ssdb-ephemeral-store",              },
       # zm-timezones repo can be removed and made independent of zm-zextras
       # zm-timezones cannot be done unless the packages from it are pushed to public repo
       # zm-timezones is already excluded in CircleCI builds via --exclude-git-repo=...
