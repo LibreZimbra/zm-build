@@ -16,5 +16,4 @@
    { name => "zm-versioncheck-store",                },
    { name => "zm-versioncheck-utilities",            },
    { name => "zm-zcs",                               },
-   { name => "zm-zcs-lib",                           },
 );
