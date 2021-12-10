@@ -36,11 +36,6 @@ main()
 
 #-------------------- Get wars content (service.war, zimbra.war and zimbraAdmin.war) ---------------------------
 
-    Log "downloads content"
-    downloadsDir=${repoDir}/zm-build/${currentPackage}/opt/zimbra/jetty_base/webapps/zimbra/downloads
-    mkdir -p ${downloadsDir}
-    cp -rf ${repoDir}/zm-downloads/. ${downloadsDir}
-
     cp -f ${repoDir}/zm-versioncheck-utilities/src/libexec/zmcheckversion ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
 
     Log "Copy log files of /opt/zimbra/"

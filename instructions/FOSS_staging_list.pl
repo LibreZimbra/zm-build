@@ -30,13 +30,6 @@
       },
    },
    {
-      "dir"         => "zm-downloads",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-downloads $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "ant-tar-patched",
       "ant_targets" => ["jar"],
       "stage_cmd"   => undef,

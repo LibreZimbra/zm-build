@@ -35,6 +35,7 @@ Requires: zimbra-openid-consumer-store
 Requires: zimbra-clientuploader-store
 Requires: zimbra-migration-tools
 Requires: zimbra-versioncheck-store
+Requires: zimbra-downloads
 Requires: zimbra-viewmail-admin-zimleton@@MORE_DEPENDS@@
 
 %description
