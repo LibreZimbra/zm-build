@@ -32,14 +32,6 @@
       },
    },
    {
-      "dir"         => "zm-licenses",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-licenses");
-         SysExec("(cd .. && rsync -az --relative zm-licenses/ $CFG{BUILD_DIR}/)");
-      },
-   },
-   {
       "dir"         => "zm-versioncheck-utilities",
       "ant_targets" => undef,
       "stage_cmd"   => sub {

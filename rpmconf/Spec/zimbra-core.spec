@@ -16,6 +16,7 @@ Requires: zimbra-core-components, zimbra-core-utils, zimbra-ldap-utilities, zimb
 Requires: zimbra-bulkprovision-store
 Requires: zimbra-certificate-manager-store
 Requires: zimbra-ssdb-ephemeral-store
+Requires: zimbra-licenses
 
 %description
 Best email money can buy

@@ -47,8 +47,6 @@ chmod 755 ${ZCS_REL}/bin/checkService.pl
 chmod 755 ${ZCS_REL}/bin/zmValidateLdap.pl
 chmod 755 ${ZCS_REL}/install.sh
 
-cp -f ${repoDir}/zm-licenses/zimbra/zcl.txt                                             ${ZCS_REL}/docs
-
 ##########################################
 
 echo "FOSS"                > ${ZCS_REL}/.BUILD_TYPE
