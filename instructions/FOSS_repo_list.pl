@@ -7,7 +7,6 @@
    { name => "zm-downloads",                         },
    { name => "zm-licenses",                          },
    { name => "zm-mailbox",                           },
-   { name => "zm-migration-tools",                   },
    { name => "zm-pkg-tool",                          },
       # zm-timezones repo can be removed and made independent of zm-zextras
       # zm-timezones cannot be done unless the packages from it are pushed to public repo

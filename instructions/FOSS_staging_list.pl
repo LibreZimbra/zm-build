@@ -54,13 +54,6 @@
       },
    },
    {
-      "dir"         => "zm-migration-tools",
-      "ant_targets" => undef,
-      "stage_cmd"   => sub {
-         SysExec("cp -f -r ../zm-migration-tools $CFG{BUILD_DIR}");
-      },
-   },
-   {
       "dir"         => "zm-versioncheck-store",
       "ant_targets" => ["jar"],
       "stage_cmd"   => sub {
