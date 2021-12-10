@@ -10,7 +10,6 @@
       # zm-timezones cannot be done unless the packages from it are pushed to public repo
       # zm-timezones is already excluded in CircleCI builds via --exclude-git-repo=...
    { name => "zm-timezones",                         },
-   { name => "zm-versioncheck-store",                },
    { name => "zm-versioncheck-utilities",            },
    { name => "zm-zcs",                               },
 );

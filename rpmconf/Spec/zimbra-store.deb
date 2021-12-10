@@ -15,5 +15,6 @@ Depends: zimbra-core, zimbra-store-components, zimbra-jetty-distribution (>= 9.4
   zimbra-certificate-manager-admin-zimlet, zimbra-helptooltip-zimlet, zimbra-clientuploader-admin-zimlet,
   zimbra-versioncheck-admin-zimlet, zimbra-proxy-config-admin-zimlet, zimbra-helptooltip-zimlet,
   zimbra-nginx-lookup-store, zimbra-clientuploader-store, zimbra-migration-tools,
+  zimbra-versioncheck-store,
   zimbra-openid-consumer-store,
   zimbra-admin-help-common@@MORE_DEPENDS@@

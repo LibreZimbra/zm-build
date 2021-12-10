@@ -37,14 +37,6 @@
       },
    },
    {
-      "dir"         => "zm-versioncheck-store",
-      "ant_targets" => ["jar"],
-      "stage_cmd"   => sub {
-         SysExec("mkdir -p $CFG{BUILD_DIR}/zm-versioncheck-store");
-         SysExec("cp -f -r ../zm-versioncheck-store/build $CFG{BUILD_DIR}/zm-versioncheck-store");
-      },
-   },
-   {
       "dir"         => "ant-tar-patched",
       "ant_targets" => ["jar"],
       "stage_cmd"   => undef,
