@@ -17,6 +17,7 @@ Requires: zimbra-bulkprovision-store
 Requires: zimbra-certificate-manager-store
 Requires: zimbra-ssdb-ephemeral-store
 Requires: zimbra-licenses
+Requires: zimbra-junixsocket-native
 
 %description
 Best email money can buy

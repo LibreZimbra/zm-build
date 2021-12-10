@@ -1,6 +1,5 @@
 @ENTRIES = (
    { name => "ant-tar-patched",                      },
-   { name => "junixsocket",                         tag    => "junixsocket-parent-2.0.4", remote => "gh-ks",},
    { name => "nekohtml-1.9.13",                      },
    { name => "java-html-sanitizer-release-20190610.1",remote => "zm-ow",},
    { name => "antisamy", remote => "zm-ow",          },
