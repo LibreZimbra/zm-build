@@ -1,6 +1,5 @@
 @ENTRIES = (
    { name => "ant-tar-patched",                      },
-   { name => "antisamy", remote => "zm-ow",          },
    { name => "zm-pkg-tool",                          },
       # zm-timezones repo can be removed and made independent of zm-zextras
       # zm-timezones cannot be done unless the packages from it are pushed to public repo

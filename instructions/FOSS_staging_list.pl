@@ -11,9 +11,4 @@
       "ant_targets" => ["jar"],
       "stage_cmd"   => undef,
    },
-   {
-      "dir"         => "antisamy",
-      "ant_targets" => ["jar"],
-      "stage_cmd"   => undef,
-   },
 );
