@@ -1,13 +1,5 @@
 @ENTRIES = (
    {
-      # This repo can be removed and made independent of zm-zextras
-      # This cannot be done unless the packages from zm-timezones are pushed to public repo
-      # This is already excluded in CircleCI builds
-      "dir"             => "zm-timezones",
-      "ant_targets"     => ["pkg"],
-      "deploy_pkg_into" => "bundle",
-   },
-   {
       "dir"         => "zm-versioncheck-utilities",
       "ant_targets" => undef,
       "stage_cmd"   => sub {
