@@ -16,7 +16,6 @@ main()
         /opt/zimbra/lib/jars \
         /opt/zimbra/libexec \
         /opt/zimbra/lib/ext/mitel \
-        /opt/zimbra/lib/ext/zimbraadminversioncheck \
         /opt/zimbra/lib/ext/zimbraldaputils \
         /opt/zimbra/lib/ext-common \
         /opt/zimbra/jetty_base/ \
@@ -35,8 +34,6 @@ main()
     cp ${repoDir}/zm-build/rpmconf/Env/sudoers.d/02_${currentScript} ${repoDir}/zm-build/${currentPackage}/etc/sudoers.d/02_${currentScript}
 
 #-------------------- Get wars content (service.war, zimbra.war and zimbraAdmin.war) ---------------------------
-
-    cp -f ${repoDir}/zm-versioncheck-utilities/src/libexec/zmcheckversion ${repoDir}/zm-build/${currentPackage}/opt/zimbra/libexec
 
     Log "Copy log files of /opt/zimbra/"
     cp -f ${repoDir}/zm-build/rpmconf/Conf/hotspot_compiler ${repoDir}/zm-build/${currentPackage}/opt/zimbra/log/.hotspot_compiler
