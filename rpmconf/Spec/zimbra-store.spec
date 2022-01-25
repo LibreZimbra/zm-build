@@ -13,7 +13,6 @@ Packager: Zimbra, Inc.
 BuildRoot: /opt/zimbra
 AutoReqProv: no
 Requires: zimbra-core
-Requires: zimbra-store-base
 Requires: mariadb-server
 Requires: mariadb-client
 Requires: zimbra-jetty-distribution >= 9.4.18.v20190429-2
