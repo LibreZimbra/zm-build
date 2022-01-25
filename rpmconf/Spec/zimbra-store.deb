@@ -7,7 +7,7 @@ Priority: optional
 Architecture: @@ARCH@@
 Depends: zimbra-core,
   mariadb-server, mariadb-client,
-  zimbra-jetty-distribution (>= 9.4.18.v20190429-2),
+  zimbra-jetty-distribution,
   zimbra-webclient-portal-example, zimbra-help, zimbra-jetty-conf, zimbra-common-mbox-conf,
   zimbra-common-core-jar, zimbra-common-mbox-docs, zimbra-common-mbox-conf,
   zimbra-common-mbox-conf-attrs, zimbra-mbox-conf, zimbra-zimlets, zimbra-viewmail-admin-zimlet,
