@@ -15,6 +15,7 @@ AutoReqProv: no
 Requires: zimbra-core
 Requires: mariadb-server
 Requires: mariadb-client
+Requires: zimbra-base
 Requires: zimbra-jetty-distribution
 Requires: zimbra-webclient-portal-example
 Requires: zimbra-help

@@ -6,7 +6,7 @@ Section: Mail
 Priority: optional
 Architecture: @@ARCH@@
 Depends: zimbra-core,
-  mariadb-server, mariadb-client,
+  mariadb-server, mariadb-client, zimbra-base,
   zimbra-jetty-distribution,
   zimbra-webclient-portal-example, zimbra-help, zimbra-jetty-conf, zimbra-common-mbox-conf,
   zimbra-common-core-jar, zimbra-common-mbox-docs, zimbra-common-mbox-conf,
